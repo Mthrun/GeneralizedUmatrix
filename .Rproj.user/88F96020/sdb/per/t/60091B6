@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "\\name{uniquePoints}\n\\alias{uniquePoints}\n%- Also NEED an '\\alias' for EACH other topic documented here.\n\\title{Detect multiple appearances of projected points}\n\\description{\n  Erase all multiple appearances of Points.\n}\n\\usage{\nuniquePoints(Points)\n}\n\\arguments{\n  \\item{Points}{[1:n,1:2], The matrix with data points,points should be in rows.}\n}\n\n\\value{\n  Returns a list:\n  \\item{unique}{[1:u,1:d] The points with no multiple appearance.}\n  \\item{sorted}{[1:u] The \"unique\" indices (first appearance).}\n  \\item{mergeind}{[1:n] Index, which includes multiple appearance of indices. Can be used to recover the original points.}\n\t\\item{IsDuplicate}{[1:n,1:n], for i!=j IsDuplicate[i,j]== 1  iff Data[i,] == Data[j,] ;  IsDuplicate[i,i]==0}\n\n}\n\\author{Michael Thrun}\n\n\\examples{\n# Create data.\nx <- c(1,1,7,8,2,2,9,3,3,3,9,7)\nx <- matrix(x,4,3)\n uniquePoints(x)\n# Returns a matrix: 1 2 3\n#                   7 9 9\n#                   8 3 7\n# a vector: 1,3,4 (unique indices)\n# and a vector: 1,1,3,4 (multiple appearance).\n}\n\\keyword{unique points}\n\\keyword{uniquePoints}\n\\keyword{multiple appearance}",
+    "created" : 1489410450481.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2155857902",
+    "id" : "60091B6",
+    "lastKnownWriteTime" : 1489410687,
+    "last_content_update" : 1489410687,
+    "path" : "D:/Subversion/PUB/CRANupload/GeneralizedUmatrix/man/uniquePoints.Rd",
+    "project_path" : "man/uniquePoints.Rd",
+    "properties" : {
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}
