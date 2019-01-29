@@ -1,4 +1,4 @@
-plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits=NULL, Cls=NULL, ClsColors=NULL,Imx=NULL, Tiled=FALSE, BmSize=0.5,ShowAxis=F){
+plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, ClsColors=NULL,Imx=NULL, BmSize=0.5,...){
 # plotTopographicMap(GeneralizedUmatrix, BestMatchingUnits, Cls, Tiled)
 # Draws a plot of given GeneralizedUmatrix
 # INPUT
@@ -13,6 +13,70 @@ plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits=NULL, Cls=N
               
 # author: MT
   #Bei einer Insel muss die Umatrix vervierfacht werden damit funktion funktioniert
+ 
+########################################################################################## 
+  #Catch further arguments ----
+##########################################################################################
+  dots=list(...)
+  
+  #in case of pmatrix
+  if(is.null(dots[["Colormap"]]))
+    Colormap=GeneralizedUmatrix::UmatrixColormap
+  else
+    Colormap=dots$Colormap
+  
+  #axis with labels
+  if(is.null(dots[["ShowAxis"]]))
+    ShowAxis=FALSE
+  else
+    ShowAxis=dots$ShowAxis
+  
+  if(is.null(dots[["Tiled"]]))
+    Tiled=FALSE
+  else
+    Tiled=dots$Tiled
+  
+  #number of contour lines, limit to plot faster
+  if(is.null(dots[["NoLevels"]]))
+    NoLevels=35
+  else
+    NoLevels=dots$NoLevels
+  
+  if(is.null(dots[["main"]]))
+    main=NULL
+  else
+    main=dots$main
+  
+  if(!is.null(dots[["title"]]))
+    main=dots$title
+  
+  
+  if(is.null(dots[["sub"]]))
+    sub=NULL
+  else
+    sub=dots$sub
+  
+  if(!ShowAxis){
+    if(is.null(dots[["xlab"]]))
+      xlab=NULL
+    else
+      xlab=dots$xlab
+    
+    if(is.null(dots[["ylab"]]))
+      ylab=NULL
+    else
+      ylab=dots$ylab
+    
+    if(is.null(dots[["zlab"]]))
+      zlab=NULL
+    else
+      zlab=dots$zlab
+  }else{
+    xlab=ylab=zlab=NULL
+  }
+##########################################################################################  
+  #check for island ----
+##########################################################################################
 if(!is.null(Imx))
   Tiled=TRUE
 
@@ -21,7 +85,7 @@ if(!is.null(Imx))
   # OUTPUT
 	if(!requireNamespace("rgl", quietly = T)) stop("Package Rgl could not be loaded.")
 
-  ## MT: Normalization der GeneralizedUmatrix werte
+  # N#ormalization der GeneralizedUmatrix werte ----
   # Milligan, Copper 1988 A Study of Standadization of Variables in Cluster Analysis,
   # robust Normalization Z_5 :"Z_5 is bounded by 0.0 and 1.0 with at least one observed value at each of these end points"
 
@@ -35,7 +99,7 @@ if(!is.null(Imx))
   minU2=quants2[1]
   maxU2=quants2[3]
 
-  ### Hoehe aus GeneralizedUmatrix schaetzen
+  ### Hoehe aus GeneralizedUmatrix schaetzen ----
   #Verhaeltnis zwischen minhoehe/maxHoehe=1/HeightScale
       HeightScale=round(maxU2/(2*max(minU2,0.05)),0) #Factor 2 damit die GeneralizedUmatrix Hoehe nicht zu riesig wird
 
@@ -55,9 +119,12 @@ if(!is.null(Imx))
   if(length(indMin)>0)
     GeneralizedUmatrix[indMin]=0
 ##########################################################################################
-  #diverse Checks
+  #diverse Checks ----
 ##########################################################################################
-  
+  if(missing(BestMatchingUnits)){
+    BestMatchingUnits=matrix(1,2,2)
+    warning('BestMatchingUnits are missing.Creating a dummy..')
+  }
   if (!is.matrix(BestMatchingUnits))
     stop('Bestmatches have to be a matrix')
   else
@@ -99,60 +166,35 @@ if(!is.null(Imx))
       d[2]
     ))
   }
+  ##Cls checks
 if(is.null(Cls)) Cls=rep(1,b[1])
- 
+if(!is.vector(Cls)){
+  warning('Cls is not a vector. Calling as.vector()')
+  Cls=as.vector(Cls)
+}
+  if(!is.numeric(Cls)){
+    warning('Cls is not a numeric Calling as.numeric()')
+    Cls=as.numeric(Cls)
+  }   
+  if(sum(!is.finite(Cls))>0){
+    warning('Not all values in Cls are finite. Generating nonfiniteclass with value 999')
+    Cls[!is.finite(Cls)]=999
+  }
+  if(length(Cls)!=b[1]){
+    Cls=rep(1,b[1])
+    warning(paste0('Cls has the length ',length(Cls),'which does not equal the number of the BestMatchingUnits:',b[1],'. Plotting without Cls.'))
+  }
+    
 if(is.null(ClsColors)){
- ClsColors=DefaultColorSequence()
+ ClsColors=GeneralizedUmatrix::DefaultColorSequence
  }else{
 	if(length(unique(Cls))!=length(ClsColors)){
 		stop('Length of vector of Clscolor does not match the number of unique Clusters in Cls.')
 	}
 } 
-##########################################################################################
-## Textur generieren
-##########################################################################################
- #requires Umatrix packages 
-  # if(TextureRendering){ #Aus showUmatrix3d, package Umatrix
-  #   print("Please wait while the GeneralizedUmatrix texture gets generated")
-  # 
-  #   rotate <- function(x) t(apply(x, 2, rev))
-  # 
-  #   #rotatedGeneralizedUmatrix = apply(GeneralizedUmatrix, 2, function(x)rev(x))
-  #   rotatedGeneralizedUmatrix = t(GeneralizedUmatrix)
-  #   if(is.null(Imx)) rotatedImx = NULL
-  # 
-  #   if(!is.null(Imx)){
-  #     rotatedImx = t(Imx)
-  #     oceanLine = apply(rotatedImx, 1, function(x) all(x==1))
-  #     startLine = min(which(!oceanLine),na.rm=T)
-  #     endLine = length(oceanLine) - min(which(rev(!oceanLine)),na.rm=T) + 1
-  # 
-  #     oceanCol = apply(rotatedImx, 2, function(x) all(x==1))
-  #     startCol = min(which(!oceanCol),na.rm=T)
-  #     endCol = length(oceanCol) - min(which(rev(!oceanCol)),na.rm=T) + 1
-  # 
-  #     Height = (endLine - startLine) * 8
-  #     Width = (endCol - startCol) * 8
-  #   }
-  #   else{
-  #     Width = ncol(rotatedGeneralizedUmatrix)*8
-  #     if(Tiled) Width = Width*2
-  #     ratio = nrow(rotatedGeneralizedUmatrix)/ncol(rotatedGeneralizedUmatrix)
-  #     Height = Width*ratio
-  #   }
-  # 
-  #   png("tmpGeneralizedUmatrix.png", width=Width, height = Height )
-  #   print(plotUmatrix(rotatedGeneralizedUmatrix, Fast=F, Clean = T, Tiled = Tiled,
-  #                     RemoveOcean = T, TransparentOcean = T,
-  #                     Imx=rotatedImx,Nrlevels = 35)) #MT: hier konstanten Wert nehmen, damits klappt
-  #   dev.off()
-  # 
-  #   print("Texture generation finished")
-  # }
-
 
 ##########################################################################################
-## 4fach Kachelung (tiling) durchfuehren
+## 4fach Kachelung (tiling) durchfuehren ----
 ##########################################################################################
   
   TileGUM=function(Umatrix, BestMatches = NULL, Cls = NULL) 
@@ -197,7 +239,7 @@ if(is.null(ClsColors)){
 
 
 ##########################################################################################
-## groessere imx bauen
+## groessere imx bauen ----
 #########
   bigImx = Imx
 
@@ -209,41 +251,16 @@ if(is.null(ClsColors)){
 
   lines = seq(1, nrow(GeneralizedUmatrix), len = nrow(GeneralizedUmatrix))
   columns = seq(1, ncol(GeneralizedUmatrix), len = ncol(GeneralizedUmatrix))
+  
 
-
-  Colormap=c(rep("#3C6DF0",2),c("#3C6DF0", "#006602", "#006A02", "#006D01", "#007101", 
-                                "#007501", "#007901", "#007C00", "#008000", "#068103", 
-                                "#118408", "#0B8305", "#17860A", "#1D870D", "#228810", 
-                                "#288A12", "#2E8B15", "#348D18", "#398E1A", "#3F8F1D", 
-                                "#45911F", "#4A9222", "#509325", "#569527", "#5C962A", 
-                                "#61982C", "#67992F", "#6D9A32", "#729C34", "#789D37", 
-                                "#7E9F39", "#84A03C", "#89A13F", "#8FA341", "#95A444", 
-                                "#9AA547", "#A0A749", "#A6A84C", "#ACAA4E", "#B1AB51", 
-                                "#B7AC54", "#BDAE56", "#C3AF59", "#C8B15B", "#CEB25E", 
-                                "#CBAF5C", "#C8AC59", "#C5A957", "#C3A654", "#C0A352", 
-                                "#BDA050", "#BA9D4D", "#B7994B", "#B49648", "#B29346", 
-                                "#AF9044", "#AC8D41", "#A98A3F", "#A6873C", "#A3843A", 
-                                "#A08138", "#9E7E35", "#9B7B33", "#987830", "#95752E", 
-                                "#92722B", "#8F6E29", "#8C6B27", "#8A6824", "#876522", 
-                                "#84621F", "#815F1D", "#7E5C1B", "#7B5918", "#795616", 
-                                "#765313", "#714E0F", "#6C480B", "#674307", "#6F4D15", 
-                                "#785822", "#806230", "#896D3E", "#91774C", "#998159", 
-                                "#A28C67", "#AA9675", "#B3A183", "#BBAB90", "#C3B59E", 
-                                "#CCC0AC", "#D4CABA", "#DDD5C7", "#E5DFD5", "#E7E1D8", 
-                                "#E9E4DB", "#EBE6DE", "#ECE8E1", "#EEEAE4", "#F0EDE7", 
-                                "#F2EFEA", "#F4F1ED", "#F6F4F0", "#F8F6F3", "#F9F8F6", 
-                                "#FBFAF9", "#FDFDFC", "#FFFFFF", "#FFFFFF", "#FEFEFE", 
-                                "#FEFEFE", "#FEFEFE", "#FDFDFD", "#FDFDFD", "#FDFDFD", 
-                                "#FCFCFC", "#FCFCFC", "#FCFCFC", "#FBFBFB", "#FBFBFB", 
-                                "#FBFBFB", "#FAFAFA", "#FAFAFA", "#FAFAFA", "#F9F9F9", 
-                                "#F9F9F9", "#FFFFFF", "#FFFFFF"))
+  
   Nrlevels2 = 2*HeightScale*stretchFactor #MT Farbintervalle gleich 2*hoehenintervalle, siehe oben
   levelBreaks <- seq(0,1.000001,length.out=(Nrlevels2+1))
 
 
 
 ##########################################################################################
-## remove Heights by island
+## remove Heights by island ----
 ##########################################################################################
   
   if(!is.null(Imx)){#Aus showUmatrix3d, package Umatrix
@@ -301,7 +318,7 @@ if(is.null(ClsColors)){
 
 
 ##########################################################################################
-## GeneralizedUmatrix darstellen
+## GeneralizedUmatrix darstellen ----
 ##########################################################################################
  #Aus showUmatrix3d, package Umatrix
    rgl::open3d()
@@ -318,11 +335,15 @@ if(is.null(ClsColors)){
       rgl::surface3d(x=lines, y=columns, z=z, color=color, aspect=FALSE, lit=F)
    # else
      # rgl::surface3d(x=lines, y=columns, z=z, col="white", texture="tmpGeneralizedUmatrix.png", textype="rgb",lit=F)
-
   }
-
+  
+  if(!ShowAxis){
+    rgl::title3d(main = main,sub = sub,xlab = xlab,ylab = ylab,zlab = zlab)
+  }else{
+    rgl::title3d(main = main,sub = sub)
+  }
 ##########################################################################################
-## BestMatchingUnits darstellen
+## BestMatchingUnits darstellen ----
 ##########################################################################################
 #Aus showUmatrix3d, package Umatrix   
   if(!is.null(BestMatchingUnits)){
@@ -335,52 +356,13 @@ if(is.null(ClsColors)){
     if(is.list(BestMatchingUnitsHeights))
       BestMatchingUnitsHeights = unlist(BestMatchingUnitsHeights)
 
-    # DefaultColorSeq <- c('magenta','yellow','black','red','green', 'blue','cyan',
-    #                      # jetzt kommen einfach alle R farben in random sequenz
-    #                      'burlywood4',
-    #                      'gray28',
-    #                      'darksalmon',
-    #                      'orchid2',
-    #                      'plum4',
-    #                      'gray41',
-    #                      'plum',
-    #                      'pink1',
-    #                      'coral1',
-    #                      'gray39',
-    #                      'gray',
-    #                      'gray67',
-    #                      'slategray1',
-    #                      'peachpuff1',
-    #                      'floralwhite',
-    #                      'hotpink',
-    #                      'gray12',
-    #                      'gray88',
-    #                      'orange1',
-    #                      'rosybrown1',
-    #                      'royalblue',
-    #                      'gray78',
-    #                      'mediumturquoise',
-    #                      'darkolivegreen',
-    #                      'gray45',
-    #                      'azure',
-    #                      'peachpuff3',
-    #                      'hotpink3',
-    #                      'blue1',
-    #                      'chocolate1',
-    #                      'tomato',
-    #                      'lightyellow',
-    #                      'gainsboro',
-    #                      'steelblue1',
-    #                      'gray95',
-    #                      'blue4',
-    #                      'slategrey')
-	DefaultColorSeq=ClsColors
+	  DefaultColorSeq=ClsColors
     rgl::spheres3d(x=BestMatchingUnits[,2],BestMatchingUnits[,3], BestMatchingUnitsHeights, col = DefaultColorSeq[ColorClass], radius = BmSize)
   }
 
   # konturlinien zeichnen
  # if(!TextureRendering){
-    lines = contourLines(lines,columns,z, nlevels = 35)
+    lines = contourLines(lines,columns,z, nlevels = NoLevels)
      for (i in seq_along(lines)) {
        x <- lines[[i]]$x
        y <- lines[[i]]$y
@@ -389,4 +371,5 @@ if(is.null(ClsColors)){
      }
  # }
 
+ 
 }

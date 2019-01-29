@@ -1,4 +1,4 @@
-GeneralizedUmatrix=function(Data,ProjectedPoints,PlotIt=TRUE,Cls=NULL,Toroid=TRUE,Tiled=FALSE,ComputeInR=FALSE){
+GeneralizedUmatrix=function(Data,ProjectedPoints,PlotIt=FALSE,Cls=NULL,Toroid=TRUE,Tiled=FALSE,ComputeInR=FALSE){
 #V=GeneralizedUmatrix(ProjectedPoints,Data)
 #V=GeneralizedUmatrix(ProjectedPoints,Data,TRUE,Cls,TRUE)
 # Generalisierte U-Matrix fuer Projektionsverfahren
@@ -16,7 +16,7 @@ GeneralizedUmatrix=function(Data,ProjectedPoints,PlotIt=TRUE,Cls=NULL,Toroid=TRU
 
 # Output
 # Umatrix[Lines,Columns                     umatrix (see ReadUMX() dbt.DataIO)
-# EsomNeurons[Lines,Columns,weights]       3-dimensional numeric array (wide format), not wts (long format)
+# EsomNeurons[1:Lines,1:Columns,1:weights]       3-dimensional numeric array (wide format), not wts (long format)
 # Bmu[1:n,OutputDimension]                 GridConverted Projected Points information converted by convertProjectionProjectedPoints() to predefined Grid by Lines and Columns
 # gplotres                                Ausgabe von ggplot
 # unbesetztePositionen                    Umatrix[unbesetztePositionen] =NA
@@ -128,114 +128,115 @@ calcUmatrixHLP <- function(EsomNeurons,Toroid=T){
   return(Umatrix)
 }
 ##############End calcUmatrixHLP()
-##########################################################################
-# gridNeighbourhoodPattern function
-##########################################################################
-
-gridNeighbourhoodPattern <- function(Radius){
-  # gridNeighbourhoodPattern(Radius)
-  # returns index for neighbours relative to (0,0) and their distances
-  #
-  # INPUT
-  # Radius		      Radius in which neighbours should be searched
-  # 
-  # OUTPUT
-  # Neighbourhood(1:m,1:3)      positions of all weights in the Neighbourhood of c(0,0) together with their distance
-  # author: Florian Lerch
-  # gridNeighbourhoodPattern(3)
-  
-  # the pattern is starting from point 0,0
-  #author: FL
-  startPoint = c(0,0) 
-  
-  # get all neighbours
-  Neighbourhood <- c()
-  
-  # make sure that Radius is an integer
-  Radius <- floor(Radius)
-  
-  # calculate only a quarter of the sphere and get the rest through symmetry
-  for (y in (startPoint[1] - Radius):(startPoint[1])){
-    for (x in (startPoint[2] - Radius):(startPoint[2])){
-      if ((y - startPoint[1])^2 + (x - startPoint[2])^2 <= Radius^2) {
-        ySym <- startPoint[1] - (y - startPoint[1])
-        xSym <- startPoint[2] - (x - startPoint[2])
-        
-        # add the new found neighbours and the points symmetric to them into the Neighbourhood
-        nn1 <- c(y, x, sqrt(y^2+x^2))
-        nn2 <- c(y, xSym, sqrt(y^2+xSym^2))
-        nn3 <- c(ySym , x, sqrt(ySym^2+x^2))
-        nn4 <- c(ySym, xSym, sqrt(ySym^2+xSym^2))
-        
-        newNeighbours <-  matrix(c(nn1, nn2, nn3, nn4),ncol=3,byrow=TRUE)
-        Neighbourhood <- rbind(Neighbourhood,newNeighbours)
-      }
-    }
-  }
-  
-  # remove duplicated entries
-  Neighbourhood <- unique(Neighbourhood)
-  
-  # sort by distance, this makes it easier to remove the farther neighbour on a Toroid
-  Neighbourhood <- Neighbourhood[order(Neighbourhood[,3]),] 
-  
-  Neighbourhood
-}
-# end GridneighbourhoodThroughPattern function
-##########################################################################
-# neighbourhoodThroughPattern function
-##########################################################################
-neighbourhoodThroughPattern <- function(Index, Pattern, Columns, Lines, Toroid=TRUE, RadiusBiggerThanTorus=TRUE){
-  # neighbourhoodThroughPattern(Index, Pattern, Columns, Lines, Toroid)
-  # gets a Pattern for neighbourhood and returns all indices within that pattern starting from
-  # Index
-  #
-  # INPUT
-  # Index			position of a weightvector for which the neighbours should be returned. Index in form (lines,columns)
-  # Pattern			The neighbourhoodpattern. (see gridNeighbourhoodPattern)
-  # Columns			Width of the grid
-  # Lines			Height of the grid
-  # OPTIONAL
-  # Toroid			Is the Pattern build on a Toroid?
-  # RadiusBiggerThanTorus		If the currently used radius is bigger than min(Columns/2,Lines/2)
-  #				        there needs to be an expensive check for neighbours on two
-  #				        sides over the Toroid
-  # OUTPUT
-  # Neighbourhood(1:m,1:2)       indices of all weights in the Neighbourhood of Index together with their distance
-  # author: Florian Lerch
-  # neighbourhoodThroughPattern(c(3,5), Pattern, 80, 50)
-  
-  # move points according to difference
-  Neighbourhood <- addRowWiseC(Pattern,c(Index,0))
-  
-  if(Toroid==FALSE){ # just keep points within the borders 
-    Neighbourhood <- subset(Neighbourhood, Neighbourhood[,1] >= 1 & Neighbourhood[,2] >= 1 & 
-                              Neighbourhood[,1] <= Lines & Neighbourhood[,2] <= Columns)
-    rows = Neighbourhood[,1]
-    cols = Neighbourhood[,2]
-  }
-  else if(Toroid==TRUE){ 
-    # use modulo operator to get all entries into the borders
-    rows = (Neighbourhood[,1]) %% Lines 
-    cols = (Neighbourhood[,2]) %% Columns 
-    
-    rows[(rows == 0)] = Lines
-    cols[(cols == 0)] = Columns
-  }
-  
-  indices <- (rows-1)*Columns + cols
-  
-  Neighbourhood <- cbind(indices,Neighbourhood[,3])
-  
-  #RadiusBiggerThanTorus = F
-  # on a Toroid its possible that a value exists two times in the Neighbourhood
-  if(RadiusBiggerThanTorus){
-    Neighbourhood = Neighbourhood[!duplicated(Neighbourhood[,1]),]
-  }
-  
-  Neighbourhood
-}
-##############End neighbourhoodThroughPattern()
+#MT: Shortcut not required anymore, Now Umatrix package availible on CRAN
+# ##########################################################################
+# # gridNeighbourhoodPattern function
+# ##########################################################################
+# 
+# gridNeighbourhoodPattern <- function(Radius){
+#   # gridNeighbourhoodPattern(Radius)
+#   # returns index for neighbours relative to (0,0) and their distances
+#   #
+#   # INPUT
+#   # Radius		      Radius in which neighbours should be searched
+#   # 
+#   # OUTPUT
+#   # Neighbourhood(1:m,1:3)      positions of all weights in the Neighbourhood of c(0,0) together with their distance
+#   # author: Florian Lerch
+#   # gridNeighbourhoodPattern(3)
+#   
+#   # the pattern is starting from point 0,0
+#   #author: FL
+#   startPoint = c(0,0) 
+#   
+#   # get all neighbours
+#   Neighbourhood <- c()
+#   
+#   # make sure that Radius is an integer
+#   Radius <- floor(Radius)
+#   
+#   # calculate only a quarter of the sphere and get the rest through symmetry
+#   for (y in (startPoint[1] - Radius):(startPoint[1])){
+#     for (x in (startPoint[2] - Radius):(startPoint[2])){
+#       if ((y - startPoint[1])^2 + (x - startPoint[2])^2 <= Radius^2) {
+#         ySym <- startPoint[1] - (y - startPoint[1])
+#         xSym <- startPoint[2] - (x - startPoint[2])
+#         
+#         # add the new found neighbours and the points symmetric to them into the Neighbourhood
+#         nn1 <- c(y, x, sqrt(y^2+x^2))
+#         nn2 <- c(y, xSym, sqrt(y^2+xSym^2))
+#         nn3 <- c(ySym , x, sqrt(ySym^2+x^2))
+#         nn4 <- c(ySym, xSym, sqrt(ySym^2+xSym^2))
+#         
+#         newNeighbours <-  matrix(c(nn1, nn2, nn3, nn4),ncol=3,byrow=TRUE)
+#         Neighbourhood <- rbind(Neighbourhood,newNeighbours)
+#       }
+#     }
+#   }
+#   
+#   # remove duplicated entries
+#   Neighbourhood <- unique(Neighbourhood)
+#   
+#   # sort by distance, this makes it easier to remove the farther neighbour on a Toroid
+#   Neighbourhood <- Neighbourhood[order(Neighbourhood[,3]),] 
+#   
+#   Neighbourhood
+# }
+# # end GridneighbourhoodThroughPattern function
+# ##########################################################################
+# # neighbourhoodThroughPattern function
+# ##########################################################################
+# neighbourhoodThroughPattern <- function(Index, Pattern, Columns, Lines, Toroid=TRUE, RadiusBiggerThanTorus=TRUE){
+#   # neighbourhoodThroughPattern(Index, Pattern, Columns, Lines, Toroid)
+#   # gets a Pattern for neighbourhood and returns all indices within that pattern starting from
+#   # Index
+#   #
+#   # INPUT
+#   # Index			position of a weightvector for which the neighbours should be returned. Index in form (lines,columns)
+#   # Pattern			The neighbourhoodpattern. (see gridNeighbourhoodPattern)
+#   # Columns			Width of the grid
+#   # Lines			Height of the grid
+#   # OPTIONAL
+#   # Toroid			Is the Pattern build on a Toroid?
+#   # RadiusBiggerThanTorus		If the currently used radius is bigger than min(Columns/2,Lines/2)
+#   #				        there needs to be an expensive check for neighbours on two
+#   #				        sides over the Toroid
+#   # OUTPUT
+#   # Neighbourhood(1:m,1:2)       indices of all weights in the Neighbourhood of Index together with their distance
+#   # author: Florian Lerch
+#   # neighbourhoodThroughPattern(c(3,5), Pattern, 80, 50)
+#   
+#   # move points according to difference
+#   Neighbourhood <- addRowWiseC(Pattern,c(Index,0))
+#   
+#   if(Toroid==FALSE){ # just keep points within the borders 
+#     Neighbourhood <- subset(Neighbourhood, Neighbourhood[,1] >= 1 & Neighbourhood[,2] >= 1 & 
+#                               Neighbourhood[,1] <= Lines & Neighbourhood[,2] <= Columns)
+#     rows = Neighbourhood[,1]
+#     cols = Neighbourhood[,2]
+#   }
+#   else if(Toroid==TRUE){ 
+#     # use modulo operator to get all entries into the borders
+#     rows = (Neighbourhood[,1]) %% Lines 
+#     cols = (Neighbourhood[,2]) %% Columns 
+#     
+#     rows[(rows == 0)] = Lines
+#     cols[(cols == 0)] = Columns
+#   }
+#   
+#   indices <- (rows-1)*Columns + cols
+#   
+#   Neighbourhood <- cbind(indices,Neighbourhood[,3])
+#   
+#   #RadiusBiggerThanTorus = F
+#   # on a Toroid its possible that a value exists two times in the Neighbourhood
+#   if(RadiusBiggerThanTorus){
+#     Neighbourhood = Neighbourhood[!duplicated(Neighbourhood[,1]),]
+#   }
+#   
+#   Neighbourhood
+# }
+# ##############End neighbourhoodThroughPattern()
 ##########################################################################
 # Koordinatenbestimmung auf Gitter
 ##########################################################################
@@ -262,35 +263,37 @@ HeuristischerParameter=max(round(Columns/6,0),20)
 ##########################################################################
 # Bestimmung der Positionen, auf welchen sESOM keinen Einfluss haben kann
 ##########################################################################
-#path=paste0(SubversionDirectory(),'PUB/dbt/Umatrix/src/')
-#requireRpackage("Rcpp")
-#sourceCpp(paste0(path,"addRowWiseC.cpp"))
 
-Radius=HeuristischerParameter
-pattern=gridNeighbourhoodPattern(Radius)
-bmPos=lapply(1:nrow(coordsres$GridConvertedPoints),FUN=function(i,coordsres,pattern,Radius){
-  index=coordsres$GridConvertedPoints[i,]
-  res=neighbourhoodThroughPattern(index,pattern,coordsres$LC[2],coordsres$LC[1],T)
-  t(sapply(res[,1],FUN=function(ind,Columns){
-    row = ((ind-1) %/% Columns) + 1
-    col = ((ind-1) %% Columns) + 1
-    c(row,col)
-  },coordsres$LC[2]))
-},coordsres,pattern,Radius)
+###
+#only for NoN CRAN intern usage:
+###
+# pattern=Umatrix::gridNeighbourhoodPattern(Radius)
+# bmPos=lapply(1:nrow(coordsres$GridConvertedPoints),FUN=function(i,coordsres,pattern,Radius){
+#   index=coordsres$GridConvertedPoints[i,]
+#   res=Umatrix::neighbourhoodThroughPattern(index,pattern,coordsres$LC[2],coordsres$LC[1],T)
+#   t(sapply(res[,1],FUN=function(ind,Columns){
+#     row = ((ind-1) %/% Columns) + 1
+#     col = ((ind-1) %% Columns) + 1
+#     c(row,col)
+#   },coordsres$LC[2]))
+# },coordsres,pattern,Radius)
+# 
+# besetztPos=do.call(rbind,bmPos)
 
-besetztPos=do.call(rbind,bmPos)
+# Radius2=max(coordsres$LC[1],coordsres$LC[2])
+# pattern2=Umatrix::gridNeighbourhoodPattern(Radius2)
+# res2=Umatrix::neighbourhoodThroughPattern(c(1,1),pattern2,coordsres$LC[1],coordsres$LC[2],T)
+# allePositionen=t(sapply(res2[,1],FUN=function(ind,Columns){
+#   row = ((ind-1) %/% Columns) + 1
+#   col = ((ind-1) %% Columns) + 1
+#   c(row,col)
+# },coordsres$LC[2]))
 
-Radius2=max(coordsres$LC[1],coordsres$LC[2])
-pattern2=gridNeighbourhoodPattern(Radius2)
-res2=neighbourhoodThroughPattern(c(1,1),pattern2,coordsres$LC[1],coordsres$LC[2],T)
-allePositionen=t(sapply(res2[,1],FUN=function(ind,Columns){
-  row = ((ind-1) %/% Columns) + 1
-  col = ((ind-1) %% Columns) + 1
-  c(row,col)
-},coordsres$LC[2]))
+# unbesetztePositionen=setdiffMatrix(allePositionen,besetztPos)$CurtedMatrix
 
-unbesetztePositionen=setdiffMatrix(allePositionen,besetztPos)$CurtedMatrix
-
+###
+#only for NoN CRAN intern usage
+###
 ##########################################################################
 # Begin. simplified ESOM Algorithmus for given BestMatching units
 ##########################################################################
@@ -323,11 +326,10 @@ for (i in vec){
   #Umap[unbesetztePositionen]=NA
   gplotres=NULL
 if(PlotIt){
-plotTopographicMap(Umap,BMUs,Cls,Tiled =Tiled,BmSize =1) #Sondern Gebirge=Unbekannte Orte der U-Matrix
+plotTopographicMap(Umap,BMUs,Cls,Tiled =Tiled,BmSize =1,NoLevels=5) #Sondern Gebirge=Unbekannte Orte der U-Matrix
 }
 
 return(list(Umatrix=Umap,EsomNeurons=wts,Bestmatches=BMUs,Lines=Lines,Columns=Columns,
-            unbesetztePositionen=unbesetztePositionen,
        sESOMparamaters=list(Eppochs=HeuristischerParameter,Rmax=HeuristischerParameter,Rmin=1,CoolingStrategie='Linear, Lernratate ist const =1',Toroid=toroid),
        gplotres=gplotres))
 
