@@ -14,11 +14,13 @@ interactiveGeneralizedUmatrixIsland(Umatrix, Bestmatches=NULL, Cls=NULL)
   \item{Cls}{Classification of the Bestmatches}
 }
 \value{Boolean Matrix that represents the island within the tiled Umatrix.}
-
+\details{
+Clicking on "Quit" returns the Imx matrix to the workspace. Details can bee read in [Thrun et al, 2016, Thrun/Ultsch, 2017].
+}
 \examples{
-data("Lsun3D")
-Data=Lsun3D$Data
-Cls=Lsun3D$Cls
+data("Chainlink")
+Data=Chainlink$Data
+Cls=Chainlink$Cls
 InputDistances=as.matrix(dist(Data))
 res=cmdscale(d=InputDistances, k = 2, eig = TRUE, add = FALSE, x.ret = FALSE)
 ProjectedPoints=as.matrix(res$points)
@@ -45,5 +47,8 @@ plotTopographicMap(resUmatrix$Umatrix,resUmatrix$Bestmatches,Cls)
 This function is a depricated version of a function from the Umatrix packages created by Florian Lerch and Michael Thrun
 }
 \references{
-Thrun, M. C., Lerch, F., Loetsch, J., Ultsch, A.: Visualization and 3D Printing of Multivariate Data of Biomarkers, in Skala, V. (Ed.), International Conference in Central Europe on Computer Graphics, Visualization and Computer Vision,Plzen, 2016. 
+[Thrun, et al.,2016] 	Thrun, M. C., Lerch, F., Loetsch, J., Ultsch, A.: Visualization and 3D Printing of Multivariate Data of Biomarkers, in Skala, V. (Ed.), International Conference in Central Europe on Computer Graphics, Visualization and Computer Vision,Plzen, 2016. 
+
+[Thrun/Ultsch, 2017]	Thrun, M.C., Ultsch, A.: Projection based Clustering, Conf. Int. Federation of Classification Societies (IFCS),<DOI:10.13140/RG.2.2.13124.53124>, Tokyo, 2017.
+
 }

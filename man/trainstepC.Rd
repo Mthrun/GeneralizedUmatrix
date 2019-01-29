@@ -5,7 +5,7 @@
 internal function for s-esom
 }
 \description{
-Does the training for fixed bestmatches in one epoch of the s-esom.
+Does the training for fixed bestmatches in one epoch of the sESOM.
 }
 \usage{
 trainstepC(vx,vy, DataSampled,BMUsampled,Lines,Columns, Radius, toroid)
@@ -22,9 +22,13 @@ trainstepC(vx,vy, DataSampled,BMUsampled,Lines,Columns, Radius, toroid)
 }
 \value{WeightVectors, array[1:Lines,1:Columns,1:weights] with the adjusted Weights}
 \references{
-[Thrun, 2017]   Thrun, M. C.:A System for Projection Based Clustering through Self-Organization and Swarm Intelligence, (Doctoral dissertation), Philipps-Universitaet Marburg, Marburg, 2017.
-
+[Thrun, 2018]  Thrun, M. C.: Projection Based Clustering through Self-Organization and Swarm Intelligence, doctoral dissertation 2017, Springer, Heidelberg, ISBN: 978-3-658-20539-3, \url{https://doi.org/10.1007/978-3-658-20540-9}, 2018. 
 }
 \author{
 Michael Thrun
 }
+\details{
+
+Algorithm is described in [Thrun, 2018, p. 48, Listing 5.1].
+}
+\note{Usually not for seperated usage!}

@@ -4,7 +4,7 @@
 simplified ESOM
 }
 \description{
-internfunction for the simplified ESOM Algorithmus for fixed BestMatchingUnits
+internfunction for the simplified ESOM Algorithmus of [Thrun, 2018] for fixed BestMatchingUnits
 }
 \usage{
 sESOM4BMUs(BMUs,Data, esom, toroid, CurrentRadius,ComputeInR)
@@ -19,9 +19,13 @@ sESOM4BMUs(BMUs,Data, esom, toroid, CurrentRadius,ComputeInR)
 
 }
 
+
 \details{
-not for seperated usage!
+
+Algorithm is described in [Thrun, 2018, p. 48, Listing 5.1].
 }
+\note{Usually not for seperated usage!}
+
 \value{
 
  \item{esom}{array [1:Lines,1:Columns,1:d], d is the dimension of the weights, the same as in the ESOM algorithm. modified esomneuros regarding a predefined neighborhood defined by a radius}
@@ -35,7 +39,7 @@ Michael Thrun
 \code{\link{GeneralizedUmatrix}}
 }
 \references{
-Thrun, M. C.:A System for Projection Based Clustering through Self-Organization and Swarm Intelligence, (Doctoral dissertation), Philipps-Universität Marburg, Marburg, 2017.
+[Thrun, 2018]  Thrun, M. C.: Projection Based Clustering through Self-Organization and Swarm Intelligence, doctoral dissertation 2017, Springer, Heidelberg, ISBN: 978-3-658-20539-3, \url{https://doi.org/10.1007/978-3-658-20540-9}, 2018. 
 }
 
 \keyword{GeneratePswarmVisualization}
