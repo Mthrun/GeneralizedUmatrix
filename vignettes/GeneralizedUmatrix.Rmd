@@ -43,7 +43,7 @@ data("Chainlink")
 Data=Chainlink$Data
 Cls=Chainlink$Cls
 require(DataVisualizations)
-DataVisualizations::plot3D(Data,Cls,main='Chainlink dataset')
+DataVisualizations::Plot3D(Data,Cls,main='Chainlink dataset')
 
 InputDistances=as.matrix(dist(Data))
 res=cmdscale(d=InputDistances, k = 2, eig = TRUE, add = FALSE, x.ret = FALSE)
