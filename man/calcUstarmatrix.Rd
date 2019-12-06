@@ -1,4 +1,5 @@
-\name{calcUstarmatrix}
+\name{CalcUstarmatrix}
+\alias{CalcUstarmatrix}
 \alias{calcUstarmatrix}
 \title{ Calculate the U*matrix for a given Umatrix and Pmatrix. }
 \arguments{

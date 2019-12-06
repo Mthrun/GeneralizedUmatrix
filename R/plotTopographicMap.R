@@ -1,4 +1,4 @@
-plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, ClsColors=NULL,Imx=NULL, BmSize=0.5,...){
+plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=0.5,...){
 # plotTopographicMap(GeneralizedUmatrix, BestMatchingUnits, Cls, Tiled)
 # Draws a plot of given GeneralizedUmatrix
 # INPUT
@@ -55,6 +55,39 @@ plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, 
     sub=NULL
   else
     sub=dots$sub
+  
+  #Settings for Legend ----
+  if(!is.null(Names)){
+    if(is.null(dots[["NamesCex"]]))
+      NamesCex=1.5
+    else
+      NamesCex=dots$NamesCex
+    
+    if(is.null(dots[["NamesPosition"]]))
+      NamesPosition="topright"
+    else
+      NamesPosition=dots$NamesPosition
+    
+    if(is.null(dots[["NamesTitle"]]))
+      NamesTitle="Class"
+    else
+      NamesTitle=dots$NamesTitle
+    
+    if(is.null(dots[["NamesColors"]]))
+      NamesColors=DataVisualizations::DefaultColorSequence[1:length(Names)]
+    else{
+      NamesColors=dots$NamesColors
+      if(length(NamesColors)!=length(Names)){
+        warning('Length of "Names" does not equal length of "NamesColors". Trying to use "ClsColors".')
+        if(length(ClsColors)!=length(Names)){
+          warning('Length of "Names" does not equal length of "ClsColors". Using default Colors')
+          NamesColors=DataVisualizations::DefaultColorSequence[1:length(Names)]
+        }else{
+          NamesColors=ClsColors
+        }
+      }
+    }
+  }
   
   if(!ShowAxis){
     if(is.null(dots[["xlab"]]))
@@ -371,5 +404,18 @@ if(is.null(ClsColors)){
      }
  # }
 
- 
+ if(!is.null(Names)){
+   if(is.character(Names)){
+     if(length(Names)==length(unique(Cls))){
+       rgl::legend3d(NamesPosition, legend = paste(Names), 
+                     pch = 16, col = NamesColors,
+                     cex=NamesCex, 
+                     inset=c(0.02),bty="n",title=NamesTitle)
+     }else{
+       warning('Names are not of length of number of clusters and hence ignored.')
+     }
+   }else{
+     warning('Names are not a character vector and hence ignored.')
+   }
+ }
 }

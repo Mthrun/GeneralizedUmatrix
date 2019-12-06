@@ -1,4 +1,4 @@
-calcUstarmatrix=function(Umatrix,Pmatrix){
+CalcUstarmatrix=CalcUstarmatrix=function(Umatrix,Pmatrix){
 # ustarMatrix=calcUstarmatrix(Umatrix,Pmatrix)
 # Berechnet die U*-Matrix aus der U-Matrix und der P-Matrix.
 #

@@ -10,22 +10,25 @@ visualizes high-dimensional distance and density based structurs of the combinat
 \usage{
 plotTopographicMap(GeneralizedUmatrix, BestMatchingUnits,
 
-Cls=NULL,ClsColors=NULL,Imx=NULL, BmSize=0.5,\dots)
+Cls=NULL,ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=0.5,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
  \item{GeneralizedUmatrix}{(1:Lines,1:Columns), Umatrix to be plotted}
 \item{BestMatchingUnits}{(1:n,1:2), Positions of bestmatches to be plotted onto the Umatrix}
-  \item{Cls}{(1:n), Class identifier for the bestmatch at the given point}
+  \item{Cls}{(1:n), numerical vector of classification of \code{k} classes for the bestmatch at the given point}
   \item{ClsColors}{Vector of colors that will be used to colorize the different classes}
  \item{Imx}{a mask (Imx) that will be used to cut out the umatrix}
-
+\item{Names}{If set: [1:k] character vector naming the k classes for the legend.
+. In this case, further parameters with the possibility to adjust are:
+\code{NamesCex}: (size); \code{NamesPosition}: Legend position; \code{NamesTitle}: title of legend; \code{NamesColors}: colors if ClsColors are not default (NULL).
+}
 
 \item{BmSize}{size(diameter) of the points in the visualizations. The points represent the BestMatchingUnits}
 
 \item{\dots}{
 
- further parameters, use only of you know what you are doing:
+ Besides the legend/names parameter the list of further parameters, use only of you know what you are doing:
 \describe{
  \item{Tiled}{Should the Umatrix be drawn 4times?}
  \item{ShowAxis}{shall the axis be shown?}

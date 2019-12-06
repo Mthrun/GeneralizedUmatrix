@@ -1,12 +1,10 @@
 export(GeneralizedUmatrix)
 export(plotTopographicMap)
 export(XYcoords2LinesColumns)
-#export(interactiveGeneralizedUmatrixIsland)
-
 export(upscaleUmatrix)
 export(NormalizeUmatrix)
-
-#export(GeneratePmatrix)
+export(GeneratePmatrix)
+export(CalcUstarmatrix)
 useDynLib("GeneralizedUmatrix", .registration = TRUE)
 
 #Only for Non CRAN usage 
