@@ -34,7 +34,7 @@ Optional,  =T: Rcode, =F Cpp Code
 }
 \value{List with
 \item{Umatrix}{
- [1:Lines,1:Columns] (see \code{ReadUMX} in package DataIO)
+ [1:Lines,1:Columns]  [1:Lines,1:Columns] Umatrix to be plotted, numerical matrix storing the U-heights, see [Thrun, 2018] for definition.
 }
 \item{EsomNeurons}{
 [1:Lines,1:Columns,1:weights]  3-dimensional numeric array (wide format), not wts (long format)

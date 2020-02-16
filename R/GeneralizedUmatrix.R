@@ -22,6 +22,7 @@ GeneralizedUmatrix=function(Data,ProjectedPoints,PlotIt=FALSE,Cls=NULL,Toroid=TR
 # unbesetztePositionen                    Umatrix[unbesetztePositionen] =NA
 # author: MT 06/2015
 #1.Editor; MT 12/2015
+#2 Editor: MT 02/2020   switched to faster plotting
 toroid=Toroid
 # ErrorHandling
 if(any(is.nan(Data))) stop('Data contains NaNs')
@@ -325,8 +326,10 @@ for (i in vec){
 
   #Umap[unbesetztePositionen]=NA
   gplotres=NULL
-if(PlotIt){
-plotTopographicMap(Umap,BMUs,Cls,Tiled =Tiled,BmSize =1,NoLevels=5) #Sondern Gebirge=Unbekannte Orte der U-Matrix
+if(isTRUE(PlotIt)){
+  if(length(Cls)!=nrow(BMUs)) Cls=rep(1,nrow(BMUs))
+  gplotres=TopviewTopographicMap(GeneralizedUmatrix = Umap,BestMatchingUnits = BMUs,Cls = Cls,Tiled =Tiled,BmSize =12) #Sondern Gebirge=Unbekannte Orte der U-Matrix
+  print(gplotres)
 }
 
 return(list(Umatrix=Umap,EsomNeurons=wts,Bestmatches=BMUs,Lines=Lines,Columns=Columns,

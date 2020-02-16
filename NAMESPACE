@@ -5,6 +5,7 @@ export(upscaleUmatrix)
 export(NormalizeUmatrix)
 export(GeneratePmatrix)
 export(CalcUstarmatrix)
+export(TopviewTopographicMap)
 useDynLib("GeneralizedUmatrix", .registration = TRUE)
 
 #Only for Non CRAN usage 

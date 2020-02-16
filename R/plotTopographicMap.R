@@ -215,7 +215,7 @@ if(!is.vector(Cls)){
   }
   if(length(Cls)!=b[1]){
     Cls=rep(1,b[1])
-    warning(paste0('Cls has the length ',length(Cls),'which does not equal the number of the BestMatchingUnits:',b[1],'. Plotting without Cls.'))
+    warning(paste0('Cls has the length ',length(Cls),' which does not equal the number of the BestMatchingUnits: ',b[1],'. Plotting without Cls.'))
   }
     
 if(is.null(ClsColors)){
