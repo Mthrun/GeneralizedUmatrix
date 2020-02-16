@@ -21,4 +21,5 @@ import(Rcpp)
   importFrom("stats", "quantile", "runif", "dist","cmdscale")
   importFrom("grDevices", "dev.off", "png")
   importFrom("graphics", "lines", "par", "rasterImage")
- 
+ importFrom("grDevices", "colorRamp")
+     importFrom("stats", "qnorm", "sd")
