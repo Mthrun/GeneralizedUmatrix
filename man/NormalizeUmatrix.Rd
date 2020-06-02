@@ -35,12 +35,25 @@ Loetsch, J., Ultsch, A.: Exploiting the structures of the U-matrix, in Villmann,
 \author{
 Felix Pape, Michael Thrun
 }
-\note{
-Development Ongoing.
-}
 
 \examples{
-#ToDo
+data("Chainlink")
+Data=Chainlink$Data
+Cls=Chainlink$Cls
+InputDistances=as.matrix(dist(Data))
+res=cmdscale(d=InputDistances, k = 2, eig = TRUE, add = FALSE, x.ret = FALSE)
+ProjectedPoints=as.matrix(res$points)
+#see also ProjectionBasedClustering package for other common projection methods
+\donttest{
+resUmatrix=GeneralizedUmatrix(Data,ProjectedPoints)
+## visualization
+normalizedUmatrix=NormalizeUmatrix(Data,resUmatrix$Umatrix,resUmatrix$Bestmatches)
+TopviewTopographicMap(GeneralizedUmatrix = normalizedUmatrix,resUmatrix$Bestmatches)
+}
+\dontshow{
+	resUmatrix=GeneralizedUmatrix(Data[1:2,],ProjectedPoints[1:2,])
+	normalizedUmatrix=NormalizeUmatrix(Data[1:2,],resUmatrix$Umatrix, resUmatrix$Bestmatches)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

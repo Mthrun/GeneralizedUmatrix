@@ -32,7 +32,7 @@ data(Chainlink)
 str(Chainlink)
 \donttest{
 library(DataVisualizations)
-DataVisualizations::plot3D(Chainlink$Data,Chainlink$Cls)
+DataVisualizations::Plot3D(Chainlink$Data,Chainlink$Cls)
 }
 }
 \keyword{datasets}

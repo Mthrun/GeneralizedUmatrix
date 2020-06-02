@@ -173,11 +173,11 @@ getAbstractUMatrix <- function(BestMatches, Size, Data, BorderAlg = BorderToGrid
     
     
     # when data is a vector, convert to matrix
-    if (class(data) == "numeric" || class(data) == "complex") {
+    if (methods::is(data,"numeric") || methods::is(data,"complex")) {
       data <- matrix(data, ncol = 1)
-    } else if (class(data) == "data.frame") {
+    } else if (inherits(data,"data.frame")) {
       data <- as.matrix(data)
-    } else if (class(data) != "matrix") {
+    } else if (!inherits(data,"matrix")) {
       stop("uniquePoints input is neither a (numeric or complex) vector, matrix or data.frame.")
     }
     
@@ -302,10 +302,11 @@ NormalizeUmatrix = function(Data, Umatrix, BestMatches) {
   if (is.null(d)) {
     stop('Umatrix Dimension is null. Please check Input')
   }
-  
-  requireNamespace('matrixStats')
-  mini = matrixStats::colMins(Points, na.rm = TRUE)
-  maxi = matrixStats::colMaxs(Points, na.rm = TRUE)
+  mini=apply(Points, 2, min,na.rm=TRUE)
+  maxi=apply(Points, 2, max,na.rm=TRUE)
+  #requireNamespace('matrixStats')
+  #mini = matrixStats::colMins(Points, na.rm = TRUE)
+  #maxi = matrixStats::colMaxs(Points, na.rm = TRUE)
   if (sum(mini) < 2) {
     stop('Some Bestmatches are below 1 in X or Y/Columns or Lines')
   }
