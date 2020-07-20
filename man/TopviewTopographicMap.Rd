@@ -37,7 +37,7 @@ Cls, ClsColors = NULL, Imx = NULL, Names = NULL, BmSize = 6, ...)
 }
 }
 \details{
-Please see \code{\link{plotTopographicMap}}.
+Please see \code{\link{plotTopographicMap}}. This function is currently still experimental because not all functionallity is implemented yet.
 }
 \value{
 plotly handler
@@ -85,3 +85,5 @@ TopviewTopographicMap(GeneralizedUmatrix = resUmatrix$Umatrix,resUmatrix$Bestmat
 \keyword{U-Matrix}% __ONLY ONE__ keyword per line
 \keyword{Umatrix}% __ONLY ONE__ keyword per line
 \keyword{GeneralizedUmatrix}% __ONLY ONE__ keyword per line
+\concept{topographic map}
+\concept{Generalized U-matrix}

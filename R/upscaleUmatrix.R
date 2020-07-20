@@ -78,7 +78,7 @@ upscaleUmatrix <- function(Umatrix, Factor = 2, BestMatches, Imx){
   rv$Umatrix = umx
   
   if(!missing(BestMatches)){
-    rv$Bmu = BestMatches * Factor - (Factor - 1)
+    rv$BestMatches = BestMatches * Factor - (Factor - 1)
   }
   
   if(!missing(Imx)){

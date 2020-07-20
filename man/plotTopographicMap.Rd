@@ -5,27 +5,29 @@
 Visualizes th Generalized U-matrix in 3D
 }
 \description{
-Visualizes high-dimensional distance and density based structurs of the combination two-dimensional scatter plots (projections) with high-dimensional data as the topographic map with hypsometric tints which is a 3D landscape.
+The Generalized U-matrix is visualized as the topographic map with hypsometric tints which is a 3D landscape. The topographic map presents high-dimensional distance and density-based structurs.
 }
 \usage{
 plotTopographicMap(GeneralizedUmatrix, BestMatchingUnits,
 
-Cls=NULL,ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=0.5,\dots)
+Cls=NULL,ClsColors=NULL,Imx=NULL,Names=NULL,
+
+BmSize=0.5,RenderingContourLines=TRUE,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
  \item{GeneralizedUmatrix}{(1:Lines,1:Columns),  [1:Lines,1:Columns] Umatrix to be plotted, numerical matrix storing the U-heights, see [Thrun, 2018] for definition.}
 \item{BestMatchingUnits}{(1:n,1:2), Positions of bestmatches to be plotted onto the Umatrix}
   \item{Cls}{(1:n), numerical vector of classification of \code{k} classes for the bestmatch at the given point}
-  \item{ClsColors}{Vector of colors that will be used to colorize the different classes}
+  \item{ClsColors}{Vector of colors that will be used to colorize the different classes, default is GeneralizedUmatrix::DefaultColorSequence}
  \item{Imx}{a mask (Imx) that will be used to cut out the umatrix}
 \item{Names}{If set: [1:k] character vector naming the k classes for the legend.
 . In this case, further parameters with the possibility to adjust are:
-\code{NamesCex}: (size); \code{NamesPosition}: Legend position; \code{NamesTitle}: title of legend; \code{NamesColors}: colors if ClsColors are not default (NULL).
+\code{NamesCex}: (size); \code{NamesPosition}: Legend position; \code{NamesTitle}: title of legend; \code{NamesColors}: colors if ClsColors are not default (NULL), etc.
 }
 
 \item{BmSize}{size(diameter) of the points in the visualizations. The points represent the BestMatchingUnits}
-
+ \item{RenderingContourLines}{FALSE: disables plotting of contour lines resulting in a much faster plot.}
 \item{\dots}{
 
  Besides the legend/names parameter the list of further parameters, use only of you know what you are doing:
@@ -40,6 +42,11 @@ Cls=NULL,ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=0.5,\dots)
          \item{xlab}{same as in \code{\link{plot}}}   
          \item{ylab}{same as in \code{\link{plot}}}
          \item{zlab}{same as in \code{\link{plot}}}
+   \item{NamesPosition}{same as in \code{\link[rgl]{bgplot3d}}}
+    \item{NamesColors}{same as col in \code{\link[rgl]{bgplot3d}}}
+     \item{NamesCex}{same as cex in \code{\link[rgl]{bgplot3d}}}
+      \item{NamesTitle}{same as title in \code{\link[rgl]{bgplot3d}}}
+      \item{NamesPch}{same as pch in \code{\link[rgl]{bgplot3d}}}
  }
  
 }
@@ -58,7 +65,7 @@ The visualization and result of this function is a topographic map with hypsomet
 Michael Thrun
 }
 \note{
-Algorithm is partly based on the Umatrix package.
+First version of algorithm was partly based on the Umatrix package.
 }
 
 \seealso{
@@ -97,3 +104,5 @@ rgl.snapshot('test.png')
 \keyword{U-Matrix}% __ONLY ONE__ keyword per line
 \keyword{Umatrix}% __ONLY ONE__ keyword per line
 \keyword{GeneralizedUmatrix}% __ONLY ONE__ keyword per line
+\concept{topographic map}
+\concept{Generalized U-matrix}

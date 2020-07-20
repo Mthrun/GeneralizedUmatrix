@@ -1,4 +1,4 @@
-plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=0.5,...){
+plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=0.5,RenderingContourLines=TRUE,...){
 # plotTopographicMap(GeneralizedUmatrix, BestMatchingUnits, Cls, Tiled)
 # Draws a plot of given GeneralizedUmatrix
 # INPUT
@@ -41,9 +41,14 @@ plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, 
   else
     Tiled=dots$Tiled
   
+  if(is.null(dots[["Silent"]]))
+    Silent=TRUE
+  else
+    Silent=dots$Silent
+  
   #number of contour lines, limit to plot faster
   if(is.null(dots[["NoLevels"]]))
-    NoLevels=35
+    NoLevels=30
   else
     NoLevels=dots$NoLevels
   
@@ -60,39 +65,6 @@ plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, 
     sub=NULL
   else
     sub=dots$sub
-  
-  #Settings for Legend ----
-  if(!is.null(Names)){
-    if(is.null(dots[["NamesCex"]]))
-      NamesCex=1.5
-    else
-      NamesCex=dots$NamesCex
-    
-    if(is.null(dots[["NamesPosition"]]))
-      NamesPosition="topright"
-    else
-      NamesPosition=dots$NamesPosition
-    
-    if(is.null(dots[["NamesTitle"]]))
-      NamesTitle="Class"
-    else
-      NamesTitle=dots$NamesTitle
-    
-    if(is.null(dots[["NamesColors"]]))
-      NamesColors=DataVisualizations::DefaultColorSequence[1:length(Names)]
-    else{
-      NamesColors=dots$NamesColors
-      if(length(NamesColors)!=length(Names)){
-        warning('Length of "Names" does not equal length of "NamesColors". Trying to use "ClsColors".')
-        if(length(ClsColors)!=length(Names)){
-          warning('Length of "Names" does not equal length of "ClsColors". Using default Colors')
-          NamesColors=DataVisualizations::DefaultColorSequence[1:length(Names)]
-        }else{
-          NamesColors=ClsColors
-        }
-      }
-    }
-  }
   
   if(!ShowAxis){
     if(is.null(dots[["xlab"]]))
@@ -232,6 +204,66 @@ if(is.null(ClsColors)){
 	}
 } 
 
+  
+  #Settings for Legend ----
+  if(!is.null(Names)){
+    
+    if(!is.character(Names)){
+      warning('Names are not a character vector, calling as.character')
+      Names=as.character(Names)
+    }
+    
+    # 
+     if(!is.null(Names)){
+       cls_length=length(unique(Cls))
+       if(!length(Names)==cls_length){
+         warning('Names are not of length of number of clusters, Renaming Names to Cluster 1.. Cluster n')
+         Names=rep("C",cls_length)
+         no_vec=seq_len(cls_length)
+         Names=paste0(Names,no_vec)
+      }
+     }
+    
+    if(is.null(dots[["NamesCex"]]))
+      NamesCex=1.5
+    else
+      NamesCex=dots$NamesCex
+    
+    if(is.null(dots[["NamesPosition"]]))
+      NamesPosition="topright"
+    else
+      NamesPosition=dots$NamesPosition
+    
+    if(is.null(dots[["NamesTitle"]]))
+      NamesTitle="Class"
+    else
+      NamesTitle=dots$NamesTitle
+    
+    if(is.null(dots[["NamesPch"]]))
+      NamesPch=16
+    else
+      NamesPch=dots$NamesPch
+    
+    if(is.null(dots[["NamesColors"]]))
+      NamesColors=DataVisualizations::DefaultColorSequence[1:length(Names)]
+    else{
+      NamesColors=dots$NamesColors
+      if(length(NamesColors)!=length(Names)){
+        warning('Length of "Names" does not equal length of "NamesColors". Trying to use "ClsColors".')
+        if(length(ClsColors)!=length(Names)){
+          warning('Length of "Names" does not equal length of "ClsColors". Using default Colors')
+          NamesColors=DataVisualizations::DefaultColorSequence[1:length(Names)]
+        }else{
+          NamesColors=ClsColors
+        }
+      }
+    }
+  }
+  
+  if(isFALSE(Silent)){
+    cat("plotToporaphicMaps: Error checks complete.\n")
+  }
+
 ##########################################################################################
 ## 4fach Kachelung (tiling) durchfuehren ----
 ##########################################################################################
@@ -355,12 +387,17 @@ if(is.null(ClsColors)){
   columns = seq(1, ncol(z), len = ncol(z))
 
 
-
+  
+  if(isFALSE(Silent)){
+    cat("plotToporaphicMaps: Heights computed.\n")
+  }
 ##########################################################################################
 ## GeneralizedUmatrix darstellen ----
 ##########################################################################################
  #Aus showUmatrix3d, package Umatrix
    rgl::open3d()
+   rgl::rgl.viewpoint(0, -30,zoom = 1)
+  
   if(ShowAxis){
     rgl::material3d(col = "black")
 
@@ -368,12 +405,20 @@ if(is.null(ClsColors)){
       rgl::persp3d(x=lines, y=columns, z=z, color=color, aspect=FALSE, lit=F,box=F, texmagfilter="nearest", texminfilter="nearest", texenvmap=TRUE)
    # else
     #  rgl::persp3d(x=lines, y=columns, z=z, col="white", texture="tmpGeneralizedUmatrix.png", textype="rgb",lit=F)
+      
+      if(isFALSE(Silent)){
+        cat("plotToporaphicMaps: persp3d computed.\n")
+      }
   }
   else{
     #if(!TextureRendering)
       rgl::surface3d(x=lines, y=columns, z=z, color=color, aspect=FALSE, lit=F)
    # else
      # rgl::surface3d(x=lines, y=columns, z=z, col="white", texture="tmpGeneralizedUmatrix.png", textype="rgb",lit=F)
+    
+    if(isFALSE(Silent)){
+      cat("plotToporaphicMaps:surface 3d computed. \n")
+    }
   }
   
   if(!ShowAxis){
@@ -388,33 +433,58 @@ if(is.null(ClsColors)){
   if(!is.null(BestMatchingUnits)){
 
     ColorClass = c()
-    for(i in 1:length(unique(Cls))) ColorClass[Cls == sort(unique(Cls))[i]] = i
-
+    #for(i in 1:length(unique(Cls))) ColorClass[Cls == sort(unique(Cls))[i]] = i
+    for(i in 1:length(unique(Cls))) ColorClass[Cls == unique(Cls)[i]] = i
+    
     BestMatchingUnitsHeights <- sapply(1:nrow(BestMatchingUnits), function(x) z[BestMatchingUnits[x,2],BestMatchingUnits[x,3]])
 
     if(is.list(BestMatchingUnitsHeights))
       BestMatchingUnitsHeights = unlist(BestMatchingUnitsHeights)
 
-	  DefaultColorSeq=ClsColors
-    rgl::spheres3d(x=BestMatchingUnits[,2],BestMatchingUnits[,3], BestMatchingUnitsHeights, col = DefaultColorSeq[ColorClass], radius = BmSize)
+    rgl::spheres3d(x=BestMatchingUnits[,2],y = BestMatchingUnits[,3], z = BestMatchingUnitsHeights, col = ClsColors[ColorClass], radius = BmSize)
+    
+    #shapelist3d(shapes, x = 0, y = NULL, z = NULL, size = 1, matrix = NULL, override = TRUE, 
+    #            ..., plot = TRUE)
+    
+    
+    if(isFALSE(Silent)){
+      cat("plotToporaphicMaps: Bestmatching Unit drawn.\n")
+    }
   }
 
   # konturlinien zeichnen
  # if(!TextureRendering){
+   if(RenderingContourLines){
     lines = contourLines(lines,columns,z, nlevels = NoLevels)
+      #XYZ=list()
+      X=c()
+      Y=c()
+      Z=c()
      for (i in seq_along(lines)) {
        x <- lines[[i]]$x
        y <- lines[[i]]$y
        z <- rep(lines[[i]]$level, length(x))
-       rgl::lines3d(x, y, z)
+       if(isFALSE(Silent)){
+         #cat(paste("plotToporaphicMaps: contour line",i," drawn.\n"))
+       }
+       #rgl::lines3d(x = x, y = y,z =z)
+       #XYZ[[i]]=xyz.coords(x=x,y=y,z=z)
+       X=c(X,NaN,x)
+       Y=c(Y,NaN,y)
+       Z=c(Z,NaN,z)
+       
      }
- # }
+      rgl::lines3d(x = X, y = Y,z =Z)
+      #return(XYZ)
+      #lapply(XYZ, function(x) rgl::lines3d(x))#lit=FALSE,point_antialias=FALSE,line_antialias = FALSE,fog=FALSE,depth_test="never",depth_mask=FALSE,texenvmap=FALSE,texmipmap=FALSE))
+  }
+   cat(paste("plotToporaphicMaps: contour lines computed.\n"))
 
  if(!is.null(Names)){
    if(is.character(Names)){
      if(length(Names)==length(unique(Cls))){
        rgl::legend3d(NamesPosition, legend = paste(Names), 
-                     pch = 16, col = NamesColors,
+                     pch = NamesPch, col = NamesColors,
                      cex=NamesCex, 
                      inset=c(0.02),bty="n",title=NamesTitle)
      }else{

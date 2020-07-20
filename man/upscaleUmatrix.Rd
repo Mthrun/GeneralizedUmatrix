@@ -31,3 +31,6 @@ upscaleUmatrix(Umatrix, Factor = 2,BestMatches, Imx)
 \author{
 Felix Pape
 }
+\concept{topographic map}
+\concept{Generalized U-matrix}
+\keyword{U-matrix}

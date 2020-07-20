@@ -85,9 +85,8 @@ as.matrix(dist(ProjectedPoints)))
 	plotTopographicMap(resUmatrix$Umatrix,resUmatrix$Bestmatches,Cls)
 }
 }
-\keyword{topographic}% use one of  RShowDoc("KEYWORDS")
-\keyword{map}% __ONLY ONE__ keyword per line
 \keyword{visualization}% __ONLY ONE__ keyword per line
 \keyword{U-Matrix}% __ONLY ONE__ keyword per line
 \keyword{Umatrix}% __ONLY ONE__ keyword per line
 \keyword{GeneralizedUmatrix}% __ONLY ONE__ keyword per line
+\concept{Generalized U-matrix}
