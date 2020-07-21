@@ -268,43 +268,10 @@ if(is.null(ClsColors)){
 ## 4fach Kachelung (tiling) durchfuehren ----
 ##########################################################################################
   
-  TileGUM=function(Umatrix, BestMatches = NULL, Cls = NULL) 
-  {
-    rows = nrow(Umatrix)
-    cols = ncol(Umatrix)
-    Umatrix <- Umatrix[c(1:rows, 1:rows), c(1:cols, 1:cols)]
-    bm_keys = NULL
-    if (!is.null(BestMatches)) {
-      if (ncol(BestMatches) == 3) {
-        bm_keys = BestMatches[, 1]
-        BestMatches = BestMatches[, c(2, 3)]
-      }
-      else {
-        bm_keys = 1:nrow(BestMatches)
-      }
-      bmRow <- nrow(BestMatches)
-      BestMatches <- BestMatches[rep(1:bmRow, 4), ]
-      BestMatches[(bmRow + 1):(2 * bmRow), 1] <- BestMatches[(bmRow + 
-                                                                1):(2 * bmRow), 1] + rows
-      BestMatches[(2 * bmRow + 1):(3 * bmRow), 2] <- BestMatches[(2 * 
-                                                                    bmRow + 1):(3 * bmRow), 2] + cols
-      BestMatches[(3 * bmRow + 1):(4 * bmRow), 1] <- BestMatches[(3 * 
-                                                                    bmRow + 1):(4 * bmRow), 1] + rows
-      BestMatches[(3 * bmRow + 1):(4 * bmRow), 2] <- BestMatches[(3 * 
-                                                                    bmRow + 1):(4 * bmRow), 2] + cols
-    }
-    if (!is.null(Cls)) {
-      Cls <- rep(Cls, 4)
-    }
-    if (!is.null(bm_keys)) 
-      BestMatches = cbind(rep(bm_keys, 4), BestMatches)
-    list(GeneralizedUmatrix = Umatrix, BestMatchingUnits = BestMatches, Cls = Cls)
-  }
-  
   if(Tiled){
-    tU <- TileGUM(GeneralizedUmatrix,BestMatchingUnits,Cls)
+    tU <- tileGUM(GeneralizedUmatrix,BestMatchingUnits,Cls)
     GeneralizedUmatrix <- tU$GeneralizedUmatrix
-    BestMatchingUnits <- tU$BestMatchingUnits
+    BestMatchingUnits <- tU$BestMatchingUnits #with key
     Cls <- tU$Cls
   }
 
@@ -443,6 +410,7 @@ if(is.null(ClsColors)){
 
     rgl::spheres3d(x=BestMatchingUnits[,2],y = BestMatchingUnits[,3], z = BestMatchingUnitsHeights, col = ClsColors[ColorClass], radius = BmSize)
     
+    #ToDo: shape selection for multiple clusters (>20 clusters)
     #shapelist3d(shapes, x = 0, y = NULL, z = NULL, size = 1, matrix = NULL, override = TRUE, 
     #            ..., plot = TRUE)
     
@@ -474,12 +442,14 @@ if(is.null(ClsColors)){
        Z=c(Z,NaN,z)
        
      }
-      rgl::lines3d(x = X, y = Y,z =Z)
+      rgl::lines3d(x = X, y = Y,z =Z,alpha=0.75)
       #return(XYZ)
       #lapply(XYZ, function(x) rgl::lines3d(x))#lit=FALSE,point_antialias=FALSE,line_antialias = FALSE,fog=FALSE,depth_test="never",depth_mask=FALSE,texenvmap=FALSE,texmipmap=FALSE))
-  }
-   cat(paste("plotToporaphicMaps: contour lines computed.\n"))
-
+   }
+   if(isFALSE(Silent)){
+    cat(paste("plotToporaphicMaps: contour lines computed.\n"))
+   }
+   
  if(!is.null(Names)){
    if(is.character(Names)){
      if(length(Names)==length(unique(Cls))){
@@ -494,4 +464,8 @@ if(is.null(ClsColors)){
      warning('Names are not a character vector and hence ignored.')
    }
  }
+   
+  widgets <- rgl::rglwidget()
+
+  return(invisible(widgets))
 }

@@ -165,26 +165,58 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
                            MarkerSize,
                            ShinyBinding,
                            ShinyDimension,
-                           Imx) {
+                           Imx,Cls) {
     
 
     # configure filter, so that every bestmatch stays in
-    if(!is.null(plotbmus)){
-      BestMatchesFilter = rep(T,nrow(plotbmus)) # every Bestmatch stays
-    }
+ 
     
     # put Imx on Umatrix and bestmatches if given
     if(!is.null(Imx)){
+      if(!is.null(plotbmus)){
+        BestMatchesFilter = rep(T,nrow(plotbmus)) # every Bestmatch stays
+        
+      }
+      plotumx[which(Imx == 1)] = 0
+      bigImx = Imx
+      #print(str(BestMatchesFilter))
+      #print(str(plotbmus))
       for(i in 1:nrow(Imx)){
         for(j in 1:ncol(Imx)){
           if(Imx[i,j] == 1){
-            plotumx[i,j] = NA
-            if(!is.null(plotbmus))
+            #plotumx[i,j] = NA
+            if(!is.null(plotbmus)){
+              
               BestMatchesFilter[(plotbmus[,1] == i) & (plotbmus[,2] == j)] = F
+            }
+              
           }
         }
       }
+      #BestMatchesFilter = rep(T,nrow(plotbmus)) # every Bestmatch stays
+      #print(str(BestMatchesFilter))
       if(!is.null(plotbmus)) plotbmus = plotbmus[BestMatchesFilter,]
+
+      #äprint(str(class))
+      #print(class)
+      #todo, ohne globale variable loesen
+      if(!is.null(Cls)) Cls <<- Cls[BestMatchesFilter]
+      
+      oceanLine = apply(plotumx, 1, function(x) all(x==0))
+      startLine = min(which(!oceanLine),na.rm=T)
+      endLine = length(oceanLine) - min(which(rev(!oceanLine)),na.rm=T) + 1
+      
+      oceanCol = apply(plotumx, 2, function(x) all(x==0))
+      startCol = min(which(!oceanCol),na.rm=T)
+      endCol = length(oceanCol) - min(which(rev(!oceanCol)),na.rm=T) + 1
+   
+      if(!is.null(plotbmus)){
+        plotbmus <- plotbmus - cbind(rep(startLine-1,nrow(plotbmus)),rep(startCol-1,nrow(plotbmus)))
+      }
+      plotumx <- plotumx[startLine:endLine,startCol:endCol]
+      Imx <- Imx[startLine:endLine,startCol:endCol]
+      bigImx <- bigImx[startLine:endLine,startCol:endCol]
+      
     }
    
 
@@ -262,13 +294,13 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
       #, showlegend = FALSE
     )
 
-    if (isTRUE(ShinyBinding)) {
-      requireNamespace('shiny')
-      shiny::updateSelectInput(session,
-                        "ClsSelect",
-                        label = "Select Class",
-                        choices = unique(Cls))
-    }
+    #if (isTRUE(ShinyBinding)) {
+    #  requireNamespace('shiny')
+    #  shiny::updateSelectInput(session,
+    #                    "ClsSelect",
+    #                    label = "Select Class",
+    #                    choices = unique(Cls))
+    #}
 
     return(plt)
   }
@@ -292,25 +324,30 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
   stretchFactor = sqrt(nrow(GeneralizedUmatrix) ^ 2 + ncol(GeneralizedUmatrix) ^
                          2) / sqrt(50 ^ 2 + 80 ^ 2)
   Nrlevels2 = 2 * HeightScale * stretchFactor
-  # indMax = which(GeneralizedUmatrix > 1, arr.ind = T)
-  # indMin = which(GeneralizedUmatrix < 0, arr.ind = T)
-  # if (length(indMax) > 0)
-  #   GeneralizedUmatrix[indMax] = 1
-  # if (length(indMin) > 0)
-  #   GeneralizedUmatrix[indMin] = 0
+  indMax = which(GeneralizedUmatrix > 1, arr.ind = T)
+  indMin = which(GeneralizedUmatrix < 0, arr.ind = T)
+  if (length(indMax) > 0)
+    GeneralizedUmatrix[indMax] = 1
+  if (length(indMin) > 0)
+    GeneralizedUmatrix[indMin] = 0
 
   # GeneralizedUmatrix <- GeneralizedUmatrix * HeightScale * stretchFactor
   if (isTRUE(Tiled)) {
+    
+    tU <- tileGUM(GeneralizedUmatrix,BestMatchingUnits,Cls)
+    GeneralizedUmatrix <- tU$GeneralizedUmatrix
+    BestMatchingUnits <- tU$BestMatchingUnits[,2:3] #no key
+    Cls <- tU$Cls
     qdim <- udim * 2
-    dmx  <- cbind(GeneralizedUmatrix, GeneralizedUmatrix)
-    qmx  <- rbind(dmx, dmx)
-    dbm  <-
-      rbind(BestMatchingUnits,
-            cbind(BestMatchingUnits[, 1], BestMatchingUnits[, 2] + udim[2]))
-    qbm  <- rbind(dbm, cbind(dbm[, 1] + udim[1], dbm[, 2]))
-    plotumx <- qmx
-    plotbmus <- qbm
-    plotCls <- rep(Cls, 4)
+    #dmx  <- cbind(GeneralizedUmatrix, GeneralizedUmatrix)
+    #qmx  <- rbind(dmx, dmx)
+    #dbm  <-
+    #  rbind(BestMatchingUnits,
+    #        cbind(BestMatchingUnits[, 1], BestMatchingUnits[, 2] + udim[2]))
+    #qbm  <- rbind(dbm, cbind(dbm[, 1] + udim[1], dbm[, 2]))
+    plotumx <- tU$GeneralizedUmatrix
+    plotbmus <- tU$BestMatchingUnits[,2:3] #no key
+    plotCls <-  tU$Cls
   } else{
     plotumx <- GeneralizedUmatrix
     plotbmus <- BestMatchingUnits
@@ -331,20 +368,21 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
     BmSize,
     ShinyBinding,
     ShinyDimension,
-    Imx
+    Imx,
+    Cls
   )
   if(is.null(main))
     plt=plotly::layout(plt,title = "Topographic Map of Generalized U-Matrix")
   else
     plt=plotly::layout(plt,title = main)
   
-  if (isTRUE(ShinyBinding)) {
-    PlotR <- plotly::renderPlotly({
-      plt
-    })
-    return(list(Rendered=PlotR,single=plt))
-  } else{
+  #if (isTRUE(ShinyBinding)) {
+  #  PlotR <- plotly::renderPlotly({
+  #    plt
+  #  })
+  #  return(list(Rendered=PlotR,single=plt))
+  #} else{
     return(plt)
-  }
+  #}
  
 }#end TopviewTopographicMap

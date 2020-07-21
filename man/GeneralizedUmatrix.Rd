@@ -1,7 +1,7 @@
 \name{GeneralizedUmatrix}
 \alias{GeneralizedUmatrix}
 \alias{getUmatrix4Projection}
-\title{ Generalized U-Matrix for Projection Methods }
+\title{ Generalized U-Matrix for Projection Methods}
 \usage{
 GeneralizedUmatrix(Data,ProjectedPoints,
 
@@ -46,10 +46,9 @@ Optional,  =T: Rcode, =F Cpp Code
  Ausgabe von ggplot
 }
 
-
 }
-\description{Generalized U-Matrix visualizes high-dimensional distance and density based structurs in two-dimensional scatter plots of projectios methods like CCA,MDS,PCA or NeRV
-with the help of a topographic map with hypsometrioc tints [Thrun et al. 2016] based on the Umatrix method for emergent SOMs [Ultsch 2003], for further explanation see [Thrun,2018]}
+\description{Generalized U-Matrix visualizes high-dimensional distance and density based structurs in two-dimensional scatter plots of projectios methods like CCA, MDS, PCA or NeRV with the help of a topographic map with hypsometrioc tints [Thrun et al. 2016] based on the Umatrix method for emergent SOMs [Ultsch 2003], for further explanation see [Thrun,2018]}
+
 \author{Michael Thrun}
 \details{
 Introduced first in [Thrun, 2018, p.46], additionaly reviewed in [Ultsch/Thrun, 2017].

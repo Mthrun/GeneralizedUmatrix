@@ -8,13 +8,11 @@ export(CalcUstarmatrix)
 export(TopviewTopographicMap)
 useDynLib("GeneralizedUmatrix", .registration = TRUE)
 
-#Only for Non CRAN usage 
-#importFrom("Umatrix","neighbourhoodThroughPattern","neighbourhoodThroughPattern")
+
 import(ggplot2)
 importFrom("stats", "quantile")
 #Island generation now in ProjectionBasedClustering package
-#importFrom("shinyjs","hide","useShinyjs","toggle", "hidden", "enable", "disable")
-#import(shiny)
+
 importFrom("stats", "median")
 import(Rcpp)
   importFrom("grDevices", "contourLines")

@@ -37,7 +37,7 @@ Cls, ClsColors = NULL, Imx = NULL, Names = NULL, BmSize = 6, ...)
 }
 }
 \details{
-Please see \code{\link{plotTopographicMap}}. This function is currently still experimental because not all functionallity is implemented yet.
+Please see \code{\link{plotTopographicMap}}. This function is currently still experimental because not all functionallity is fully tested yet.
 }
 \value{
 plotly handler
@@ -52,7 +52,7 @@ plotly handler
 Tim Schreier, Luis Winckelmann, Michael Thrun
 }
 \note{
-Names and Imx are currently under development
+Names are currently under development, Imx in testing phase.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
