@@ -115,14 +115,14 @@ esomwts = esomwts-neigharray%inputdiff; // element-wise cube multiplicatio with 
             
 // Hold BMUs
 //std::cout<<"hold p"<<p<<std::endl;
-            for(int i=0;i<NumberOfDataSamples;i++){
-              for(int j=0;j<NumberOfweights;j++){
+            //for(int i=0;i<NumberOfDataSamples;i++){
+              //for(int j=0;j<NumberOfweights;j++){
                 
                // std::cout<<i<<" "<<j<<" "<<BMUsampled(i,0)<<" "<< BMUsampled(i,1)<<std::endl;
-                esomwts(BMUsampled(i,0),BMUsampled(i,1),j) = DataSampled(i,j);
+                //esomwts(BMUsampled(i,0),BMUsampled(i,1),j) = DataSampled(i,j);
               
-              }
-            } // end for hold bmus
+              //}
+            //} // end for hold bmus
             //std::cout<<"end p"<<p<<std::endl;
   } //end for 1:NumberOfDataSamples
   return(esomwts);

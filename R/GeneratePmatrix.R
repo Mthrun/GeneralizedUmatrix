@@ -36,16 +36,21 @@ else
 
 
 if(is.null(dots[["Radius"]])){
-requireNamespace('ABCanalysis')
+
 x=x[lower.tri(x, diag = FALSE)]
-par=quantile(x,c(0.2)) #geschaetzter paretorRadius
-xx=ABCanalysis::ABCRemoveSmallYields(x,0.5)
-x=xx$SubstantialData
-res=suppressWarnings(ABCanalysis::ABCanalysis(x))
-Radius=1/(min(x[res$Aind])/max(x[res$Cind]))*par  #Verhaeltnis vermutliche inner/Inter Clusterdistanz
-#print(min(x[res$Aind])/max(x[res$Cind]))
-#print(par)
-print(Radius)
+para=quantile(x,c(0.2)) #geschaetzter paretorRadius
+	if(requireNamespace('ABCanalysis')){
+		xx=ABCanalysis::ABCRemoveSmallYields(x,0.5)
+		x=xx$SubstantialData
+		res=suppressWarnings(ABCanalysis::ABCanalysis(x))
+		Radius=1/(min(x[res$Aind])/max(x[res$Cind]))*para  #Verhaeltnis vermutliche inner/Inter Clusterdistanz
+		#print(min(x[res$Aind])/max(x[res$Cind]))
+		#print(par)
+		#print(Radius)
+	}else{
+		warning('Package ABCanalysis is not available.Please install it.')
+		Radius=quantile(x,c(0.4))
+	}
 }else{
   Radius=dots$Radius
 }

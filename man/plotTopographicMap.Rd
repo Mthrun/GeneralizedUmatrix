@@ -92,7 +92,14 @@ resUmatrix=GeneralizedUmatrix(Data,ProjectedPoints)
 plotTopographicMap(GeneralizedUmatrix = resUmatrix$Umatrix,resUmatrix$Bestmatches)
 }
 
+## Open window in specific resolution
+#relevant if Names given
 \donttest{
+library(rgl)
+r3dDefaults$windowRect = c(0,0,1200,1200) 
+plotTopographicMap(GeneralizedUmatrix = resUmatrix$Umatrix,resUmatrix$Bestmatches)
+}
+\dontrun{
 ## To save as STL for 3D printing
  rgl::writeSTL("GenerelizedUmatrix_3d_model.stl")
 

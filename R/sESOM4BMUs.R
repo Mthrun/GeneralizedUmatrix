@@ -89,9 +89,10 @@ for(p in 1:NumberOfDataSamples){
   ## End One Learnstep for one inputvector (1 Datenzeilen)
   
   # Hold BMUs
-  for(i in c(1:NumberOfDataSamples)){
-    esom[BMUs[i,1],BMUs[i,2],] = Data[i,]
-  } # end for hold bmus
+  #for(i in c(1:NumberOfDataSamples)){
+    #esom[BMUs[i,1],BMUs[i,2],] = Data[i,]
+    #esom[BMUs[i,1],BMUs[i,2],] = (CurrentRadius*Data[i,]+esom[BMUs[i,1],BMUs[i,2],])/(CurrentRadius+1)
+  #} # end for hold bmus
   esomAngepasst=esom
 } #end for 1:NumberOfDataSamples
   

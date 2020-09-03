@@ -1,4 +1,4 @@
-GeneralizedUmatrix=function(Data,ProjectedPoints,PlotIt=FALSE,Cls=NULL,Toroid=TRUE,Tiled=FALSE,ComputeInR=FALSE){
+GeneralizedUmatrix=function(Data,ProjectedPoints,PlotIt=FALSE,Cls=NULL,Toroid=TRUE,Tiled=FALSE,ComputeInR=FALSE,...){
 #V=GeneralizedUmatrix(ProjectedPoints,Data)
 #V=GeneralizedUmatrix(ProjectedPoints,Data,TRUE,Cls,TRUE)
 # Generalisierte U-Matrix fuer Projektionsverfahren
@@ -258,7 +258,15 @@ m=Columns+5
 #Hier ist nur relevant, das der Radius mindestens so gross ist, das in innerhalb des Radius um ein BMU
 # noch jeweils ein anderer BMU liegt
 # ansonsten fuert ein hoeherer Anfangsradius nur zu einer laengeren Berechnungsdauer
-HeuristischerParameter=max(round(Columns/6,0),20)
+dots=list(...)
+
+#in case very, very high dim (d>20k,and high amount of points, set eppochs manually lower)
+if(is.null(dots[["HeuristischerParameter"]]))
+  HeuristischerParameter=max(c(round(Columns/6,0),20))
+else
+  HeuristischerParameter=dots$HeuristischerParameter
+
+
 #print(HeuristischerParameter)
 #HeuristischerParameter=20
 ##########################################################################
@@ -302,19 +310,24 @@ HeuristischerParameter=max(round(Columns/6,0),20)
 rnd=runif(n=d*k*m, min =min(Data), max = max(Data)) #besser als min(data) bis max(data)
 wts<- array(rnd,c(k,m,d)) #[Lines,Columns,weights]
 # BestMatches werden festgehalten
-for(i in c(1:nrow(BMUs))){
-  wts[BMUs[i,1],BMUs[i,2],] = Data[i,]
+#for(i in c(1:nrow(BMUs))){
+#  wts[BMUs[i,1],BMUs[i,2],] = Data[i,]
 
-}
+#}
 #Jeder Radius sollte min. 1 Eppoche durchlaufen werden, mehr als eine Eppoche fuehrte nicht zu mehr Emergenz
 # s. auch Experimente mit iUmatrix(), wo eine Umatrix als Video pro Eppoche bei diverser Parameterwahl gezeichnet wird
 epochs=HeuristischerParameter
 AnfangsRadius=HeuristischerParameter
-vec=pmax(seq(from=AnfangsRadius-1,by=-1,length.out = HeuristischerParameter),1)
-for (i in vec){
+
+if(is.null(dots[["Radii"]]))
+  Radii=pmax(seq(from=AnfangsRadius-1,by=-1,length.out = HeuristischerParameter),1)
+else
+  Radii=dots$Radii
+
+for (i in Radii){
   CurrentRadius =  i#max(AnfangsRadius-i,1) #Endradius=1
   #Algorithmus
-  wts=sESOM4BMUs(BMUs,Data, wts, toroid, CurrentRadius,ComputeInR=ComputeInR)
+  wts=GeneralizedUmatrix:::sESOM4BMUs(BMUs,Data, wts, toroid, CurrentRadius,ComputeInR=ComputeInR)
   print(paste0('Operator: getUmatrix4BMUs() at ',round(1-(i/HeuristischerParameter),2)*100,'%'))
 } # end 1:epochs
 ##########################################################################

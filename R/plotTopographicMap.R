@@ -235,7 +235,7 @@ if(is.null(ClsColors)){
       NamesPosition=dots$NamesPosition
     
     if(is.null(dots[["NamesTitle"]]))
-      NamesTitle="Class"
+      NamesTitle="Clustering"
     else
       NamesTitle=dots$NamesTitle
     
@@ -363,7 +363,7 @@ if(is.null(ClsColors)){
 ##########################################################################################
  #Aus showUmatrix3d, package Umatrix
    rgl::open3d()
-   rgl::rgl.viewpoint(0, -30,zoom = 1)
+   rgl::rgl.viewpoint(0, -30,zoom = 0.8)
   
   if(ShowAxis){
     rgl::material3d(col = "black")
@@ -382,12 +382,12 @@ if(is.null(ClsColors)){
       rgl::surface3d(x=lines, y=columns, z=z, color=color, aspect=FALSE, lit=F)
    # else
      # rgl::surface3d(x=lines, y=columns, z=z, col="white", texture="tmpGeneralizedUmatrix.png", textype="rgb",lit=F)
-    
     if(isFALSE(Silent)){
       cat("plotToporaphicMaps:surface 3d computed. \n")
     }
   }
-  
+   #rgl::bgplot3d( suppressWarnings ( fields::image.plot( legend.only=TRUE, legend.args=list(text='legend'), zlim=round(range(z,na.rm = T),1),col=color) )  )
+   #rgl::legend3d("topleft", legend="a",col=color, pch=20)
   if(!ShowAxis){
     rgl::title3d(main = main,sub = sub,xlab = xlab,ylab = ylab,zlab = zlab)
   }else{
@@ -409,6 +409,7 @@ if(is.null(ClsColors)){
       BestMatchingUnitsHeights = unlist(BestMatchingUnitsHeights)
 
     rgl::spheres3d(x=BestMatchingUnits[,2],y = BestMatchingUnits[,3], z = BestMatchingUnitsHeights, col = ClsColors[ColorClass], radius = BmSize)
+  
     
     #ToDo: shape selection for multiple clusters (>20 clusters)
     #shapelist3d(shapes, x = 0, y = NULL, z = NULL, size = 1, matrix = NULL, override = TRUE, 
@@ -457,6 +458,7 @@ if(is.null(ClsColors)){
                      pch = NamesPch, col = NamesColors,
                      cex=NamesCex, 
                      inset=c(0.02),bty="n",title=NamesTitle)
+   
      }else{
        warning('Names are not of length of number of clusters and hence ignored.')
      }
@@ -465,6 +467,7 @@ if(is.null(ClsColors)){
    }
  }
    
+
   widgets <- rgl::rglwidget()
 
   return(invisible(widgets))
