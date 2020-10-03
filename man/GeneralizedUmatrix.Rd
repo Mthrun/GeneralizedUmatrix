@@ -18,11 +18,11 @@ PlotIt=FALSE,Cls=NULL,Toroid=TRUE,Tiled=FALSE,ComputeInR=FALSE)
 Optional, For plotting, see \code{plotUmatrix} in package Umatrix
 }
 \item{Toroid}{
-Optional, Default=FALSE, 
+Optional, Default=TRUE, 
 
-==FALSE planar computation
+==FALSE planar computation with borders defined by projection method
 
-==TRUE: toroid borderless computation, set so only if projection method is also toroidal
+==TRUE: toroid borderless (toroidal) computation, the four borders defined by projection method are ignored.
 }
 \item{Tiled}{
 Optional,For plotting see \code{plotUmatrix} in package Umatrix
@@ -40,7 +40,7 @@ Optional,  =T: Rcode, =F Cpp Code
 [1:Lines,1:Columns,1:weights]  3-dimensional numeric array (wide format), not wts (long format)
 }
 \item{Bestmatches}{
-[1:n,OutputDimension]   GridConverted Projected Points information converted by convertProjectionProjectedPoints() to predefined Grid by Lines and Columns
+[1:n,1:2]   Positions of GridConverted Projected Points on the Umatrix to the predefined Grid by Lines and Columns, First Columns has the content of the Line No and second Column of the Column number.
 }
 \item{gplotres}{
  Ausgabe von ggplot
