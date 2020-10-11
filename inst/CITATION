@@ -1,18 +1,22 @@
 citHeader("To cite the 'GeneralizedUmatrix' R package in publications, please use:")
 
-citEntry(entry = "Book",
-  title = "Projection-Based Clustering through Self-Organization and Swarm Intelligence",
-  author = personList(person(given="Michael Christoph", family="Thrun")),
-  publisher = "Springer",
-  year = "2018",
-  doi = "10.1007/978-3-658-20540-9",
-   url = "https://doi.org/10.1007/978-3-658-20540-9",
+citEntry(entry = "Article",
+  title = "Uncovering High-Dimensional Structures of Projections from Dimensionality Reduction Methods",
+  author = personList(person(given="Michael Christoph", family="Thrun"),person(given="Alfred", family="Ultsch")),
+  journal = "MethodsX",
+  pages = "101093",
+  year = "2020",
+  issn = "2215-0161",
+  doi = "https://doi.org/10.1016/j.mex.2020.101093",
+  url = "http://www.sciencedirect.com/science/article/pii/S2215016120303137",
+
   textVersion =
   paste(
-"Thrun, M. C. :",
-"Projection-Based Clustering through Self-Organization and Swarm Intelligence,",
-"Springer,",
-"Heidelberg,",
-"ISBN: 978-3658205393,",
- "2018."
+"Thrun, M. C., & Ultsch, A: ",
+"Uncovering High-Dimensional Structures of Projections from Dimensionality Reduction Methods,",
+"MethodsX,",
+"in press,",
+"pp. 101093,",
+"doi 10.1016/j.mex.2020.101093,",
+ "2020."
 ))

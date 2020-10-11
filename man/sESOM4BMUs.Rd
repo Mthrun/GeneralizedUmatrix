@@ -4,7 +4,7 @@
 simplified ESOM
 }
 \description{
-internfunction for the simplified ESOM Algorithmus of [Thrun, 2018] for fixed BestMatchingUnits
+internfunction for the simplified ESOM Algorithmus [Thrun/Ultsch, 2020] for fixed BestMatchingUnits
 }
 \usage{
 sESOM4BMUs(BMUs,Data, esom, toroid, CurrentRadius,ComputeInR)
@@ -39,7 +39,7 @@ Michael Thrun
 \code{\link{GeneralizedUmatrix}}
 }
 \references{
-[Thrun, 2018]  Thrun, M. C.: Projection Based Clustering through Self-Organization and Swarm Intelligence, doctoral dissertation 2017, Springer, Heidelberg, ISBN: 978-3-658-20539-3, \url{https://doi.org/10.1007/978-3-658-20540-9}, 2018. 
+[Thrun/Ultsch, 2020]  Thrun, M. C., & Ultsch, A.: Uncovering High-Dimensional Structures of Projections from Dimensionality Reduction Methods, MethodsX, Vol. in press, pp. 101093. doi 10.1016/j.mex.2020.101093, 2020.
 }
 
 \keyword{GeneratePswarmVisualization}
