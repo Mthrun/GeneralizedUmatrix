@@ -10,7 +10,7 @@
 \details{
 For a brief introduction to \pkg{GeneralizedUmatrix} please see the vignette \href{../doc/GeneralizedUmatrix.html}{Introduction of the Generalized Umatrix Package}.
 
-For further details regarding the generalized Umatrix see [Thrun, 2018], chapter 4-5 or [Thrun/Ultsch, 2020].
+For further details regarding the generalized Umatrix see [Thrun, 2018], chapter 4-5, or [Thrun/Ultsch, 2020].
 
 If you want to verifiy your clustering result externally, you can use \code{Heatmap} or \code{SilhouettePlot} of the CRAN package \code{DataVisualizations}.
 

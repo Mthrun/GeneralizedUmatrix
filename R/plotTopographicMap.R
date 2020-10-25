@@ -273,9 +273,16 @@ if(is.null(ClsColors)){
     GeneralizedUmatrix <- tU$GeneralizedUmatrix
     BestMatchingUnits <- tU$BestMatchingUnits #with key
     Cls <- tU$Cls
+  }else{
+    if(is.null(dots[["ExtendBorders"]])){
+      #nothing
+    }else{
+      ExtendBorders=dots$ExtendBorders
+      V=ExtendToroidalUmatrix(GeneralizedUmatrix,BestMatchingUnits[,2:3],ExtendBorders)
+      GeneralizedUmatrix=V$Umatrix
+      BestMatchingUnits=cbind(BestMatchingUnits[,1],V$Bestmatches)
+    }
   }
-
-
 ##########################################################################################
 ## groessere imx bauen ----
 #########
@@ -290,12 +297,8 @@ if(is.null(ClsColors)){
   lines = seq(1, nrow(GeneralizedUmatrix), len = nrow(GeneralizedUmatrix))
   columns = seq(1, ncol(GeneralizedUmatrix), len = ncol(GeneralizedUmatrix))
   
-
-  
   Nrlevels2 = 2*HeightScale*stretchFactor #MT Farbintervalle gleich 2*hoehenintervalle, siehe oben
   levelBreaks <- seq(0,1.000001,length.out=(Nrlevels2+1))
-
-
 
 ##########################################################################################
 ## remove Heights by island ----

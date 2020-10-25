@@ -349,6 +349,15 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
     plotbmus <- tU$BestMatchingUnits[,2:3] #no key
     plotCls <-  tU$Cls
   } else{
+  
+    if(is.null(dots[["ExtendBorders"]])){
+      #nothing
+    }else{
+      ExtendBorders=dots$ExtendBorders
+      V=ExtendToroidalUmatrix(GeneralizedUmatrix,BestMatchingUnits,ExtendBorders)
+      GeneralizedUmatrix=V$Umatrix
+      BestMatchingUnits=V$Bestmatches
+    }
     plotumx <- GeneralizedUmatrix
     plotbmus <- BestMatchingUnits
     plotCls <- Cls

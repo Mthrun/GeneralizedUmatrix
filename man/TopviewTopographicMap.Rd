@@ -30,7 +30,7 @@ Cls, ClsColors = NULL, Imx = NULL, Names = NULL, BmSize = 6, ...)
 \describe{
  \item{Tiled}{Should the Umatrix be drawn 4times?}
   \item{main}{set specific title in plot}
- 
+   \item{ExtendBorders}{scalar, extends Umatrix by toroidal continuation of the given Umatrix}
   \item{_}{Further Arguments relevant for interactive shiny application}
 }
 

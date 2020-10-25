@@ -6,6 +6,7 @@ export(NormalizeUmatrix)
 export(GeneratePmatrix)
 export(CalcUstarmatrix)
 export(TopviewTopographicMap)
+export(ExtendToroidalUmatrix)
 useDynLib("GeneralizedUmatrix", .registration = TRUE)
 
 

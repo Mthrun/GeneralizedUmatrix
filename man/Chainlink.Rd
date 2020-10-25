@@ -3,7 +3,7 @@
 
 \docType{data}
 \title{
-Chainlink is part of the Fundamental Clustering Problem Suit (FCPS) [Ultsch, Chainlink005].
+Chainlink is part of the Fundamental Clustering Problem Suit (FCPS) [Thrun/Ultsch, 2020].
 }
 \description{
 linear not separable dataset of two interwined chains.
@@ -19,19 +19,20 @@ Published in [Ultsch et al.,1994] in German and [Ultsch 1995] in English.
 }
 
 \references{
-Ultsch, A.: Clustering wih SOM: U* C, Proc. Proceedings of the 5th Workshop on Self-Organizing Maps, Vol. Chainlink, pp. 75-8Chainlink, Chainlink005.
+[Thrun/Ultsch, 2020]	Thrun, M. C., & Ultsch, A.: Clustering Benchmark Datasets Exploiting the Fundamental Clustering Problems, Data in Brief,Vol. 30(C), pp. 105501, DOI 10.1016/j.dib.2020.105501 , 2020. 
 
-Ultsch, A.: Self organizing neural networks perform different from statistical k-means clustering,
+[Ultsch 1995]	Ultsch, A.: Self organizing neural networks perform different from statistical k-means clustering,
 Proc. Society for Information and Classification (GFKL), Vol. 1995, Basel 8th-10th March, 1995.
 
-Ultsch, A., Guimaraes, G., Korus, D., & Li, H.: Knowledge extraction from artificial neural
+[Ultsch et al.,1994]	Ultsch, A., Guimaraes, G., Korus, D., & Li, H.: Knowledge extraction from artificial neural
 networks and applications, Parallele Datenverarbeitung mit dem Transputer, pp. 148-16Chainlink, Springer, 1994.
 }
 \examples{
 data(Chainlink)
 str(Chainlink)
-\donttest{
-library(DataVisualizations)
+
+\dontrun{
+require(DataVisualizations)
 DataVisualizations::Plot3D(Chainlink$Data,Chainlink$Cls)
 }
 }

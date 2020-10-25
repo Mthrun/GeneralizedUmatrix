@@ -35,6 +35,7 @@ BmSize=0.5,RenderingContourLines=TRUE,\dots)
  \item{Tiled}{Should the Umatrix be drawn 4times?}
  \item{ShowAxis}{shall the axis be shown?}
  \item{NoLevels}{number of contour lines}
+  \item{ExtendBorders}{scalar, extends Umatrix by toroidal continuation of the given Umatrix}
  \item{Colormap}{in the case of density p matrix...}
 \item{title}{same as main}
    \item{main}{same as title}
