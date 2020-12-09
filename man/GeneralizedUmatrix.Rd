@@ -42,10 +42,16 @@ Optional,  =T: Rcode, =F Cpp Code
 \item{Bestmatches}{
 [1:n,1:2]   Positions of GridConverted Projected Points on the Umatrix to the predefined Grid by Lines and Columns, First Columns has the content of the Line No and second Column of the Column number.
 }
-\item{gplotres}{
- Ausgabe von ggplot
-}
 
+\item{sESOMparamaters}{internals for debugging}
+
+\item{Lines}{Number of Lines}
+
+\item{Columns}{Number of Columns}
+
+\item{gplotres}{
+output of ggplot2
+}
 }
 \description{Generalized U-Matrix visualizes high-dimensional distance and density based structurs in two-dimensional scatter plots of projectios methods like CCA, MDS, PCA or NeRV [Ultsch/Thrun, 2017] with the help of a topographic map with hypsometrioc tints [Thrun et al. 2016] using a simplified emergent SOM published in [Thrun/Ultsch, 2020]. 
 

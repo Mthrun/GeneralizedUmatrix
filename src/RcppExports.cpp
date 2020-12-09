@@ -48,15 +48,3 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-
-static const R_CallMethodDef CallEntries[] = {
-    {"_GeneralizedUmatrix_Delta3DWeightsC", (DL_FUNC) &_GeneralizedUmatrix_Delta3DWeightsC, 2},
-    {"_GeneralizedUmatrix_addRowWiseC", (DL_FUNC) &_GeneralizedUmatrix_addRowWiseC, 2},
-    {"_GeneralizedUmatrix_trainstepC", (DL_FUNC) &_GeneralizedUmatrix_trainstepC, 8},
-    {NULL, NULL, 0}
-};
-
-RcppExport void R_init_GeneralizedUmatrix(DllInfo *dll) {
-    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
-    R_useDynamicSymbols(dll, FALSE);
-}
