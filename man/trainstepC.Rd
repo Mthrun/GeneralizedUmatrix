@@ -22,7 +22,7 @@ trainstepC(vx,vy, DataSampled,BMUsampled,Lines,Columns, Radius, toroid)
 }
 \value{WeightVectors, array[1:Lines,1:Columns,1:weights] with the adjusted Weights}
 \references{
-[Thrun, 2018]  Thrun, M. C.: Projection Based Clustering through Self-Organization and Swarm Intelligence, doctoral dissertation 2017, Springer, Heidelberg, ISBN: 978-3-658-20539-3, \url{https://doi.org/10.1007/978-3-658-20540-9}, 2018. 
+[Thrun, 2018]  Thrun, M. C.: Projection Based Clustering through Self-Organization and Swarm Intelligence, doctoral dissertation 2017, Springer, Heidelberg, ISBN: 978-3-658-20539-3, \doi{10.1007/978-3-658-20540-9}, 2018. 
 }
 \author{
 Michael Thrun
