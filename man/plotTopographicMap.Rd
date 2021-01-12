@@ -116,7 +116,9 @@ if(requireNamespace("htmlwidgets"))
   htmlwidgets::saveWidget(widgets,file = "interactiveTopographicMap.html")
 }
 \dontshow{
+	if(requireNamespace('deldir',quietly = TRUE)) 
 	resUmatrix=GeneralizedUmatrix(Data[1:2,],ProjectedPoints[1:2,])
+	
 	#plotTopographicMap(resUmatrix$Umatrix,resUmatrix$Bestmatches)#testing takes longer than 5 secs
 }
 }

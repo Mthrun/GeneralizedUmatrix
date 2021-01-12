@@ -39,7 +39,14 @@ if(c==3){
 }
 #end  ErrorHandling
 
-
+if (!requireNamespace('deldir',quietly = TRUE)) {
+  message(
+    'Subordinate clustering package (deldir) is missing. No computations are performed.
+            Please install the package which is defined in "Suggests".'
+  )
+  return( "Subordinate clustering package (deldir) is missing.
+                Please install the package which is defined in 'Suggests'." )
+}
 ##########################################################################
 # calcUmatrixHLP function
 ##########################################################################

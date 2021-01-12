@@ -1,4 +1,4 @@
-XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=T){
+XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=FALSE){
   #XYcoords2LinesColumns(X,Y)
   # Converts points given as x(i),y(i) coordinates to integer coordinates Columns(i),Lines(i)
   # INPUT
@@ -150,7 +150,7 @@ XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=T
   }# end if MaxDifferentPoints
   if (PlotIt) {
     #  requireRpackage('ggplot2')
-      requireNamespace('ggplot2')
+      if(requireNamespace('ggplot2')){
     sp2 <-
       ggplot2::ggplot(as.data.frame(rCoord), ggplot2::aes(X, Y)) + ggplot2::geom_point() + ggplot2::ggtitle("Projected Points")
     sp1 <-
@@ -158,7 +158,12 @@ XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=T
     multiplot(sp1, sp2, cols = 2)
     sp2 + ggplot2::coord_fixed(ratio = Columns / Lines)
     sp1 + ggplot2::coord_fixed(ratio = RangeXfirst / RangeYfirst)
-    
+    }else{
+      message(
+        'Subordinate clustering package (ggplot2) is missing. No plotting is performed.
+            Please install the package which is defined in "Suggests".'
+      )
+	}
     #   windows()
     #   par(mfrow = c(1,2))
     #   plot(sp1)

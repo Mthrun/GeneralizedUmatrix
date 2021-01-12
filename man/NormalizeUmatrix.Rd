@@ -44,15 +44,16 @@ InputDistances=as.matrix(dist(Data))
 res=cmdscale(d=InputDistances, k = 2, eig = TRUE, add = FALSE, x.ret = FALSE)
 ProjectedPoints=as.matrix(res$points)
 #see also ProjectionBasedClustering package for other common projection methods
-\donttest{
-resUmatrix=GeneralizedUmatrix(Data,ProjectedPoints)
-## visualization
-normalizedUmatrix=NormalizeUmatrix(Data,resUmatrix$Umatrix,resUmatrix$Bestmatches)
-TopviewTopographicMap(GeneralizedUmatrix = normalizedUmatrix,resUmatrix$Bestmatches)
+
+if(requireNamespace('deldir',quietly = TRUE)) {
+  resUmatrix=GeneralizedUmatrix(Data,ProjectedPoints)
+  ## visualization
+  normalizedUmatrix=NormalizeUmatrix(Data,resUmatrix$Umatrix,resUmatrix$Bestmatches)
 }
-\dontshow{
-	resUmatrix=GeneralizedUmatrix(Data[1:2,],ProjectedPoints[1:2,])
-	normalizedUmatrix=NormalizeUmatrix(Data[1:2,],resUmatrix$Umatrix, resUmatrix$Bestmatches)
+\donttest{
+TopviewTopographicMap(GeneralizedUmatrix = normalizedUmatrix,resUmatrix$Bestmatches)
+resUmatrix=GeneralizedUmatrix(Data[1:2,],ProjectedPoints[1:2,])
+normalizedUmatrix=NormalizeUmatrix(Data[1:2,],resUmatrix$Umatrix, resUmatrix$Bestmatches)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

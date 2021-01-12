@@ -1,6 +1,16 @@
 TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=6,...) {
   #author: Tim Schreier, Luis Winckelmann, MCT
   udim <- dim(GeneralizedUmatrix)
+  
+  if (!requireNamespace('plotly',quietly = TRUE)) {
+    message(
+      'Subordinate clustering package (plotly) is missing. No computations are performed.
+            Please install the package which is defined in "Suggests".'
+    )
+    return( "Subordinate clustering package (plotly) is missing.
+                Please install the package which is defined in 'Suggests'." )
+  }
+  
   #Tiled needed for Imx
   if(!is.null(Imx)){
     Tiled=TRUE

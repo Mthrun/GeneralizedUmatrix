@@ -75,8 +75,10 @@ resUmatrix=GeneralizedUmatrix(Data,ProjectedPoints)
 TopviewTopographicMap(GeneralizedUmatrix = resUmatrix$Umatrix,resUmatrix$Bestmatches)
 }
 \dontshow{
+if(requireNamespace('deldir',quietly = TRUE)) {
 	resUmatrix=GeneralizedUmatrix(Data[1:2,],ProjectedPoints[1:2,])
 	TopviewTopographicMap(resUmatrix$Umatrix,resUmatrix$Bestmatches)
+}
 }
 }
 \keyword{topographic}% use one of  RShowDoc("KEYWORDS")
