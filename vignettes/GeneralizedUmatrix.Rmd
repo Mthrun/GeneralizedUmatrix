@@ -26,11 +26,18 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.align='center',
                       message = FALSE
                       )
-library(GeneralizedUmatrix)
+
 ```
 
 ```{r echo = FALSE}
-if (!requireNamespace("rmarkdown") || !rmarkdown::pandoc_available("1.12.3")) {
+if (!requireNamespace("rmarkdown")) {
+  warning("This vignette requires rmarkdown; code will not run in older versions.")
+  knitr::opts_chunk$set(eval = FALSE)
+}
+```
+
+```{r echo = FALSE}
+if (!rmarkdown::pandoc_available("1.12.3")) {
   warning("This vignette requires pandoc version 1.12.3; code will not run in older versions.")
   knitr::opts_chunk$set(eval = FALSE)
 }
@@ -44,6 +51,10 @@ if (!requireNamespace("rgl")) {
   library(rgl)
   setupKnitr()
 }
+```
+
+```{r echo = FALSE}
+library(GeneralizedUmatrix)
 ```
 
 # Introduction

@@ -12,7 +12,7 @@ Suggests: DataVisualizations, rgl, grid, mgcv, png, reshape2, fields, ABCanalysi
 LinkingTo: Rcpp, RcppArmadillo
 Depends: R (>= 3.0)
 NeedsCompilation: yes
-SystemRequirements: C++11
+SystemRequirements: C++11, pandoc (>=1.12.3, needed for vignettes)
 LazyLoad: yes
 LazyData: TRUE
 URL: http://www.deepbionics.org
