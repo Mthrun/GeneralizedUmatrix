@@ -133,7 +133,7 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
     session = dots[["Session"]]
   
   if (is.null(dots[["main"]]))
-    main = NULL
+    main = "Topographic Map of Generalized U-Matrix"
   else
     main=dots[["main"]]
   
@@ -390,9 +390,8 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
     Imx,
     Cls
   )
-  if(is.null(main))
-    plt=plotly::layout(plt,title = "Topographic Map of Generalized U-Matrix")
-  else
+  
+  if(!is.null(main))
     plt=plotly::layout(plt,title = main)
   
   #if (isTRUE(ShinyBinding)) {
