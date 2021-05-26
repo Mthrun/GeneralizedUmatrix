@@ -1,5 +1,21 @@
-TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=6,...) {
-  #author: Tim Schreier, Luis Winckelmann, MCT
+TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
+                                  ClsColors=NULL,Imx=NULL,
+                                  ClsNames=NULL,
+                                  BmSize=6,...) {
+  #author: Tim Schreier, Luis Winckelmann, MCT, QS
+  
+  #CopyCls = Cls
+  #counter = 1
+  #for(j in sort(unique(Cls))){
+  #  CopyCls[which(Cls == j)] = counter
+  #  counter = counter + 1
+  #}
+  #Cls = CopyCls
+  #Cls <- CopyCls
+  #Cls <<- CopyCls
+  
+  
+  
   udim <- dim(GeneralizedUmatrix)
   
   if (!requireNamespace('plotly',quietly = TRUE)) {
@@ -68,7 +84,6 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
       )
     )
   }
-  
   if (!is.vector(Cls)) {
     warning('Cls is not a vector. Calling as.vector()')
     Cls = as.vector(Cls)
@@ -138,54 +153,42 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
     main=dots[["main"]]
   
   #Helper Function ----
-  addclass <- function(class,
-                       plotbmus,
-                       plot,
-                       bmu_cols,
-                       MarkerSize) {
-    
+  addclass <- function(class, plotbmus, plot, bmu_cols, MarkerSize, my_counter,
+                       ClsNames){
     inds <- which(Cls == class)
     x = as.numeric(plotbmus[inds, 2])
     y = as.numeric(plotbmus[inds, 1])
-
-    plot <- plotly::add_markers(
-      plot, x=x, y=y,
-
-
-    
-      marker = list(
-        size = MarkerSize,
-        color = bmu_cols[class],
-        line = list(color = "rgba(80, 80, 80, .8)",
-                    width = 1)
-      ),
-      name = paste("Cluster", class)
-    )
-
+    # Color names to RGBA = RGB + Opacity
+    if(is.character(bmu_cols)){
+      #vecRGBA  = col2rgb(bmu_cols[class], 1)
+      vecRGBA  = col2rgb(bmu_cols[my_counter], 1)
+      my_color = paste("rgba(", vecRGBA[1], ",", vecRGBA[2], ",",
+                       vecRGBA[3], ",", .8,")", sep="")
+    }else{
+      my_color = "rgba(80, 80, 80, .8)"
+    }
+    marker = list(size = MarkerSize,
+                  color = my_color,#bmu_cols[class],
+                  line = list(color="rgba(80, 80, 80, .8)", width = 1))
+    if(is.null(ClsNames)){
+      name = class
+    }else{
+      name = ClsNames[my_counter]
+    }
+    plot <- plotly::add_markers(plot, x=x, y=y, marker = marker,
+                                name = paste("Cluster", name))
     return(plot)
   }
   
-  PlotlyUmatrix = function(plotdim,
-                           plotumx,
-                           colormap,
-                           Nrlevels2,
-                           plotbmus,
-                           class,
-                           ClsColors,
-                           MarkerSize,
-                           ShinyBinding,
-                           ShinyDimension,
-                           Imx,Cls) {
-    
-
+  
+  PlotlyUmatrix = function(plotdim, plotumx, colormap, Nrlevels2, plotbmus,
+                           class, ClsColors, MarkerSize, ShinyBinding,
+                           ShinyDimension, Imx, Cls){
     # configure filter, so that every bestmatch stays in
- 
-    
     # put Imx on Umatrix and bestmatches if given
     if(!is.null(Imx)){
       if(!is.null(plotbmus)){
         BestMatchesFilter = rep(T,nrow(plotbmus)) # every Bestmatch stays
-        
       }
       plotumx[which(Imx == 1)] = 0
       bigImx = Imx
@@ -196,18 +199,15 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
           if(Imx[i,j] == 1){
             #plotumx[i,j] = NA
             if(!is.null(plotbmus)){
-              
               BestMatchesFilter[(plotbmus[,1] == i) & (plotbmus[,2] == j)] = F
             }
-              
           }
         }
       }
       #BestMatchesFilter = rep(T,nrow(plotbmus)) # every Bestmatch stays
       #print(str(BestMatchesFilter))
       if(!is.null(plotbmus)) plotbmus = plotbmus[BestMatchesFilter,]
-
-      #äprint(str(class))
+      #print(str(class))
       #print(class)
       #todo, ohne globale variable loesen
       if(!is.null(Cls)) Cls <<- Cls[BestMatchesFilter]
@@ -226,73 +226,44 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
       plotumx <- plotumx[startLine:endLine,startCol:endCol]
       Imx <- Imx[startLine:endLine,startCol:endCol]
       bigImx <- bigImx[startLine:endLine,startCol:endCol]
-      
     }
-   
-
-
-    ax <- list(
-      title = "",
-      zeroline = FALSE,
-      showline = FALSE,
-      #showticklabels = FALSE,
-      showgrid = FALSE
+    ax <- list(title = "", zeroline = FALSE, showline = FALSE, #showticklabels = FALSE,
+               showgrid = FALSE
     )
-    ay <- list(
-      autorange = "reversed",
-      title = "",
-      zeroline = FALSE,
-      showline = FALSE,
-      #showticklabels = FALSE,
-      showgrid = FALSE
-    )
-    
+    ay <- list(autorange = "reversed", title = "", zeroline = FALSE,
+               showline = FALSE, #showticklabels = FALSE,
+               showgrid = FALSE)
     if (isTRUE(ShinyBinding)) {
       width = (0.95 * as.numeric(ShinyDimension[1]))
       height = udim[1] / udim[2] * (width - 80)
       #print(width)
       plt <- plotly::plot_ly(width = width, height = height * 0.75)
-    } else{
+    }else{
       plt <- plotly::plot_ly()
     }
-    plt <- plotly::add_contour(
-      plt,
-      x = 1:plotdim[1],
-      y = 1:plotdim[2],
-      z = plotumx,
-      showscale = FALSE,
-      line = list(color = 'black',
-                  width = 0.5),
-      contours = list(
-        start = 0,
-        end = 1,
-        size = 1 / 15
-      ),
-      # colors = colorRamp(colormap[c(rep(3, 6),
-      #                               seq(
-      #                                 from = 4,
-      #                                 to = length(colormap) - 30,
-      #                                 length.out = ceiling(Nrlevels2 + 1) - 7
-      #                               ),
-      #                               length(colormap))]),
-      colors = colorRamp(colormap[c(  1,2,
-                                      seq(
-                                      from = 3,
-                                      to = length(colormap) - 30,
-                                      length.out = ceiling(Nrlevels2 + 1)- 4
-                                    ),length(colormap),
-                                    length(colormap))]),
-
-
-      name = "UMatrix"
-      # , showscale = FALSE
-    )
-
+    plt <- plotly::add_contour(plt, x = 1:plotdim[1], y = 1:plotdim[2], 
+                               z = plotumx, showscale = FALSE, 
+                               line = list(color = 'black', width = 0.5), 
+                               contours = list(start=0, end=1, size=1/15),
+                               colors = colorRamp(colormap[c(  1,2,
+                                      seq(from=3, to=length(colormap)-30, 
+                                          length.out = ceiling(Nrlevels2+1)-4),
+                                      length(colormap), length(colormap))]),
+                                # colors = colorRamp(colormap[c(rep(3, 6),
+                                #                               seq(
+                                #                                 from = 4,
+                                #                                 to = length(colormap) - 30,
+                                #                                 length.out = ceiling(Nrlevels2 + 1) - 7
+                                #                               ),
+                                #                               length(colormap))]),
+                                name = "UMatrix")
+                                # , showscale = FALSE
+    my_counter = 1
     for (class in unique(Cls)) {
-      
-      plt <- addclass(class, plotbmus, plt, ClsColors, MarkerSize)
+      plt <- addclass(class, plotbmus, plt, ClsColors, MarkerSize, my_counter,
+                      ClsNames)
+      my_counter = my_counter + 1
     }#end add class
- 
     plt <- plotly::layout(
       #title <- "Drop plot title here",
       #bgcolor = "rgb(244, 244, 248)",
@@ -375,21 +346,8 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
   }
   
   plotdim <- qdim
-
-  plt=PlotlyUmatrix(
-    plotdim,
-    plotumx,
-    colormap,
-    Nrlevels2,
-    plotbmus,
-    class,
-    ClsColors,
-    BmSize,
-    ShinyBinding,
-    ShinyDimension,
-    Imx,
-    Cls
-  )
+  plt=PlotlyUmatrix(plotdim, plotumx, colormap, Nrlevels2, plotbmus, class,
+                    ClsColors, BmSize, ShinyBinding, ShinyDimension, Imx, Cls)
   
   if(!is.null(main))
     plt=plotly::layout(plt,title = main)
@@ -400,7 +358,14 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,ClsCo
   #  })
   #  return(list(Rendered=PlotR,single=plt))
   #} else{
-    return(plt)
   #}
- 
-}#end TopviewTopographicMap
+  return(plt)
+}
+
+
+
+
+
+
+
+
