@@ -98,7 +98,7 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   }
 
   if (length(Cls) != b[1]) {
-    Cls = rep(1, b[1])
+
     warning(
       paste0(
         'Cls has the length ',
@@ -108,6 +108,7 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
         '. Plotting without Cls.'
       )
     )
+    Cls = rep(1, b[1])
   }
   
   #Handle Color ----
@@ -152,6 +153,26 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   else
     main=dots[["main"]]
   
+  if (is.null(dots[["LegendCex"]]))
+    LegendCex = NULL
+  else
+    LegendCex=dots[["LegendCex"]]
+  
+  if (is.null(dots[["MainCex"]]))
+    MainCex = NULL
+  else
+    MainCex=dots[["MainCex"]]
+
+  if (is.null(dots[["NamesOrientation"]]))
+    NamesOrientation = NULL
+  else
+    NamesOrientation=dots[["NamesOrientation"]]
+  
+  if (is.null(dots[["NamesTitle"]]))
+    NamesTitle = NULL
+  else
+    NamesTitle=dots[["NamesTitle"]]
+  
   #Helper Function ----
   addclass <- function(class, plotbmus, plot, bmu_cols, MarkerSize, my_counter,
                        ClsNames){
@@ -172,11 +193,16 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
                   line = list(color="rgba(80, 80, 80, .8)", width = 1))
     if(is.null(ClsNames)){
       name = class
+      #standard names
+      plot <- plotly::add_markers(plot, x=x, y=y, marker = marker,
+                                  name = paste("Cluster", name))
     }else{
       name = ClsNames[my_counter]
+      #user names
+      plot <- plotly::add_markers(plot, x=x, y=y, marker = marker,
+                                  name = name)
     }
-    plot <- plotly::add_markers(plot, x=x, y=y, marker = marker,
-                                name = paste("Cluster", name))
+
     return(plot)
   }
   
@@ -265,13 +291,11 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
       my_counter = my_counter + 1
     }#end add class
     plt <- plotly::layout(
-      #title <- "Drop plot title here",
-      #bgcolor = "rgb(244, 244, 248)",
       plt,
       xaxis = ax,
       yaxis = ay,
       dragmode = 'lasso',
-      legend = list(orientation = 'h')
+      legend = list(orientation = 'h')#,font = list(size = LegendCex))
       #, showlegend = FALSE
     )
 
@@ -350,7 +374,22 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
                     ClsColors, BmSize, ShinyBinding, ShinyDimension, Imx, Cls)
   
   if(!is.null(main))
-    plt=plotly::layout(plt,title = main)
+    plt=plotly::layout(plt,title = list(text=main))
+  
+  if(!is.null(LegendCex))
+    plt=plotly::layout(plt,legend = list(font = list(size = LegendCex)))
+  
+  if(!is.null(MainCex))
+    plt=plotly::layout(plt,  title=list(font=list(size=MainCex)))
+  
+  if(!is.null(NamesOrientation))
+    plt=plotly::layout(plt,    legend = list(orientation = NamesOrientation))
+  
+  if(!is.null(NamesTitle))
+    plt=plotly::layout(plt,    legend = list(title = list(text=NamesTitle)))
+  
+  if(!is.null(LegendCex)&!is.null(NamesTitle))
+    plt=plotly::layout(plt,    legend = list(title = list(texsize=LegendCex)))
   
   #if (isTRUE(ShinyBinding)) {
   #  PlotR <- plotly::renderPlotly({

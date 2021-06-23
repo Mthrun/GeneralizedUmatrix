@@ -19,9 +19,9 @@ Cls, ClsColors = NULL, Imx = NULL, Names = NULL, BmSize = 6, ...)
   \item{Cls}{(1:n), numerical vector of classification of \code{k} classes for the bestmatch at the given point}
   \item{ClsColors}{Vector of colors that will be used to colorize the different classes}
  \item{Imx}{a mask (Imx) that will be used to cut out the umatrix}
-\item{Names}{If set: [1:k] character vector naming the k classes for the legend.
+\item{ClsNames}{If set: [1:k] character vector naming the k classes for the legend.
 . In this case, further parameters with the possibility to adjust are:
-\code{NamesCex}: (size); \code{NamesPosition}: Legend position; \code{NamesTitle}: title of legend; \code{NamesColors}: colors if ClsColors are not default (NULL).
+\code{LegendCex}: (size); \code{NamesOrientation}: Legend position "v" or "h"; \code{NamesTitle}: title of legend.
 }
 
 \item{BmSize}{size(diameter) of the points in the visualizations. The points represent the BestMatchingUnits}
@@ -31,6 +31,9 @@ Cls, ClsColors = NULL, Imx = NULL, Names = NULL, BmSize = 6, ...)
  \item{Tiled}{Should the Umatrix be drawn 4times?}
   \item{main}{set specific title in plot}
    \item{ExtendBorders}{scalar, extends Umatrix by toroidal continuation of the given Umatrix}
+    \item{MainCex}{scalar, magnification to be used for legend}
+    \item{LegendCex}{scalar, magnification to be used for main titles}
+         
   \item{_}{Further Arguments relevant for interactive shiny application}
 }
 
