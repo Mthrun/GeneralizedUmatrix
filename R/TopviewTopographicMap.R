@@ -1,7 +1,7 @@
 TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
                                   ClsColors=NULL,Imx=NULL,
                                   ClsNames=NULL,
-                                  BmSize=6,...) {
+                                  BmSize=6,DotLineWidth=2,alpha=1,...) {
   #author: Tim Schreier, Luis Winckelmann, MCT, QS
   
   #CopyCls = Cls
@@ -175,22 +175,24 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   
   #Helper Function ----
   addclass <- function(class, plotbmus, plot, bmu_cols, MarkerSize, my_counter,
-                       ClsNames){
+                       ClsNames, DotLineWidth, alpha){
     inds <- which(Cls == class)
     x = as.numeric(plotbmus[inds, 2])
     y = as.numeric(plotbmus[inds, 1])
     # Color names to RGBA = RGB + Opacity
     if(is.character(bmu_cols)){
       #vecRGBA  = col2rgb(bmu_cols[class], 1)
-      vecRGBA  = col2rgb(bmu_cols[my_counter], 1)
+      vecRGBA  = col2rgb(bmu_cols[my_counter], alpha)
       my_color = paste("rgba(", vecRGBA[1], ",", vecRGBA[2], ",",
-                       vecRGBA[3], ",", .8,")", sep="")
+                       vecRGBA[3], ",", alpha,")", sep="")
     }else{
       my_color = "rgba(80, 80, 80, .8)"
     }
     marker = list(size = MarkerSize,
                   color = my_color,#bmu_cols[class],
-                  line = list(color="rgba(80, 80, 80, .8)", width = 1))
+                  line = list(color="rgba(0, 0, 0, .8)", width = DotLineWidth))
+                  #line = list(color="rgba(80, 80, 80, .8)", width = 3))
+
     if(is.null(ClsNames)){
       name = class
       #standard names
@@ -209,7 +211,7 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   
   PlotlyUmatrix = function(plotdim, plotumx, colormap, Nrlevels2, plotbmus,
                            class, ClsColors, MarkerSize, ShinyBinding,
-                           ShinyDimension, Imx, Cls){
+                           ShinyDimension, Imx, Cls, DotLineWidth, alpha){
     # configure filter, so that every bestmatch stays in
     # put Imx on Umatrix and bestmatches if given
     if(!is.null(Imx)){
@@ -285,9 +287,10 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
                                 name = "UMatrix")
                                 # , showscale = FALSE
     my_counter = 1
-    for (class in unique(Cls)) {
+    ClsColors = ClsColors[order(unique(Cls))]
+    for(class in sort(unique(Cls), decreasing = F)){    # QS: Force stable order in the plot legend
       plt <- addclass(class, plotbmus, plt, ClsColors, MarkerSize, my_counter,
-                      ClsNames)
+                      ClsNames, DotLineWidth, alpha)
       my_counter = my_counter + 1
     }#end add class
     plt <- plotly::layout(
@@ -298,7 +301,7 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
       legend = list(orientation = 'h')#,font = list(size = LegendCex))
       #, showlegend = FALSE
     )
-
+    
     #if (isTRUE(ShinyBinding)) {
     #  requireNamespace('shiny')
     #  shiny::updateSelectInput(session,
@@ -354,7 +357,6 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
     plotbmus <- tU$BestMatchingUnits[,2:3] #no key
     plotCls <-  tU$Cls
   } else{
-  
     if(is.null(dots[["ExtendBorders"]])){
       #nothing
     }else{
@@ -371,7 +373,8 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   
   plotdim <- qdim
   plt=PlotlyUmatrix(plotdim, plotumx, colormap, Nrlevels2, plotbmus, class,
-                    ClsColors, BmSize, ShinyBinding, ShinyDimension, Imx, Cls)
+                    ClsColors, BmSize, ShinyBinding, ShinyDimension, Imx, Cls,
+                    DotLineWidth, alpha)
   
   if(!is.null(main))
     plt=plotly::layout(plt,title = list(text=main))
