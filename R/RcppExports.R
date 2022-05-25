@@ -13,3 +13,7 @@ trainstepC <- function(vx, vy, DataSampled, BMUsampled, Lines, Columns, Radius, 
     .Call(`_GeneralizedUmatrix_trainstepC`, vx, vy, DataSampled, BMUsampled, Lines, Columns, Radius, toroid)
 }
 
+trainstepC2 <- function(esomwts, aux, DataSampled, BMUsampled, Lines, Columns, Weights, Radius, toroid) {
+    .Call(`_GeneralizedUmatrix_trainstepC2`, esomwts, aux, DataSampled, BMUsampled, Lines, Columns, Weights, Radius, toroid)
+}
+

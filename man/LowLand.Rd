@@ -1,70 +1,29 @@
 \name{LowLand}
 \alias{LowLand}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-LowLand
-}
+\title{LowLand}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+LowLand
 }
 \usage{
 LowLand(BestMatchingUnits, GeneralizedUmatrix, Data, Cls, Key, LowLimit)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BestMatchingUnits}{
-%%     ~~Describe \code{BestMatchingUnits} here~~
-}
-  \item{GeneralizedUmatrix}{
-%%     ~~Describe \code{GeneralizedUmatrix} here~~
-}
-  \item{Data}{
-%%     ~~Describe \code{Data} here~~
-}
-  \item{Cls}{
-%%     ~~Describe \code{Cls} here~~
-}
-  \item{Key}{
-%%     ~~Describe \code{Key} here~~
-}
-  \item{LowLimit}{
-%%     ~~Describe \code{LowLimit} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
+\item{BestMatchingUnits}{(1:n,1:n,1:n) BestMatchingUnits =[BMkey, BMLineCoords, BMColCoords]}
+\item{GeneralizedUmatrix}{(1:l,1:c) U-Matrix heights in Matrix form}
+\item{Data}{(1:n,1:d) data cases in lines, variables in Columns or [] or 0}
+\item{Cls}{(1:n) a possible classif( ication of the data or [] or 0}
+\item{Key}{(1:n) the keys of the data or [] or 0}
+\item{LowLimit}{GeneralizedUmatrix heights up to this are considered to lie in
+the low lands default: LowLimit = prctile(Uheights,80) nur die 80# tiefsten}
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
+\item{LowLandBM}{the unique BestMatchingUnits in the low lands of an u-Matrix}
+\item{LowLandInd}{index such that UniqueBM = BestMatchingUnits(UniqueInd,]}
+\item{LowLandData}{Data reduced to LowLand:   LowLandData = Data(LowLandInd,]}
+\item{LowLandCls}{Cls  reduced to LowLand:   LowLandCls  = Cls(LowLandInd)}
+\item{LowLandKey}{Key  reduced to LowLand:   LowLandKey  = Key(LowLandInd)}
 }
 \author{
  ALU 2021 in matlab, MCT reimplemented in R
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##todo
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.

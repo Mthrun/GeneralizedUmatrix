@@ -197,7 +197,7 @@ if(!is.vector(Cls)){
   }
     
 if(is.null(ClsColors)){
- ClsColors=GeneralizedUmatrix::DefaultColorSequence
+ ClsColors=GeneralizedUmatrix::DefaultColorSequence[1:length(unique(Cls))]
  }else{
 	if(length(unique(Cls))!=length(ClsColors)){
 		stop('Length of vector of Clscolor does not match the number of unique Clusters in Cls.')

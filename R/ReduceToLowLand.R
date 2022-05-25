@@ -7,14 +7,15 @@ ReduceToLowLand = function(BestMatchingUnits,GeneralizedUmatrix,Data=NULL,Cls=NU
 # BestMatchingUnits(1:n,1:n,1:n)   BestMatchingUnits =[BMkey, BMLineCoords, BMColCoords]  
 # GeneralizedUmatrix(1:l,1:c)           U-Matrix heights in Matrix form
 #
-# OPTINAL
+# OPTIONAL
 # Data(1:n,1:d)              data cases in lines, variables in Columns or [] or 0
 # Cls(1:n)                   a possible classif( ication of the data or [] or 0
 # Key(1:n)                   the keys of the data or [] or 0
-# LowLimit                   GeneralizedUmatrix heights up to this are considered ti lie in the low lands
+# LowLimit                   GeneralizedUmatrix heights up to this are considered to lie in the low lands
 #                            default: LowLimit = prctile(Uheights,80)
-       # nur die 80# tiefsten
-# Force                     ==TRUE: Always perfordm reduction
+#                            nur die 80# tiefsten
+# Force                     ==TRUE: Always perform reduction
+#
 # OUTPUT 
 # LowLandBM                 the unique BestMatchingUnits in the low lands of an u-Matrix           
 # LowLandInd                index such that UniqueBM = BestMatchingUnits(UniqueInd,]

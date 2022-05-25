@@ -1,8 +1,9 @@
 #include <RcppArmadillo.h>
 //using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]
-arma::cube Delta3DWeightsC(arma::cube x,Rcpp::NumericVector Datasample) {
-  
+arma::cube Delta3DWeightsC(arma::cube x,
+                           Rcpp::NumericVector Datasample) {
+
   //Rcpp::IntegerVector x_dims = vx.attr("dim");
   //arma::cube x(vx.begin(), x_dims[0], x_dims[1], x_dims[2], false);
 
@@ -18,9 +19,17 @@ arma::cube Delta3DWeightsC(arma::cube x,Rcpp::NumericVector Datasample) {
   
   return x;
 }
+
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
-arma::cube trainstepC(Rcpp::NumericVector vx,Rcpp::NumericVector vy,Rcpp::NumericMatrix DataSampled,Rcpp::NumericMatrix BMUsampled,double Lines, double Columns,double Radius,bool toroid) {
+arma::cube trainstepC(Rcpp::NumericVector vx,
+                      Rcpp::NumericVector vy,
+                      Rcpp::NumericMatrix DataSampled,
+                      Rcpp::NumericMatrix BMUsampled,
+                      double Lines,
+                      double Columns,
+                      double Radius,
+                      bool toroid) {
   
   Rcpp::IntegerVector x_dims = vx.attr("dim");
   Rcpp::IntegerVector y_dims = vy.attr("dim");

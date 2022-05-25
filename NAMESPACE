@@ -1,3 +1,9 @@
+useDynLib("GeneralizedUmatrix", .registration = TRUE)
+importFrom(Rcpp, evalCpp)
+importFrom(RcppParallel, RcppParallelLibs)
+
+#exportPattern("^[[:alpha:]]+")
+
 export(GeneralizedUmatrix)
 export(plotTopographicMap)
 export(XYcoords2LinesColumns)
@@ -12,18 +18,12 @@ export(LowLand)
 export(ReduceToLowLand)
 export(Uheights4Data)
 
-useDynLib("GeneralizedUmatrix", .registration = TRUE)
-
-
-import(ggplot2)
-importFrom("stats", "quantile")
 #Island generation now in ProjectionBasedClustering package
 
-importFrom("stats", "median")
-import(Rcpp)
-  importFrom("grDevices", "contourLines")
-  importFrom("stats", "quantile", "runif", "dist","cmdscale")
-  importFrom("grDevices", "dev.off", "png")
-  importFrom("graphics", "lines", "par", "rasterImage")
- importFrom("grDevices", "colorRamp")
-     importFrom("stats", "qnorm", "sd")
+import(ggplot2)
+
+
+importFrom("grDevices", "dev.off", "png", "contourLines", "col2rgb", "colorRamp")
+importFrom("graphics", "lines", "par", "rasterImage")
+importFrom("stats", "median", "qnorm", "sd", "quantile", "runif", "dist","cmdscale")
+

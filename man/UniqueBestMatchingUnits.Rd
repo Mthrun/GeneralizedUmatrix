@@ -1,55 +1,20 @@
 \name{UniqueBestMatchingUnits}
 \alias{UniqueBestMatchingUnits}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
+\title{UniqueBestMatchingUnits}
+\description{
 UniqueBestMatchingUnits
 }
-\description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
 \usage{
-UniqueBestMatchingUnits(UniqueBestMatchingUnits)
+UniqueBestMatchingUnits(NonUniqueBestMatchingUnits)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{UniqueBestMatchingUnits}{
-%%     ~~Describe \code{UniqueBestMatchingUnits} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
+\item{NonUniqueBestMatchingUnits}{(1:n,1:n,1:n) UniqueBestMatchingUnits =[BMkey, BMLineCoords, BMColCoords]}
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
+\item{UniqueBM}{(1:u,1:u,1:u) UniqueBM =[UBMkey, UBMLineCoords, UBMColCoords]}
+\item{UniqueInd}{Index such that UniqueBM = UniqueBestMatchingUnits(UniqeInd,:)}
+\item{Uniq2AllInd}{Index such that UniqueBestMatchingUnits    = UniqueBM(Uniq2AllInd,:)}
 }
 \author{
- ALU 2021 in matlab, MCT reimplemented in R
+ALU 2021 in matlab, MCT reimplemented in R
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##todo
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
