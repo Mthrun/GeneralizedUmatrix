@@ -1,6 +1,5 @@
 \name{Chainlink}
 \alias{Chainlink}
-
 \docType{data}
 \title{
 Chainlink is part of the Fundamental Clustering Problem Suit (FCPS) [Thrun/Ultsch, 2020].

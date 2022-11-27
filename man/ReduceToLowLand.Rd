@@ -9,12 +9,12 @@ ReduceToLowLand(BestMatchingUnits, GeneralizedUmatrix, Data = NULL, Cls = NULL,
 Key = NULL, LowLimit,Force=FALSE)
 }
 \arguments{
-\item{BestMatchingUnits}{(1:n,1:n,1:n) BestMatchingUnits =[BMkey, BMLineCoords,
+\item{BestMatchingUnits}{[1:n,1:n,1:n] BestMatchingUnits =[BMkey, BMLineCoords,
 BMColCoords]}
-\item{GeneralizedUmatrix}{(1:l,1:c) U-Matrix heights in Matrix form}
-\item{Data}{(1:n,1:d) data cases in lines, variables in Columns or [] or 0}
-\item{Cls}{(1:n) a possible classif( ication of the data or [] or 0}
-\item{Key}{(1:n) the keys of the data or [] or 0}
+\item{GeneralizedUmatrix}{[1:l,1:c] U-Matrix heights in Matrix form}
+\item{Data}{[1:n,1:d] data cases in lines, variables in Columns or [] or 0}
+\item{Cls}{[1:n] a possible classif( ication of the data or [] or 0}
+\item{Key}{[1:n] the keys of the data or [] or 0}
 \item{LowLimit}{GeneralizedUmatrix heights up to this are considered to lie in
 the low lands default: LowLimit = prctile(Uheights,80) nur die 80# tiefsten}
 \item{Force}{==TRUE: Always perform reduction}
@@ -27,5 +27,5 @@ the low lands default: LowLimit = prctile(Uheights,80) nur die 80# tiefsten}
 \item{LowLandKey}{Key  reduced to LowLand:   LowLandKey  = Key(LowLandInd)}
 }
 \author{
- ALU 2021 in matlab, MCT reimplemented in R
+ALU 2021 in matlab, MCT reimplemented in R
 }

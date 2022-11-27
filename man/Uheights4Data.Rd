@@ -8,8 +8,8 @@ Uheights4Data
 Uheights4Data(BestMatchingUnits, GeneralizedUmatrix)
 }
 \arguments{
-\item{BestMatchingUnits}{(1:n,1:d) BMKey = BestMatchingUnits[,1)}
-\item{GeneralizedUmatrix}{(1:Lines,1:Columns) a GeneralizedUmatrix}
+\item{BestMatchingUnits}{[1:n,1:d] BMKey = BestMatchingUnits[,1)}
+\item{GeneralizedUmatrix}{[1:Lines,1:Columns] a GeneralizedUmatrix}
 }
 \value{
 \item{Uheights}{Uheights}

@@ -1,16 +1,23 @@
 \name{XYcoords2LinesColumns}
 \alias{XYcoords2LinesColumns}
-\title{ XYcoords2LinesColumns(X,Y) Converts points given as x(i),y(i) coordinates to integer coordinates Columns(i),Lines(i)}
+\title{XYcoords2LinesColumns(X,Y) Converts points given as x(i),y(i) coordinates
+to integer coordinates Columns(i),Lines(i)}
 \arguments{
-\item{X(1:n), Y(1:n)}{coordinates: x(i),y(i) is the i-th point on a plane}
-\item{minNeurons}{minimal size of the corresponding grid i.e max(Lines)*max(Columns)>=MinGridSize , default MinGridSize = 4096 defined by the numer of neurons}
-\item{MaxDifferentPoints}{TRUE: the discretization error is minimal FALSE: number of Lines and Columns is minimal}
+\item{X}{[1:n] first coordinate: x(i), y(i) is the i-th point on a plane}
+\item{Y}{[1:n] second coordinate: x(i), y(i) is the i-th point on a plane}
+\item{minNeurons}{minimal size of the corresponding grid i.e
+max(Lines)*max(Columns)>=MinGridSize , default MinGridSize = 4096 defined by the
+numer of neurons}
+\item{MaxDifferentPoints}{TRUE: the discretization error is minimal FALSE:
+number of Lines and Columns is minimal}
 \item{PlotIt}{Plots the result}
 }
-\value{GridConvertedPoints[1:Columns,1:Lines,2]  IntegerPositions on a grid corresponding to x,y}
+\value{GridConvertedPoints[1:Columns,1:Lines,2]  IntegerPositions on a grid
+corresponding to x,y}
 \description{
- XYcoords2LinesColumns(X,Y) Converts points given as x(i),y(i) coordinates to integer coordinates Columns(i),Lines(i)}
- 
+XYcoords2LinesColumns(X,Y) Converts points given as x(i),y(i) coordinates to
+integer coordinates Columns(i),Lines(i)
+}
 \details{
 Details are written down in [Thrun, 2018, p. 47].
 }

@@ -13,8 +13,8 @@ ComputeInR=FALSE,Parallel=FALSE,DataPerEpoch=1,\dots)
 \item{Data}{[1:n,1:d] array of data: n cases in rows, d variables in columns}
 \item{ProjectedPoints}{[1:n,2] matrix containing coordinates of the Projection: A matrix of the fitted configuration.}
 \item{PlotIt}{
- Optional,bool, defaut=FALSE, if =TRUE: U-Marix of every current Position of Databots will be shown
- However, the amount of details shown will be less than in \code{\link{plotTopographicMap}}.
+Optional,bool, defaut=FALSE, if =TRUE: U-Marix of every current Position of Databots will be shown
+However, the amount of details shown will be less than in \code{\link{plotTopographicMap}}.
 }
 \item{Cls}{
 Optional, For plotting, see \code{plotUmatrix} in package Umatrix
@@ -41,30 +41,23 @@ Optional, scalar, value above zero and below 1 starts sampling and defines perce
 \item{\dots}{Further parameters.}
 }
 \value{List with
-\item{Umatrix}{
- [1:Lines,1:Columns]  [1:Lines,1:Columns] Umatrix to be plotted, numerical matrix storing the U-heights, see [Thrun, 2018] for definition.
+\item{Umatrix}{[1:Lines,1:Columns] Umatrix to be plotted, numerical matrix
+storing the U-heights, see [Thrun, 2018] for definition.
 }
-\item{EsomNeurons}{
-[1:Lines,1:Columns,1:weights]  3-dimensional numeric array (wide format), not wts (long format)
+\item{EsomNeurons}{[1:Lines,1:Columns,1:weights] 3-dimensional numeric array
+(wide format), not wts (long format).
 }
-\item{Bestmatches}{
-[1:n,1:2]   Positions of GridConverted Projected Points on the Umatrix to the predefined Grid by Lines and Columns, First Columns has the content of the Line No and second Column of the Column number.
+\item{Bestmatches}{[1:n,1:2] Positions of GridConverted Projected Points on the
+Umatrix to the predefined Grid by Lines and Columns, First Columns has the
+content of the Line No and second Column of the Column number.
 }
-
 \item{sESOMparamaters}{internals for debugging}
-
 \item{Lines}{Number of Lines}
-
 \item{Columns}{Number of Columns}
-
-\item{gplotres}{
-output of ggplot2
-}
+\item{gplotres}{output of ggplot2}
 }
 \description{Generalized U-Matrix visualizes high-dimensional distance and density based structurs in two-dimensional scatter plots of projectios methods like CCA, MDS, PCA or NeRV [Ultsch/Thrun, 2017] with the help of a topographic map with hypsometrioc tints [Thrun et al. 2016] using a simplified emergent SOM published in [Thrun/Ultsch, 2020]. 
-
 }
-
 \author{Michael Thrun}
 \details{
 Introduced first in the PhD thesis in [Thrun, 2018, p.46]. Furthermore the two parts of the work were peer-reviewed and published in [Ultsch/Thrun, 2017, Thrun/Ultsch, 2020].
@@ -92,12 +85,12 @@ Stress = ProjectionBasedClustering::KruskalStress(InputDistances,
 as.matrix(dist(ProjectedPoints)))
 }
 \dontshow{
-	resUmatrix=GeneralizedUmatrix(Data[1:2,],ProjectedPoints[1:2,])
-	#plotTopographicMap(resUmatrix$Umatrix,resUmatrix$Bestmatches)#testing takes longer than 5 secs
+resUmatrix=GeneralizedUmatrix(Data[1:2,],ProjectedPoints[1:2,])
+#plotTopographicMap(resUmatrix$Umatrix,resUmatrix$Bestmatches)#testing takes longer than 5 secs
 }
 \donttest{
-	resUmatrix=GeneralizedUmatrix(Data,ProjectedPoints)
-	plotTopographicMap(resUmatrix$Umatrix,resUmatrix$Bestmatches,Cls)
+resUmatrix=GeneralizedUmatrix(Data,ProjectedPoints)
+plotTopographicMap(resUmatrix$Umatrix,resUmatrix$Bestmatches,Cls)
 }
 }
 \keyword{visualization}% __ONLY ONE__ keyword per line

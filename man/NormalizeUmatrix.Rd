@@ -12,15 +12,11 @@ NormalizeUmatrix(Data, Umatrix, BestMatches)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{Data}{
+\item{Data}{
 [1:n,1:d] numerical matrix of data with n cases and d variables
 }
-  \item{Umatrix}{
-[1:lines,1:Columns] matrix of U-heights
-}
-  \item{BestMatches}{
-[1:n,1:2] Bestmatching units.
-}
+\item{Umatrix}{ [1:lines,1:Columns] matrix of U-heights}
+\item{BestMatches}{[1:n,1:2] Bestmatching units.}
 }
 \details{
 see publication [Loetsch/Ultsch, 2014]..

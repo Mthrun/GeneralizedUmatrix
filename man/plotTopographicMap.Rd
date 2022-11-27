@@ -16,40 +16,45 @@ BmSize=0.5,RenderingContourLines=TRUE,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
- \item{GeneralizedUmatrix}{(1:Lines,1:Columns),  [1:Lines,1:Columns] Umatrix to be plotted, numerical matrix storing the U-heights, see [Thrun, 2018] for definition.}
-\item{BestMatchingUnits}{(1:n,1:2), Positions of bestmatches to be plotted as spheres onto the topographic map}
-  \item{Cls}{(1:n), numerical vector of classification of \code{k} clusters, one label for each bestmatch at that given point}
-  \item{ClsColors}{Vector of colors that will be used to colorize the different clusters, default is GeneralizedUmatrix::DefaultColorSequence}
- \item{Imx}{a mask (Imx) that will be used to cut out the umatrix}
-\item{Names}{If set: [1:k] character vector naming the k clusters for the legend.
-. In this case, further parameters with the possibility to adjust are:
-\code{NamesCex}: (size); \code{NamesPosition}: Legend position; \code{NamesTitle}: title of legend; \code{NamesColors}: colors if ClsColors are not default (NULL), etc.
+\item{GeneralizedUmatrix}{[1:Lines,1:Columns] Umatrix to be plotted, numerical
+matrix storing the U-heights, see [Thrun, 2018] for definition.}
+\item{BestMatchingUnits}{[1:n,1:2], Positions of bestmatches to be plotted as
+spheres onto the topographic map}
+\item{Cls}{[1:n], numerical vector of classification of \code{k} clusters, one
+label for each bestmatch at that given point}
+\item{ClsColors}{Vector of colors that will be used to colorize the different
+clusters, default is GeneralizedUmatrix::DefaultColorSequence}
+\item{Imx}{a mask (Imx) that will be used to cut out the umatrix}
+\item{Names}{If set: [1:k] character vector naming the k clusters for the
+legend. In this case, further parameters with the possibility to adjust are:
+\code{NamesCex}: (size); \code{NamesPosition}: Legend position;
+\code{NamesTitle}: title of legend; \code{NamesColors}: colors if ClsColors are
+not default (NULL), etc.
 }
-
-\item{BmSize}{size(diameter) of the points in the visualizations. The points represent the BestMatchingUnits}
- \item{RenderingContourLines}{FALSE: disables plotting of contour lines resulting in a much faster plot.}
-\item{\dots}{
-
- Besides the legend/names parameter the list of further parameters, use only of you know what you are doing:
+\item{BmSize}{size(diameter) of the points in the visualizations. The points
+represent the BestMatchingUnits}
+\item{RenderingContourLines}{FALSE: disables plotting of contour lines resulting
+in a much faster plot.}
+\item{\dots}{Besides the legend/names parameter the list of further parameters,
+use only of you know what you are doing:
 \describe{
- \item{Tiled}{Should the Umatrix be drawn 4times?}
- \item{ShowAxis}{shall the axis be shown?}
- \item{NoLevels}{number of contour lines}
-  \item{ExtendBorders}{scalar, extends Umatrix by toroidal continuation of the given Umatrix}
- \item{Colormap}{in the case of density p matrix...}
+\item{Tiled}{Should the Umatrix be drawn 4times?}
+\item{ShowAxis}{shall the axis be shown?}
+\item{NoLevels}{number of contour lines}
+\item{ExtendBorders}{scalar, extends Umatrix by toroidal continuation of the given Umatrix}
+\item{Colormap}{in the case of density p matrix...}
 \item{title}{same as main}
-   \item{main}{same as title}
-      \item{sub}{same as in \code{\link{plot}}}
-         \item{xlab}{same as in \code{\link{plot}}}   
-         \item{ylab}{same as in \code{\link{plot}}}
-         \item{zlab}{same as in \code{\link{plot}}}
-   \item{NamesPosition}{same as in \code{\link[rgl]{bgplot3d}}}
-    \item{NamesColors}{same as col in \code{\link[rgl]{bgplot3d}}}
-     \item{NamesCex}{same as cex in \code{\link[rgl]{bgplot3d}}}
-      \item{NamesTitle}{same as title in \code{\link[rgl]{bgplot3d}}}
-      \item{NamesPch}{same as pch in \code{\link[rgl]{bgplot3d}}}
- }
- 
+\item{main}{same as title}
+\item{sub}{same as in \code{\link{plot}}}
+\item{xlab}{same as in \code{\link{plot}}}   
+\item{ylab}{same as in \code{\link{plot}}}
+\item{zlab}{same as in \code{\link{plot}}}
+\item{NamesPosition}{same as in \code{\link[rgl]{bgplot3d}}}
+\item{NamesColors}{same as col in \code{\link[rgl]{bgplot3d}}}
+\item{NamesCex}{same as cex in \code{\link[rgl]{bgplot3d}}}
+\item{NamesTitle}{same as title in \code{\link[rgl]{bgplot3d}}}
+\item{NamesPch}{same as pch in \code{\link[rgl]{bgplot3d}}}
+}
 }
 }
 \details{

@@ -5,16 +5,16 @@
 intern function
 }
 \description{
- Adds the Vector DataPoint to every row of the matrix WeightVectors}
+Adds the Vector DataPoint to every row of the matrix WeightVectors}
 \usage{
 addRowWiseC(WeightVectors,DataPoint)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{WeightVectors}{ WeightVectors. n weights with m components each}
-    \item{DataPoint}{Vector with m components}
+\item{WeightVectors}{ WeightVectors. n weights with m components each}
+\item{DataPoint}{Vector with m components}
 }
 
 \value{
-WeightVectors[1:m,1:n]
+\item{WeightVectors}{[1:m,1:n]}
 }

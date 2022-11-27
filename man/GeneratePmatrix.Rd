@@ -8,7 +8,7 @@
 \item{PlotIt}{If set the Pmatrix will also be plotted}
 \item{\dots}{If set the Pmatrix will also be plotted}
 }
-\value{PMatrix[1:Lines,1:Columns]}
+\value{PMatrix [1:Lines,1:Columns]}
 \description{Generates a P-matrix too visualize only density based structures of high-dimensional data.}
 \details{
 To set the Radius the ABCanalysis of high-dimensional distances can be used [Ultsch/Lötsch, 2015]. For a deteailed definition and equation of automated density estimation (Radius) see Thrun et al. 2016.

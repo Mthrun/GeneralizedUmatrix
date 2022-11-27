@@ -73,9 +73,10 @@ norm=2
 distances=array(0,c(UmatrixLines,UmatrixCols,AnzData))
 #EsomNeuronsAnzInKugel=vector(mode='numeric',AnzEsomNeurons)
 PMatrix <- matrix(0,UmatrixLines,UmatrixCols)
+DataTranspose=t(Data)
 for ( i in 1:UmatrixLines ){
   for (j in 1:UmatrixCols){
-    aux <- t(Data) - EsomNeurons[i,j,] # columns
+    aux <- DataTranspose - EsomNeurons[i,j,] # columns
     distances[i,j,]= sqrt(colSums(aux^norm)) #quadrierte Differenzen zu  EsomNeurons(i)
 		#EsomNeuronsAnzInKugel[i]=sum(distances[i,j,]<=Radius)
     PMatrix[i,j] <- sum(distances[i,j,] <= Radius)

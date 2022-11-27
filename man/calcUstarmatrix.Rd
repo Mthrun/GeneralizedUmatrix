@@ -3,10 +3,14 @@
 \alias{calcUstarmatrix}
 \title{ Calculate the U*matrix for a given Umatrix and Pmatrix. }
 \arguments{
-\item{Umatrix[1:Lines,1:Column])}{ Local averages of distances at each point of the trainedGridWts[1:Lines,1:Column,1:variables] of ESOM or other SOM of same format}
-\item{Pmatrix[1:Lines,1:Column]}{ Local densities at each point of the trainedGridWts[1:Lines,1:Column,1:variables] of ESOM or other SOM of same format}
+\item{Umatrix}{[1:Lines,1:Column] Local averages of distances at each point of
+the trainedGridWts[1:Lines,1:Column,1:variables] of ESOM or other SOM of same
+format}
+\item{Pmatrix}{[1:Lines,1:Column] Local densities at each point of the
+trainedGridWts[1:Lines,1:Column,1:variables] of ESOM or other SOM of same
+format.}
 }
-\value{UStarMatrix[1:Lines,1:Column]}
+\value{\item{UStarMatrix}{[1:Lines,1:Column]}}
 \description{
  Calculate the U*matrix for a given Umatrix and Pmatrix.}
 \author{Michael Thrun}
