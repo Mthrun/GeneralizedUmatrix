@@ -1,4 +1,4 @@
-tileGUM=function(Umatrix, BestMatches = NULL, Cls = NULL) 
+tileGUM=function(Umatrix, BestMatches = NULL, Cls = NULL,Separate=FALSE) 
 {
   rows = nrow(Umatrix)
   cols = ncol(Umatrix)
@@ -24,10 +24,19 @@ tileGUM=function(Umatrix, BestMatches = NULL, Cls = NULL)
                                                                   bmRow + 1):(4 * bmRow), 2] + cols
   }
   if (!is.null(Cls)) {
+    if(isTRUE(Separate)){
+    TiledCls = c(Cls+1000,Cls+2000,Cls+3000,Cls+4000)
+    }
     Cls <- rep(Cls, 4)
   }
   if (!is.null(bm_keys)) 
     BestMatches = cbind(rep(bm_keys, 4), BestMatches)
   
-  return(list(GeneralizedUmatrix = Umatrix, BestMatchingUnits = BestMatches, Cls = Cls))
+  if(isFALSE(Separate)){
+    return(list(GeneralizedUmatrix = Umatrix, BestMatchingUnits = BestMatches, Cls = Cls))
+  }else{
+   
+    return(list(GeneralizedUmatrix = Umatrix, BestMatchingUnits = BestMatches, Cls = Cls,TiledCls=TiledCls))
+  }
+    
 }

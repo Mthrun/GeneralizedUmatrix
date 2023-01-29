@@ -14,6 +14,8 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   #Cls <- CopyCls
   #Cls <<- CopyCls
   
+  if(missing(GeneralizedUmatrix)) stop('TopviewTopographicMap: GeneralizedUmatrix is missing.')
+  if(is.null(GeneralizedUmatrix)) stop('TopviewTopographicMap: GeneralizedUmatrix is missing.')
   
   
   udim <- dim(GeneralizedUmatrix)
@@ -35,15 +37,15 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   # Error Catching ----
   if (missing(BestMatchingUnits)) {
     BestMatchingUnits = matrix(1, 2, 2)
-    warning('BestMatchingUnits are missing.Creating a dummy..')
+    warning('TopviewTopographicMap: BestMatchingUnits are missing.Creating a dummy..')
   }
   if (!is.matrix(BestMatchingUnits))
-    stop('Bestmatches have to be a matrix')
+    stop('TopviewTopographicMap: Bestmatches have to be a matrix')
   else
     b = dim(BestMatchingUnits)
   
   if (b[2] > 3 | b[2] < 2)
-    stop(paste0('Wrong number of Columns of Bestmatches: ', b[2]))
+    stop(paste0('TopviewTopographicMap: Wrong number of Columns of Bestmatches: ', b[2]))
   if (b[2] == 3) {
     BestMatchingUnits = BestMatchingUnits[, 2:3]
   }
@@ -53,7 +55,7 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   
   d = dim(GeneralizedUmatrix)
   if (is.null(d)) {
-    stop('GeneralizedUmatrix Dimension is null. Please check Input')
+    stop('TopviewTopographicMap: GeneralizedUmatrix Dimension is null. Please check Input')
   }
   
  # requireNamespace('matrixStats')
@@ -62,12 +64,12 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   #mini = matrixStats::colMins(BestMatchingUnits, na.rm = TRUE)
  # maxi = matrixStats::colMaxs(BestMatchingUnits, na.rm = TRUE)
   if (sum(mini) < 2) {
-    stop('Some Bestmatches are below 1 in X or Y/Columns or Lines')
+    stop('TopviewTopographicMap: Some Bestmatches are below 1 in X or Y/Columns or Lines')
   }
   if (d[1] < maxi[1]) {
     stop(
       paste0(
-        'Range of Bestmatches',
+        'TopviewTopographicMap: Range of Bestmatches',
         maxi[1],
         ' is higher than Range of GeneralizedUmatrix',
         d[1]
@@ -77,7 +79,7 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   if (d[2] < maxi[2]) {
     stop(
       paste0(
-        'Range of Bestmatches',
+        'TopviewTopographicMap: Range of Bestmatches',
         maxi[2],
         ' is higher than Range of GeneralizedUmatrix',
         d[2]
@@ -85,15 +87,15 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
     )
   }
   if (!is.vector(Cls)) {
-    warning('Cls is not a vector. Calling as.vector()')
+    warning('TopviewTopographicMap: Cls is not a vector. Calling as.vector()')
     Cls = as.vector(Cls)
   }
   if (!is.numeric(Cls)) {
-    warning('Cls is not a numeric Calling as.numeric()')
+    warning('TopviewTopographicMap: Cls is not a numeric Calling as.numeric()')
     Cls = as.numeric(Cls)
   }
   if (sum(!is.finite(Cls)) > 0) {
-    warning('Not all values in Cls are finite. Generating nonfiniteclass with value 999')
+    warning('TopviewTopographicMap: Not all values in Cls are finite. Generating nonfiniteclass with value 999')
     Cls[!is.finite(Cls)] = 999
   }
 
@@ -101,7 +103,7 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
 
     warning(
       paste0(
-        'Cls has the length ',
+        'TopviewTopographicMap: Cls has the length ',
         length(Cls),
         ' which does not equal the number of the BestMatchingUnits: ',
         b[1],
@@ -119,7 +121,7 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
     ClsColors = ClsColors[-5] #green is not visible in plotly
   } else{
     if (length(unique(Cls)) > length(ClsColors)) {
-      stop('Length of vector of Clscolor does not match the number of unique Clusters in Cls.')
+      stop('TopviewTopographicMap: Length of vector of Clscolor does not match the number of unique Clusters in Cls.')
     }
   }
   

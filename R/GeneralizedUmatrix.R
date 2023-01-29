@@ -29,6 +29,12 @@ GeneralizedUmatrix=function(Data, ProjectedPoints, PlotIt=FALSE, Cls=NULL,
   #2 Editor: MT 02/2020   switched to faster plotting
   toroid=Toroid
   
+  if(isTRUE(ComputeInR)){
+	  warning("GeneralizedUmatrix Parallel=TRUE is only possible for C++ not for R")
+	  Parallel=FALSE
+  }
+  
+  
   if(length(DataPerEpoch)!=1) DataPerEpoch=1
   if(DataPerEpoch<=0) DataPerEpoch=1
   

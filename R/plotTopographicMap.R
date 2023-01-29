@@ -17,9 +17,13 @@ plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, 
 ########################################################################################## 
   #Catch further arguments ----
 ##########################################################################################
-  if(missing(GeneralizedUmatrix)) stop('GeneralizedUmatrix is missing.')
-  if(!exists(x = "GeneralizedUmatrix",where = parent.frame())) stop('GeneralizedUmatrix is missing.')
-  if(is.null(GeneralizedUmatrix)) stop('GeneralizedUmatrix is missing.')
+  if(missing(GeneralizedUmatrix)) stop('plotTopographicMap: GeneralizedUmatrix is missing.')
+  
+  #macht keinen sinn, da im parentframe das nicht unbedingt vorhanden sein muss!
+  # z.b. koennte sich das objekt in einer liste befinden!
+  #if(!exists(x = "GeneralizedUmatrix",where = parent.frame())) stop('GeneralizedUmatrix is missing.')
+  
+  if(is.null(GeneralizedUmatrix)) stop('plotTopographicMap: GeneralizedUmatrix is missing.')
   
   #
   dots=list(...)
@@ -93,7 +97,7 @@ if(!is.null(Imx))
   #TextureRendering=F only with Umatrix package
 
   # OUTPUT
-	if(!requireNamespace("rgl", quietly = T)) warning("Namespace of package rgl could not be loaded. You can try 'TopviewTopographicMap' function as an alternative for plotting.")
+	if(!requireNamespace("rgl", quietly = T)) warning("plotTopographicMap: Namespace of package rgl could not be loaded. You can try 'TopviewTopographicMap' function as an alternative for plotting.")
 
   # N#ormalization der GeneralizedUmatrix werte ----
   # Milligan, Copper 1988 A Study of Standadization of Variables in Cluster Analysis,
@@ -133,15 +137,15 @@ if(!is.null(Imx))
 ##########################################################################################
   if(missing(BestMatchingUnits)){
     BestMatchingUnits=matrix(1,2,2)
-    warning('BestMatchingUnits are missing.Creating a dummy..')
+    warning('plotTopographicMap: BestMatchingUnits are missing.Creating a dummy..')
   }
   if (!is.matrix(BestMatchingUnits))
-    stop('Bestmatches have to be a matrix')
+    stop('plotTopographicMap: Bestmatches have to be a matrix')
   else
     b = dim(BestMatchingUnits)
   
   if (b[2] > 3 | b[2] < 2)
-    stop(paste0('Wrong number of Columns of Bestmatches: ', b[2]))
+    stop(paste0('plotTopographicMap: Wrong number of Columns of Bestmatches: ', b[2]))
   if (b[2] == 2) {
     Points = BestMatchingUnits
     #With Key
@@ -151,7 +155,7 @@ if(!is.null(Imx))
   }
   d = dim(GeneralizedUmatrix)
   if (is.null(d)) {
-    stop('GeneralizedUmatrix Dimension is null. Please check Input')
+    stop('plotTopographicMap: GeneralizedUmatrix Dimension is null. Please check Input')
   }
   mini=apply(Points, 2, min,na.rm=TRUE)
   maxi=apply(Points, 2, max,na.rm=TRUE)
@@ -159,11 +163,11 @@ if(!is.null(Imx))
   #mini = matrixStats::colMins(Points, na.rm = TRUE)
   #maxi = matrixStats::colMaxs(Points, na.rm = TRUE)
   if (sum(mini) < 2) {
-    stop('Some Bestmatches are below 1 in X or Y/Columns or Lines')
+    stop('plotTopographicMap: Some Bestmatches are below 1 in X or Y/Columns or Lines')
   }
   if (d[1] < maxi[1]) {
     stop(paste0(
-      'Range of Bestmatches',
+      'plotTopographicMap: Range of Bestmatches',
       maxi[1],
       ' is higher than Range of GeneralizedUmatrix',
       d[1]
@@ -171,7 +175,7 @@ if(!is.null(Imx))
   }
   if (d[2] < maxi[2]) {
     stop(paste0(
-      'Range of Bestmatches',
+      'plotTopographicMap: Range of Bestmatches',
       maxi[2],
       ' is higher than Range of GeneralizedUmatrix',
       d[2]
@@ -180,27 +184,27 @@ if(!is.null(Imx))
   ##Cls checks
 if(is.null(Cls)) Cls=rep(1,b[1])
 if(!is.vector(Cls)){
-  warning('Cls is not a vector. Calling as.vector()')
+  warning('plotTopographicMap: Cls is not a vector. Calling as.vector()')
   Cls=as.vector(Cls)
 }
   if(!is.numeric(Cls)){
-    warning('Cls is not a numeric Calling as.numeric()')
+    warning('plotTopographicMap: Cls is not a numeric Calling as.numeric()')
     Cls=as.numeric(Cls)
   }   
   if(sum(!is.finite(Cls))>0){
-    warning('Not all values in Cls are finite. Generating nonfiniteclass with value 999')
+    warning('plotTopographicMap: Not all values in Cls are finite. Generating nonfiniteclass with value 999')
     Cls[!is.finite(Cls)]=999
   }
   if(length(Cls)!=b[1]){
     Cls=rep(1,b[1])
-    warning(paste0('Cls has the length ',length(Cls),' which does not equal the number of the BestMatchingUnits: ',b[1],'. Plotting without Cls.'))
+    warning(paste0('plotTopographicMap: Cls has the length ',length(Cls),' which does not equal the number of the BestMatchingUnits: ',b[1],'. Plotting without Cls.'))
   }
     
 if(is.null(ClsColors)){
  ClsColors=GeneralizedUmatrix::DefaultColorSequence[1:length(unique(Cls))]
  }else{
 	if(length(unique(Cls))!=length(ClsColors)){
-		stop('Length of vector of Clscolor does not match the number of unique Clusters in Cls.')
+		stop('plotTopographicMap: Length of vector of Clscolor does not match the number of unique Clusters in Cls.')
 	}
 } 
 
@@ -209,7 +213,7 @@ if(is.null(ClsColors)){
   if(!is.null(Names)){
     
     if(!is.character(Names)){
-      warning('Names are not a character vector, calling as.character')
+      warning('plotTopographicMap: Names are not a character vector, calling as.character')
       Names=as.character(Names)
     }
     
@@ -217,7 +221,7 @@ if(is.null(ClsColors)){
      if(!is.null(Names)){
        cls_length=length(unique(Cls))
        if(!length(Names)==cls_length){
-         warning('Names are not of length of number of clusters, Renaming Names to Cluster 1.. Cluster n')
+         warning('plotTopographicMap: Names are not of length of number of clusters, Renaming Names to Cluster 1.. Cluster n')
          Names=rep("C",cls_length)
          no_vec=seq_len(cls_length)
          Names=paste0(Names,no_vec)
@@ -249,9 +253,9 @@ if(is.null(ClsColors)){
     else{
       NamesColors=dots$NamesColors
       if(length(NamesColors)!=length(Names)){
-        warning('Length of "Names" does not equal length of "NamesColors". Trying to use "ClsColors".')
+        warning('plotTopographicMap: Length of "Names" does not equal length of "NamesColors". Trying to use "ClsColors".')
         if(length(ClsColors)!=length(Names)){
-          warning('Length of "Names" does not equal length of "ClsColors". Using default Colors')
+          warning('plotTopographicMap: Length of "Names" does not equal length of "ClsColors". Using default Colors')
           NamesColors=DataVisualizations::DefaultColorSequence[1:length(Names)]
         }else{
           NamesColors=ClsColors
@@ -463,10 +467,10 @@ if(is.null(ClsColors)){
                      inset=c(0.02),bty="n",title=NamesTitle)
    
      }else{
-       warning('Names are not of length of number of clusters and hence ignored.')
+       warning('plotTopographicMap: Names are not of length of number of clusters and hence ignored.')
      }
    }else{
-     warning('Names are not a character vector and hence ignored.')
+     warning('plotTopographicMap: Names are not a character vector and hence ignored.')
    }
  }
    
