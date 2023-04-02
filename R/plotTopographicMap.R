@@ -372,7 +372,7 @@ if(is.null(ClsColors)){
 ##########################################################################################
  #Aus showUmatrix3d, package Umatrix
    rgl::open3d()
-   rgl::rgl.viewpoint(0, -30,zoom = 0.8)
+   rgl::view3d(0, -30,zoom = 0.8)
   
   if(ShowAxis){
     rgl::material3d(col = "black")
