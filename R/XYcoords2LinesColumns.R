@@ -1,4 +1,4 @@
-XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=FALSE){
+XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=FALSE,na.rm=FALSE){
   #XYcoords2LinesColumns(X,Y)
   # Converts points given as x(i),y(i) coordinates to integer coordinates Columns(i),Lines(i)
   # INPUT
@@ -17,6 +17,14 @@ XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=F
   # Columns                                 GridColumns==max(GridConvertedPoints[,1])
 
   # author MT 08/2015
+  #if(isTRUE(na.rm)){
+    #account for infinite values inf and -inf
+    X[!is.finite(X)]=NaN
+    Y[!is.finite(Y)]=NaN
+    if(sum(!is.finite(Y))>0|sum(!is.finite(X))>0){
+      warning("XYcoords2LinesColumns: Either X or Y have not finite values. GeneralizedUmatrix may fail with errors.")
+    }
+  #}
   multiplot <-
     function(...,
              plotlist = NULL,
@@ -64,10 +72,10 @@ XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=F
     }
   
   temp = cbind(X, Y)
-  minX <- min(X)
-  minY <- min(Y)
-  maxX <- max(X)
-  maxY <- max(Y)
+  minX <- min(X,na.rm = na.rm)
+  minY <- min(Y,na.rm = na.rm)
+  maxX <- max(X,na.rm = na.rm)
+  maxY <- max(Y,na.rm = na.rm)
   RangeXfirst = maxX - minX
   RangeYfirst = maxY - minY
   
@@ -84,18 +92,18 @@ XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=F
   }
   
   # Update min and  max.
-  minX <- min(X)
-  minY <- min(Y)
-  maxX <- max(X)
-  maxY <- max(Y)
+  minX <- min(X,na.rm = na.rm)
+  minY <- min(Y,na.rm = na.rm)
+  maxX <- max(X,na.rm = na.rm)
+  maxY <- max(Y,na.rm = na.rm)
   RangeX = maxX - minX
   RangeY = maxY - minY
   
   X <- floor((X - minX) / RangeX * (Columns - 1) + 1)
   Y <- floor((Y - minY) / RangeY * (Lines - 1) + 1)
   
-  maxX <- max(X)
-  maxY <- max(Y)
+  maxX <- max(X,na.rm = na.rm)
+  maxY <- max(Y,na.rm = na.rm)
   if (maxX > Columns)
     warning('Columnsrange exceeded')
   if (maxY > Lines)
@@ -118,17 +126,17 @@ XYcoords2LinesColumns=function(X,Y,minNeurons=4096,MaxDifferentPoints=F,PlotIt=F
       Columns = RangeXfirst / RangeYfirst * (Lines - 1) + 1
       X = temp[, 1]
       Y = temp[, 2]
-      minX <- min(X)
-      minY <- min(Y)
-      maxX <- max(X)
-      maxY <- max(Y)
+      minX <- min(X,na.rm = na.rm)
+      minY <- min(Y,na.rm = na.rm)
+      maxX <- max(X,na.rm = na.rm)
+      maxY <- max(Y,na.rm = na.rm)
       RangeX = maxX - minX
       RangeY = maxY - minY
       
       X <- floor((X - minX) / RangeX * (Columns - 1) + 1)
       Y <- floor((Y - minY) / RangeY * (Lines - 1) + 1)
-      maxX <- max(X)
-      maxY <- max(Y)
+      maxX <- max(X,na.rm = na.rm)
+      maxY <- max(Y,na.rm = na.rm)
       if (maxX > Columns)
         warning('Columnsrange exceeded')
       if (maxY > Lines)

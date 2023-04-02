@@ -17,6 +17,7 @@ export(UniqueBestMatchingUnits)
 export(LowLand)
 export(ReduceToLowLand)
 export(Uheights4Data)
+export(ListAsEsomNeurons)
 
 #Island generation now in ProjectionBasedClustering package
 

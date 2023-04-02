@@ -11,6 +11,8 @@ numer of neurons}
 \item{MaxDifferentPoints}{TRUE: the discretization error is minimal FALSE:
 number of Lines and Columns is minimal}
 \item{PlotIt}{Plots the result}
+\item{na.rm}{if non finite values should be disregarded in the computation then set to TRUE}
+
 }
 \value{GridConvertedPoints[1:Columns,1:Lines,2]  IntegerPositions on a grid
 corresponding to x,y}
@@ -19,7 +21,7 @@ XYcoords2LinesColumns(X,Y) Converts points given as x(i),y(i) coordinates to
 integer coordinates Columns(i),Lines(i)
 }
 \details{
-Details are written down in [Thrun, 2018, p. 47].
+Non finite values are not filtered out even if na.rm=TRUE, only ignored. Details are written down in [Thrun, 2018, p. 47].
 }
 
 \author{

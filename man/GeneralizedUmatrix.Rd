@@ -7,7 +7,7 @@ GeneralizedUmatrix(Data,ProjectedPoints,
 
 PlotIt=FALSE,Cls=NULL,Toroid=TRUE, Tiled=FALSE,
 
-ComputeInR=FALSE,Parallel=FALSE,DataPerEpoch=1,\dots)
+ComputeInR=FALSE,Parallel=TRUE,DataPerEpoch=1,\dots)
 }
 \arguments{
 \item{Data}{[1:n,1:d] array of data: n cases in rows, d variables in columns}

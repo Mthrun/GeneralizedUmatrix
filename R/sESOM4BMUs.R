@@ -1,5 +1,5 @@
 sESOM4BMUs <- function(BMUs, Data, esom, toroid, CurrentRadius,
-                       ComputeInR=FALSE, Parallel=FALSE){
+                       ComputeInR=FALSE, Parallel=TRUE){
   #esom=sESOM4BMUs(bmpos,Data, esom, toroid=TRUE, CurrentRadius)=F
   #simplified ESOM Algorithmus for BestMatchingUnits  
   # INPUT

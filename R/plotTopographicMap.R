@@ -1,4 +1,6 @@
-plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL, ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=0.5,RenderingContourLines=TRUE,...){
+plotTopographicMap <- function(GeneralizedUmatrix, BestMatchingUnits, Cls=NULL,
+                               ClsColors=NULL,Imx=NULL,Names=NULL, BmSize=0.5,
+                               RenderingContourLines=TRUE,...){
 # plotTopographicMap(GeneralizedUmatrix, BestMatchingUnits, Cls, Tiled)
 # Draws a plot of given GeneralizedUmatrix
 # INPUT

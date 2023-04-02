@@ -1,6 +1,6 @@
 GeneralizedUmatrix=function(Data, ProjectedPoints, PlotIt=FALSE, Cls=NULL,
                             Toroid=TRUE, Tiled=FALSE, ComputeInR=FALSE,
-                            Parallel=FALSE,
+                            Parallel=TRUE,
                             DataPerEpoch=1,
                             ...){
   #V=GeneralizedUmatrix(ProjectedPoints,Data)
@@ -28,8 +28,9 @@ GeneralizedUmatrix=function(Data, ProjectedPoints, PlotIt=FALSE, Cls=NULL,
   #1.Editor; MT 12/2015
   #2 Editor: MT 02/2020   switched to faster plotting
   toroid=Toroid
+  if(sum(!is.finite(Data))>0) warning("GeneralizedUmatrix: Data is expected to consist of only finite values.")
   
-  if(isTRUE(ComputeInR)){
+  if(isTRUE(ComputeInR)&isTRUE(Parallel)){
 	  warning("GeneralizedUmatrix Parallel=TRUE is only possible for C++ not for R")
 	  Parallel=FALSE
   }
