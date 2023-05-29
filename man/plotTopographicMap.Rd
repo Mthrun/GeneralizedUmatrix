@@ -2,7 +2,7 @@
 \alias{plotTopographicMap}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Visualizes the Generalized U-matrix in 3D
+Visualizes the generalized U-matrix in 3D
 }
 \description{
 The generalized U-matrix is visualized as the topographic map with hypsometric tints. The topographic map represents high-dimensional distance and density-based structurs in form of a 3D landscape.
@@ -16,7 +16,7 @@ BmSize=0.5,RenderingContourLines=TRUE,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-\item{GeneralizedUmatrix}{[1:Lines,1:Columns] Umatrix to be plotted, numerical
+\item{GeneralizedUmatrix}{[1:Lines,1:Columns] U-matrix to be plotted, numerical
 matrix storing the U-heights, see [Thrun, 2018] for definition.}
 \item{BestMatchingUnits}{[1:n,1:2], Positions of bestmatches to be plotted as
 spheres onto the topographic map}
@@ -24,7 +24,7 @@ spheres onto the topographic map}
 label for each bestmatch at that given point}
 \item{ClsColors}{Vector of colors that will be used to colorize the different
 clusters, default is GeneralizedUmatrix::DefaultColorSequence}
-\item{Imx}{a mask (Imx) that will be used to cut out the umatrix}
+\item{Imx}{a mask (Imx) that will be used to cut out the U-matrix}
 \item{Names}{If set: [1:k] character vector naming the k clusters for the
 legend. In this case, further parameters with the possibility to adjust are:
 \code{NamesCex}: (size); \code{NamesPosition}: Legend position;
@@ -38,10 +38,10 @@ in a much faster plot.}
 \item{\dots}{Besides the legend/names parameter the list of further parameters,
 use only of you know what you are doing:
 \describe{
-\item{Tiled}{Should the Umatrix be drawn 4times?}
+\item{Tiled}{Should the U-matrix be drawn 4times?}
 \item{ShowAxis}{shall the axis be shown?}
 \item{NoLevels}{number of contour lines}
-\item{ExtendBorders}{scalar, extends Umatrix by toroidal continuation of the given Umatrix}
+\item{ExtendBorders}{scalar, extends U-matrix by toroidal continuation of the given U-matrix}
 \item{Colormap}{in the case of density p matrix...}
 \item{title}{same as main}
 \item{main}{same as title}
@@ -78,7 +78,7 @@ An object of class "htmlwidget" in mode invisible, please \code{\link[rgl]{rglwi
 Michael Thrun
 }
 \note{
-First version of algorithm was partly based on the Umatrix package.
+First version of algorithm was partly based on the U-matrix package.
 }
 
 \seealso{

@@ -2,10 +2,10 @@
 \alias{TopviewTopographicMap}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Topview of Topographic Map ind 2D
+Top view of the topographic map in 2D
 }
 \description{
-Fast Visualization of the Generalized U-matrix in 2D which visualizes high-dimensional distance and density based structurs of the combination two-dimensional scatter plots (projections) with high-dimensional data.
+Fast visualization of the generalized U-matrix in 2D which visualizes high-dimensional distance and density based structurs of the combination two-dimensional scatter plots (projections) with high-dimensional data.
 }
 \usage{
 TopviewTopographicMap(GeneralizedUmatrix, BestMatchingUnits,
@@ -18,15 +18,15 @@ alpha = 1, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-\item{GeneralizedUmatrix}{[1:Lines,1:Columns] Umatrix to be plotted, numerical
+\item{GeneralizedUmatrix}{[1:Lines,1:Columns] U-matrix to be plotted, numerical
 matrix storing the U-heights, see [Thrun, 2018] for definition.}
 \item{BestMatchingUnits}{[1:n,1:2], Positions of bestmatches to be plotted onto
-the Umatrix}
+the U-matrix}
 \item{Cls}{[1:n], numerical vector of classification of \code{k} classes for the
 bestmatch at the given point}
 \item{ClsColors}{Vector of colors that will be used to colorize the different
 classes}
-\item{Imx}{a mask (Imx) that will be used to cut out the umatrix}
+\item{Imx}{a mask (Imx) that will be used to cut out the U-matrix}
 \item{ClsNames}{If set: [1:k] character vector naming the k classes for the
 legend. In this case, further parameters with the possibility to adjust are:
 \code{LegendCex}: (size);
@@ -39,9 +39,9 @@ represent the BestMatchingUnits}
 \item{alpha}{...}
 \item{\dots}{
 \describe{
-\item{Tiled}{Should the Umatrix be drawn 4times?}
+\item{Tiled}{Should the U-matrix be drawn 4times?}
 \item{main}{set specific title in plot}
-\item{ExtendBorders}{scalar, extends Umatrix by toroidal continuation of the given Umatrix}
+\item{ExtendBorders}{scalar, extends U-matrix by toroidal continuation of the given U-matrix}
 \item{MainCex}{scalar, magnification to be used for legend}
 \item{LegendCex}{scalar, magnification to be used for main titles}
 \item{_}{Further Arguments relevant for interactive shiny application}
