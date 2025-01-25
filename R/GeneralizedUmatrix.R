@@ -12,12 +12,12 @@ GeneralizedUmatrix=function(Data, ProjectedPoints, PlotIt=FALSE, Cls=NULL,
   # INPUT
   # Data[1:n,1:d]                          array of data: n cases in rows, d variables in columns
   # ProjectedPoints[1:n,OutputDimension]   n by OutputDimension matrix containing coordinates of the Projection: A matrix of the fitted configuration.
-                                           # see Projections/R/..
+  # see Projections/R/..
   # OPTIONAL
   # PlotIt                                 bool, defaut=FALSE, if =TRUE: U-Marix of every current Position of Databots will be shown
   # toroid
   ## ComputeInR                                  =T: Rcode, =F Cpp Code
-  
+  # 
   # Output
   # Umatrix[Lines,Columns                     umatrix (see ReadUMX() dbt.DataIO)
   # EsomNeurons[1:Lines,1:Columns,1:weights]       3-dimensional numeric array (wide format), not wts (long format)
@@ -25,8 +25,8 @@ GeneralizedUmatrix=function(Data, ProjectedPoints, PlotIt=FALSE, Cls=NULL,
   # gplotres                                Ausgabe von ggplot
   # unbesetztePositionen                    Umatrix[unbesetztePositionen] =NA
   # author: MT 06/2015
-  #1.Editor; MT 12/2015
-  #2 Editor: MT 02/2020   switched to faster plotting
+  # 1.Editor; MT 12/2015
+  # 2 Editor: MT 02/2020   switched to faster plotting
   toroid=Toroid
   if(sum(!is.finite(Data))>0) warning("GeneralizedUmatrix: Data is expected to consist of only finite values.")
   
@@ -349,18 +349,18 @@ GeneralizedUmatrix=function(Data, ProjectedPoints, PlotIt=FALSE, Cls=NULL,
   for (i in Radii){
     # Experimental: Use sampling for speed-up
     if(DataPerEpoch <1){
-    NumberOfDatapoints = floor(nrow(Data)*DataPerEpoch)
-    if(NumberOfDatapoints < 2) NumberOfDatapoints = 2
-    ind      = sample(1:nrow(Data),NumberOfDatapoints)
-    DataTemp = Data[ind,]
-    tmpBMUs  = BMUs[ind,]
+      NumberOfDatapoints = floor(nrow(Data)*DataPerEpoch)
+      if(NumberOfDatapoints < 2) NumberOfDatapoints = 2
+      ind      = sample(1:nrow(Data),NumberOfDatapoints)
+      DataTemp = Data[ind,]
+      tmpBMUs  = BMUs[ind,]
     }else{
       DataTemp = Data
       tmpBMUs  = BMUs
     }
     CurrentRadius =  i # max(AnfangsRadius-i,1) #Endradius=1
     #Algorithmus
-    wts = sESOM4BMUs(tmpBMUs, DataTemp, wts, toroid, CurrentRadius,
+    wts = sESOM4BMUs(BMUs = tmpBMUs, Data = DataTemp, esom = wts, toroid = toroid, CurrentRadius = CurrentRadius,
                      ComputeInR = ComputeInR, Parallel = Parallel)
     print(paste0('Operator: getUmatrix4BMUs() at ',round(1-(i/HeuristischerParameter),2)*100,'%'))
   } # end 1:epochs
@@ -384,10 +384,10 @@ GeneralizedUmatrix=function(Data, ProjectedPoints, PlotIt=FALSE, Cls=NULL,
               Bestmatches     = BMUs,
               Lines           = Lines,
               Columns         = Columns,
-              sESOMparamaters = list(Eppochs = HeuristischerParameter,
-                                     Rmax    = HeuristischerParameter,
-                                     Rmin = 1,
+              sESOMparamaters = list(Eppochs          = HeuristischerParameter,
+                                     Rmax             = HeuristischerParameter,
+                                     Rmin             = 1,
                                      CoolingStrategie = 'Linear, Lernratate ist const =1',
-                                     Toroid=toroid),
-              gplotres=gplotres))
+                                     Toroid           = toroid),
+              gplotres        = gplotres))
 }

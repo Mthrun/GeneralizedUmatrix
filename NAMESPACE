@@ -25,7 +25,6 @@ export(ListAsEsomNeurons)
 
 import(ggplot2)
 
-
 importFrom("grDevices", "dev.off", "png", "contourLines", "col2rgb", "colorRamp")
 importFrom("graphics", "lines", "par", "rasterImage")
 importFrom("stats", "median", "qnorm", "sd", "quantile", "runif", "dist","cmdscale")

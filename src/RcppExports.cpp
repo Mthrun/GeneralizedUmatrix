@@ -36,8 +36,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // trainstepC
-arma::cube trainstepC(Rcpp::NumericVector vx, Rcpp::NumericVector vy, Rcpp::NumericMatrix DataSampled, Rcpp::NumericMatrix BMUsampled, double Lines, double Columns, double Radius, bool toroid);
-RcppExport SEXP _GeneralizedUmatrix_trainstepC(SEXP vxSEXP, SEXP vySEXP, SEXP DataSampledSEXP, SEXP BMUsampledSEXP, SEXP LinesSEXP, SEXP ColumnsSEXP, SEXP RadiusSEXP, SEXP toroidSEXP) {
+arma::cube trainstepC(Rcpp::NumericVector vx, Rcpp::NumericVector vy, Rcpp::NumericMatrix DataSampled, Rcpp::NumericMatrix BMUsampled, double Lines, double Columns, double Radius, bool toroid, int NoCases);
+RcppExport SEXP _GeneralizedUmatrix_trainstepC(SEXP vxSEXP, SEXP vySEXP, SEXP DataSampledSEXP, SEXP BMUsampledSEXP, SEXP LinesSEXP, SEXP ColumnsSEXP, SEXP RadiusSEXP, SEXP toroidSEXP, SEXP NoCasesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -49,13 +49,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type Columns(ColumnsSEXP);
     Rcpp::traits::input_parameter< double >::type Radius(RadiusSEXP);
     Rcpp::traits::input_parameter< bool >::type toroid(toroidSEXP);
-    rcpp_result_gen = Rcpp::wrap(trainstepC(vx, vy, DataSampled, BMUsampled, Lines, Columns, Radius, toroid));
+    Rcpp::traits::input_parameter< int >::type NoCases(NoCasesSEXP);
+    rcpp_result_gen = Rcpp::wrap(trainstepC(vx, vy, DataSampled, BMUsampled, Lines, Columns, Radius, toroid, NoCases));
     return rcpp_result_gen;
 END_RCPP
 }
 // trainstepC2
-NumericVector trainstepC2(NumericVector esomwts, NumericVector aux, NumericMatrix DataSampled, NumericMatrix BMUsampled, double Lines, double Columns, double Weights, double Radius, bool toroid);
-RcppExport SEXP _GeneralizedUmatrix_trainstepC2(SEXP esomwtsSEXP, SEXP auxSEXP, SEXP DataSampledSEXP, SEXP BMUsampledSEXP, SEXP LinesSEXP, SEXP ColumnsSEXP, SEXP WeightsSEXP, SEXP RadiusSEXP, SEXP toroidSEXP) {
+NumericVector trainstepC2(NumericVector esomwts, NumericVector aux, NumericMatrix DataSampled, NumericMatrix BMUsampled, double Lines, double Columns, double Weights, double Radius, bool toroid, int NoCases);
+RcppExport SEXP _GeneralizedUmatrix_trainstepC2(SEXP esomwtsSEXP, SEXP auxSEXP, SEXP DataSampledSEXP, SEXP BMUsampledSEXP, SEXP LinesSEXP, SEXP ColumnsSEXP, SEXP WeightsSEXP, SEXP RadiusSEXP, SEXP toroidSEXP, SEXP NoCasesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -68,7 +69,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type Weights(WeightsSEXP);
     Rcpp::traits::input_parameter< double >::type Radius(RadiusSEXP);
     Rcpp::traits::input_parameter< bool >::type toroid(toroidSEXP);
-    rcpp_result_gen = Rcpp::wrap(trainstepC2(esomwts, aux, DataSampled, BMUsampled, Lines, Columns, Weights, Radius, toroid));
+    Rcpp::traits::input_parameter< int >::type NoCases(NoCasesSEXP);
+    rcpp_result_gen = Rcpp::wrap(trainstepC2(esomwts, aux, DataSampled, BMUsampled, Lines, Columns, Weights, Radius, toroid, NoCases));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -76,8 +78,8 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_GeneralizedUmatrix_Delta3DWeightsC", (DL_FUNC) &_GeneralizedUmatrix_Delta3DWeightsC, 2},
     {"_GeneralizedUmatrix_addRowWiseC", (DL_FUNC) &_GeneralizedUmatrix_addRowWiseC, 2},
-    {"_GeneralizedUmatrix_trainstepC", (DL_FUNC) &_GeneralizedUmatrix_trainstepC, 8},
-    {"_GeneralizedUmatrix_trainstepC2", (DL_FUNC) &_GeneralizedUmatrix_trainstepC2, 9},
+    {"_GeneralizedUmatrix_trainstepC", (DL_FUNC) &_GeneralizedUmatrix_trainstepC, 9},
+    {"_GeneralizedUmatrix_trainstepC2", (DL_FUNC) &_GeneralizedUmatrix_trainstepC2, 10},
     {NULL, NULL, 0}
 };
 

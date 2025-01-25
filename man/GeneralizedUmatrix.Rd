@@ -72,6 +72,10 @@ Introduced first in the PhD thesis in [Thrun, 2018, p.46]. Furthermore the two p
 [Thrun/Ultsch, 2020]  Thrun, M. C., & Ultsch, A.: Uncovering High-Dimensional Structures of Projections from Dimensionality Reduction Methods, MethodsX, Vol. 7, pp. 101093, DOI \doi{10.1016/j.mex.2020.101093}, 2020.
 
 }
+\note{
+With the update of 01.01.2024, version 1.3 a minor change is included that is not mentioned in the referenced papers: for large number of cases and small radii the learning rate decays to 0.1 instead of remaining constant (any other case).
+}
+
 \examples{
 data("Chainlink")
 Data=Chainlink$Data
@@ -85,7 +89,7 @@ Stress = ProjectionBasedClustering::KruskalStress(InputDistances,
 as.matrix(dist(ProjectedPoints)))
 }
 \dontshow{
-resUmatrix=GeneralizedUmatrix(Data[1:2,],ProjectedPoints[1:2,])
+resUmatrix=GeneralizedUmatrix(Data[1:2,], ProjectedPoints[1:2,])
 #plotTopographicMap(resUmatrix$Umatrix,resUmatrix$Bestmatches)#testing takes longer than 5 secs
 }
 \donttest{

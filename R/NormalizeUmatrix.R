@@ -13,11 +13,11 @@ normUmatrix <- function(aumx, umx){
     stop("Abstract umatrix and umatrix must have the same size")
   }
   
-  meana <- meanrobust(as.vector(aumx))
-  meanu <- meanrobust(as.vector( umx))
+  meana <- DataVisualizations::Meanrobust(as.vector(aumx))
+  meanu <- DataVisualizations::Meanrobust(as.vector( umx))
   
-  stda <- as.numeric(stdrobust(as.vector(aumx)))
-  stdu <- as.numeric(stdrobust(as.vector( umx)))
+  stda <- as.numeric(DataVisualizations::Stdrobust(as.vector(aumx)))
+  stdu <- as.numeric(DataVisualizations::Stdrobust(as.vector( umx)))
   
   normaumx <- ((aumx - meana)/stda)
   normumx <- ((umx - meanu)/stdu)
@@ -333,70 +333,3 @@ NormalizeUmatrix = function(Data, Umatrix, BestMatches) {
   
   return(normalized)
 }
-
-meanrobust <- function(x, p=0.1){
-  
-  if(is.matrix(x)){
-    mhat<-c()
-    for(i in 1:dim(x)[2]){
-      mhat[i]<-mean(x[,i],trim=p,na.rm=TRUE)
-    }
-  } else  mhat<-mean(x,trim=p,na.rm=TRUE) 
-  
-  return (mhat) 
-  
-}
-
-stdrobust <- function(x,lowInnerPercentile=25){
-  
-  if(is.vector(x) || (is.matrix(x) && dim(x)[1]==1)) dim(x)<-c(length(x),1)
-  
-  lowInnerPercentile<-max(1,min(lowInnerPercentile,49))
-  hiInnerPercentile<- 100 - lowInnerPercentile
-  #norminv=qnorm
-  faktor<-sum(abs(qnorm(c(lowInnerPercentile,hiInnerPercentile)/100,0,1)))
-  std<-sd(x,na.rm=TRUE)
-  
-  quartile<-prctile(x,c(lowInnerPercentile,hiInnerPercentile))  
-  if (ncol(x)>1)
-    iqr<-quartile[2,]-quartile[1,]
-  else
-    iqr<-quartile[2]-quartile[1]
-  
-  shat<-c()
-  for(i in 1:ncol(x)){
-    shat[i]<-min(c(std[i],iqr[i]/faktor),na.rm=TRUE)
-  }
-  dim(shat)<-c(1,ncol(x))
-  colnames(shat)<-colnames(x)
-  return (shat) 
-  
-}
-
-prctile<-function(x,p){
-  #   matlab:
-  #   Y = prctile(X,p) returns percentiles of the values in X. 
-  #   p is a scalar or a vector of percent values. When X is a 
-  #   vector, Y is the same size as p and Y(i) contains the p(i)th 
-  #   percentile. When X is a matrix, the ith row of Y contains the 
-  #   p(i)th percentiles of each column of X. For N-dimensional arrays,
-  #   prctile operates along the first nonsingleton dimension of X.  
-  if(length(p)==1){  
-    if(p>1){p=p/100}
-    
-  }
-  if(max(p)>1)
-    p=p/100
-  
-  if(is.matrix(x) && ncol(x)>1){
-    cols<-ncol(x)
-    quants<-matrix(0,nrow=length(p),ncol=cols)
-    for(i in 1:cols){
-      quants[,i]<-quantile(x[,i],probs=p,type=5,na.rm=TRUE)
-    }
-  }else{
-    quants<-quantile(x,p,type=5,na.rm=TRUE)
-  }
-  return(quants)
-}
-

@@ -4,16 +4,6 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
                                   BmSize=6,DotLineWidth=2,alpha=1,...) {
   #author: Tim Schreier, Luis Winckelmann, MCT, QS
   
-  #CopyCls = Cls
-  #counter = 1
-  #for(j in sort(unique(Cls))){
-  #  CopyCls[which(Cls == j)] = counter
-  #  counter = counter + 1
-  #}
-  #Cls = CopyCls
-  #Cls <- CopyCls
-  #Cls <<- CopyCls
-  
   if(missing(GeneralizedUmatrix)) stop('TopviewTopographicMap: GeneralizedUmatrix is missing.')
   if(is.null(GeneralizedUmatrix)) stop('TopviewTopographicMap: GeneralizedUmatrix is missing.')
   
@@ -119,12 +109,37 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
   if (is.null(ClsColors)) {
     ClsColors = GeneralizedUmatrix::DefaultColorSequence
     ClsColors = ClsColors[-5] #green is not visible in plotly
+    ClsColors=ClsColors[1:length(unique(Cls))]
+    names(ClsColors)=sort(unique(Cls))
   } else{
-    if (length(unique(Cls)) > length(ClsColors)) {
-      stop('TopviewTopographicMap: Length of vector of Clscolor does not match the number of unique Clusters in Cls.')
+    if (length(ClsColors)<length(unique(Cls))) {
+      warning('TopviewTopographicMap: Length of vector of Clscolor is shorter than the number of unique Clusters in Cls. Using defaults')
+      ClsColors = GeneralizedUmatrix::DefaultColorSequence
+      ClsColors = ClsColors[-5] #green is not visible in plotly
+      ClsColors=ClsColors[1:length(unique(Cls))]
+    }
+    if (length(ClsColors)>length(unique(Cls))) {
+      ClsColors=ClsColors[1:length(unique(Cls))]
+      warning("TopviewTopographicMap: ClsColors was longer than number of clusters, first k elements are used.")
+    }
+    
+    if(is.null(names(ClsColors))){
+      names(ClsColors)=sort(unique(Cls))
     }
   }
-  
+  if (!is.null(ClsNames)) {
+    if(length(ClsNames)>length(unique(Cls))){
+      ClsNames=ClsNames[1:length(unique(Cls))]
+      warning("TopviewTopographicMap: ClsNames was longer than number of clusters, first k elements are used.")
+    }
+    if (length(ClsNames)<length(unique(Cls))) {
+      warning('TopviewTopographicMap: Length of vector of ClsNames is shorter than the number of unique Clusters in Cls. Using defaults')
+      ClsNames=paste0("Class",1:length(unique(Cls)))
+    }
+    if(is.null(names(ClsNames))){
+      names(ClsNames)=sort(unique(Cls))
+    }
+  }
   ## Additional Arguments ----
   dots = list(...)
   #in case of pmatrix
@@ -176,15 +191,22 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
     NamesTitle=dots[["NamesTitle"]]
   
   #Helper Function ----
-  addclass <- function(class, plotbmus, plot, bmu_cols, MarkerSize, my_counter,
+  addclass <- function(class, plotbmus, plot, bmu_cols, MarkerSize,
                        ClsNames, DotLineWidth, alpha){
     inds <- which(Cls == class)
+
+    cur_class_ind=which(names(bmu_cols)==class)
+         
+    if(length(cur_class_ind)==0){
+      warning("TopviewTopographicMap: Clscolor did not match a Class.")
+    }
+
     x = as.numeric(plotbmus[inds, 2])
     y = as.numeric(plotbmus[inds, 1])
     # Color names to RGBA = RGB + Opacity
     if(is.character(bmu_cols)){
       #vecRGBA  = col2rgb(bmu_cols[class], 1)
-      vecRGBA  = col2rgb(bmu_cols[my_counter], alpha)
+      vecRGBA  = col2rgb(bmu_cols[cur_class_ind], alpha)
       my_color = paste("rgba(", vecRGBA[1], ",", vecRGBA[2], ",",
                        vecRGBA[3], ",", alpha,")", sep="")
     }else{
@@ -201,7 +223,12 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
       plot <- plotly::add_markers(plot, x=x, y=y, marker = marker,
                                   name = paste("Cluster", name))
     }else{
-      name = ClsNames[my_counter]
+      if(names(ClsNames)[cur_class_ind]!=class){
+        warning("TopviewTopographicMap: ClsNames did not match a Class.")
+        name = class
+      }else{
+        name = ClsNames[cur_class_ind]
+      }      
       #user names
       plot <- plotly::add_markers(plot, x=x, y=y, marker = marker,
                                   name = name)
@@ -288,12 +315,10 @@ TopviewTopographicMap <- function(GeneralizedUmatrix,BestMatchingUnits,Cls,
                                 #                               length(colormap))]),
                                 name = "UMatrix")
                                 # , showscale = FALSE
-    my_counter = 1
-    ClsColors = ClsColors[order(unique(Cls))]
+   
     for(class in sort(unique(Cls), decreasing = F)){    # QS: Force stable order in the plot legend
-      plt <- addclass(class, plotbmus, plt, ClsColors, MarkerSize, my_counter,
-                      ClsNames, DotLineWidth, alpha)
-      my_counter = my_counter + 1
+      plt <- addclass(class = class,plotbmus =  plotbmus, plot = plt, bmu_cols = ClsColors, MarkerSize = MarkerSize,
+                      ClsNames = ClsNames, DotLineWidth = DotLineWidth, alpha = alpha)
     }#end add class
     plt <- plotly::layout(
       plt,

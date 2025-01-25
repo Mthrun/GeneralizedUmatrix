@@ -21,11 +21,11 @@ sESOM4BMUs <- function(BMUs, Data, esom, toroid, CurrentRadius,
   if(NumberOfDataSamples!=nrow(BMUs))
      stop(paste('NumberOfDataSamples',NumberOfDataSamples,'does not equal to Number of Best Matching units',nrow(BMUs)))
   # pos= 1:NumberOfDataSamples
-  pos <- sample(1:NumberOfDataSamples,NumberOfDataSamples) # permutation of 1:n
-  newData <- Data[pos,]  
-  BMUnew=BMUs[pos,]
-  if (is.vector(newData)){
-      newData <- as.matrix(newData) # 1 x d-matrix instead of vector
+  pos     = sample(1:NumberOfDataSamples,NumberOfDataSamples) # permutation of 1:n
+  newData = Data[pos,]  
+  BMUnew  = BMUs[pos,]
+  if(is.vector(newData)){
+    newData = as.matrix(newData) # 1 x d-matrix instead of vector
   }
   # Initialisierungen werden aus der For-Schleife herausgestellt
   k <- dim(esom)[1] #Lines
@@ -42,21 +42,23 @@ sESOM4BMUs <- function(BMUs, Data, esom, toroid, CurrentRadius,
     aux[,j,2] <- j  # Indexarray
   }
   # meshgrid generiert
-  neigharray <- array(0,c(k,m,NumberOfweights))
+  neigharray <- array(0, c(k, m, NumberOfweights))
   
   #GetBestMatch Initialisierungen
   difference <- esom
   if(!ComputeInR){
     if(Parallel){
-      esomAngepasst=trainstepC2(esom,aux-1,newData,BMUnew-1,k, m, w, CurrentRadius,toroid)
+      esomAngepasst = trainstepC2(esom, aux-1, newData, BMUnew-1, k, m, w,
+                                  CurrentRadius, toroid, NumberOfDataSamples)
     }else{
-      esomAngepasst=trainstepC(esom,aux-1,newData,BMUnew-1,k, m,CurrentRadius,toroid)
+      esomAngepasst = trainstepC (esom, aux-1, newData, BMUnew-1, k, m,
+                                  CurrentRadius, toroid, NumberOfDataSamples)
     }
   }else{
     for(p in 1:NumberOfDataSamples){
       ## Begin One Learnstep for one inputvector (1 Datenzeile)
       DataSample=newData[p,]
-      ##Keine BestMatchSuche
+      ##NumLineseine BestMatchSuche
       bmpos=BMUnew[p,]
       # toroid map: different distances
       # example: on a toroid 5 x 4-grid the distance between the points (3,4) and (1,1) is sqrt(8)
@@ -86,7 +88,20 @@ sESOM4BMUs <- function(BMUs, Data, esom, toroid, CurrentRadius,
       # #CurrentLearnrate is always 1
       inputdiff=Delta3DWeightsC(esom*1,DataSample) #MT: Ohne Multiplikation mit 1 ist esom==inputdiff, kA wieso
       
-      esom <- esom-1*neigharray*inputdiff  
+      if(NumberOfDataSamples<2501){
+        esom <- esom-1*neigharray*inputdiff  
+      }else{#for large number of samples the learning rate has to be adjusted
+        if(CurrentRadius>16)
+          # in future also adjust radius thresholds depending on gridsize
+          esom <- esom-1*neigharray*inputdiff  
+        else if (CurrentRadius<=16&CurrentRadius>8)
+          esom <- esom-0.75*neigharray*inputdiff  
+        else if (CurrentRadius<=8&CurrentRadius>4)
+          esom <- esom-0.5*neigharray*inputdiff 
+        else
+          esom <- esom-0.1*neigharray*inputdiff 
+      }
+
       ## End One Learnstep for one inputvector (1 Datenzeilen)
       
       # Hold BMUs

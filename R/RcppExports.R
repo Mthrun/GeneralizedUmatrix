@@ -9,11 +9,11 @@ addRowWiseC <- function(WeightVectors, DataPoint) {
     .Call(`_GeneralizedUmatrix_addRowWiseC`, WeightVectors, DataPoint)
 }
 
-trainstepC <- function(vx, vy, DataSampled, BMUsampled, Lines, Columns, Radius, toroid) {
-    .Call(`_GeneralizedUmatrix_trainstepC`, vx, vy, DataSampled, BMUsampled, Lines, Columns, Radius, toroid)
+trainstepC <- function(vx, vy, DataSampled, BMUsampled, Lines, Columns, Radius, toroid, NoCases) {
+    .Call(`_GeneralizedUmatrix_trainstepC`, vx, vy, DataSampled, BMUsampled, Lines, Columns, Radius, toroid, NoCases)
 }
 
-trainstepC2 <- function(esomwts, aux, DataSampled, BMUsampled, Lines, Columns, Weights, Radius, toroid) {
-    .Call(`_GeneralizedUmatrix_trainstepC2`, esomwts, aux, DataSampled, BMUsampled, Lines, Columns, Weights, Radius, toroid)
+trainstepC2 <- function(esomwts, aux, DataSampled, BMUsampled, Lines, Columns, Weights, Radius, toroid, NoCases) {
+    .Call(`_GeneralizedUmatrix_trainstepC2`, esomwts, aux, DataSampled, BMUsampled, Lines, Columns, Weights, Radius, toroid, NoCases)
 }
 

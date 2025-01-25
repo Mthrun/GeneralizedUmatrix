@@ -22,13 +22,11 @@ alpha = 1, ...)
 matrix storing the U-heights, see [Thrun, 2018] for definition.}
 \item{BestMatchingUnits}{[1:n,1:2], Positions of bestmatches to be plotted onto
 the U-matrix}
-\item{Cls}{[1:n], numerical vector of classification of \code{k} classes for the
-bestmatch at the given point}
-\item{ClsColors}{Vector of colors that will be used to colorize the different
-classes}
+\item{Cls}{[1:n], numerical vector of classification defining the labels defined as digits of the [1:k] classes. See details}
+\item{ClsColors}{Optional, [1:k] character vector of colors that will be used to colorize the different classes, vector can have names that define the mapping of the k classes, see details}
 \item{Imx}{a mask (Imx) that will be used to cut out the U-matrix}
-\item{ClsNames}{If set: [1:k] character vector naming the k classes for the
-legend. In this case, further parameters with the possibility to adjust are:
+\item{ClsNames}{Optional, [1:k] character vector naming the k classes for the
+legend. Vector can have names that define the mapping of the k classes, see details. In this case, further parameters with the possibility to adjust are:
 \code{LegendCex}: (size);
 \code{NamesOrientation}: Legend position "v" or "h";
 \code{NamesTitle}: title of legend.
@@ -49,7 +47,11 @@ represent the BestMatchingUnits}
 }
 }
 \details{
-Please see \code{\link{plotTopographicMap}}. This function is currently still experimental because not all functionallity is fully tested yet.
+In \code{Cls} each the bestmatch that will be visualized as a colored point gets one label, and the mappping is consecutive, i.e. first bestmatch in \code{BestMatchingUnits} gets first label stored in \code{Cls}. Please note, that the there will be k labels stored in \code{Cls} but depending on the user input the digits in the k-labels do not need to be consecutive. For example, if an algorithm find three clusters the labels do not need to be 1,2,3 but can also be 5,99,1.
+ 
+if \code{ClsColors} or \code{ClsNames} is given but the vector is not named, than internally the mapping of \code{names(ClsColors)=sort(unique(Cls))} is assumed, meaning that the lowest digit number of the k classes gets the first color stored in the first element of the \code{ClsColors} vector. The same is true for \code{ClsNames}. The user can specify antoher non-consecutive mapping between colors/names and labels with \code{names(ClsColors)=...}. In the above example, one could define the mapping between colors and classes with \code{names(ClsColors)=c(5,99,1)}, after the vector is initialized with three colors for the three clusters.
+
+Please see also \code{\link{plotTopographicMap}}. 
 }
 \value{
 plotly handler

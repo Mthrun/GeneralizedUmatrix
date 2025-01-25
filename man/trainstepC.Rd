@@ -8,7 +8,7 @@ internal function for s-esom
 Does the training for fixed bestmatches in one epoch of the sESOM.
 }
 \usage{
-trainstepC(vx,vy, DataSampled,BMUsampled,Lines,Columns, Radius, toroid)
+trainstepC(vx,vy, DataSampled,BMUsampled,Lines,Columns, Radius, toroid, NoCases)
 }
 \arguments{
 \item{vx}{array [1:Lines,1:Columns,1:Weights], WeightVectors that will be trained, internally transformed von NumericVector to cube}
@@ -19,6 +19,7 @@ trainstepC(vx,vy, DataSampled,BMUsampled,Lines,Columns, Radius, toroid)
 \item{Columns}{double, Width of the grid}
 \item{Radius}{double, The current Radius that should be used to define neighbours to the bm}
 \item{toroid}{bool, Should the grid be considered with cyclically connected borders?}
+\item{NoCases}{int, number of samples in the given non-sampled dataset}
 }
 \value{WeightVectors, array[1:Lines,1:Columns,1:weights] with the adjusted Weights}
 \references{

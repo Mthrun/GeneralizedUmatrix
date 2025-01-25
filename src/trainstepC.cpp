@@ -22,14 +22,15 @@ arma::cube Delta3DWeightsC(arma::cube x,
 
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
-arma::cube trainstepC(Rcpp::NumericVector vx,
+arma::cube trainstepC(Rcpp::NumericVector vx, // arma::cube
                       Rcpp::NumericVector vy,
                       Rcpp::NumericMatrix DataSampled,
                       Rcpp::NumericMatrix BMUsampled,
                       double Lines,
                       double Columns,
                       double Radius,
-                      bool toroid) {
+                      bool toroid,
+                      int NoCases) {
   
   Rcpp::IntegerVector x_dims = vx.attr("dim");
   Rcpp::IntegerVector y_dims = vy.attr("dim");
@@ -58,81 +59,97 @@ arma::cube trainstepC(Rcpp::NumericVector vx,
   int NumberOfDataSamples=DataSampled.nrow();
 
   for(int p=0;p<NumberOfDataSamples;p++){
-   // std::cout<<"anfang:p"<<p<<std::endl;
-//// Begin One Learnstep for one inputvector (1 Datenzeile)
+    // std::cout<<"anfang:p"<<p<<std::endl;
+    //// Begin One Learnstep for one inputvector (1 Datenzeile)
     DataSample=DataSampled.row(p);
     
 
     bmpos=BMUsampled.row(p);
-// toroid map: different distances
-// example: on a toroid 5 x 4-grid the distance between the points (3,4) and (1,1) is sqrt(8)
-//dass geht so in arma nicht, dass muss ich elementweise machen
-
+    // toroid map: different distances
+    // example: on a toroid 5 x 4-grid the distance between the points (3,4) and (1,1) is sqrt(8)
+    //dass geht so in arma nicht, dass muss ich elementweise machen
+  
     bm1.fill(bmpos(0));
     bm2.fill(bmpos(1));
-  //  if(p==1)
+    
+    //  if(p==1)
     //  std::cout<<kmatrix*2<<" "<<sqrt(half)<<std::endl;
-      //std::cout<<kmatrix-56<<" "<<abs(kmatrix-56)<<std::endl;
+    //std::cout<<kmatrix-56<<" "<<abs(kmatrix-56)<<std::endl;
     //std::cout<<kmatrix<<" "<<pow(kmatrix,2)<<endl;
- //   std::cout<<"slice1p"<<p<<std::endl;
+    //   std::cout<<"slice1p"<<p<<std::endl;
     if (toroid){
       //   OutputDistances <- 0.5*sqrt(  (k-abs( 2*abs(aux[,,1]-bmpos[1])-k ))^2 + (m-abs( 2*abs(aux[,,2]-bmpos[2])-m ))^2)
       
-      OutputDistances = 0.5*sqrt(  pow(kmatrix-abs( 2*abs(aux.slice(0)-bm1)-kmatrix ),2) + pow(mmatrix-abs( 2*abs(aux.slice(1)-bm2)-mmatrix ),2));
+      OutputDistances = 0.5*sqrt(pow(kmatrix-abs( 2*abs(aux.slice(0)-bm1)-kmatrix ),2) + pow(mmatrix-abs( 2*abs(aux.slice(1)-bm2)-mmatrix ),2));
       
       //OutputDistances =OutputDistances%0.5;
       
     }else{
-      OutputDistances =  sqrt(pow(aux.slice(0)-bm1,2) + pow(aux.slice(1)-bm2,2));
+      OutputDistances = sqrt(pow(aux.slice(0)-bm1,2) + pow(aux.slice(1)-bm2,2));
     } //end if toroid
-
-//Bestimme Nachbahrschaftsfunktion innerhalb Radius
-//  neighborfunction='kreis'
-      neighmatrix=1-(OutputDistances%OutputDistances)/(3.14159265*Radius*Radius);
-        //neighmatrix[neighmatrix<0]=0
- 
-        for(unsigned int i=0;i<neighmatrix.n_rows;i++){
-          for(unsigned int j=0;j<neighmatrix.n_cols;j++){
-            if(neighmatrix(i,j)<0)
-              neighmatrix(i,j)=0;
-          }
-        }
-     // neigharray=array(neighmatrix,c(k,m,NumberOfweights)) //Bringe auf gleiche Dimension wie esom und inputdiff
-  //   std::cout<<"slice2p "<<p<<std::endl;
-      for(int i=0;i<NumberOfweights;i++){
-        neigharray.slice(i)=neighmatrix;
+  
+    //Bestimme Nachbahrschaftsfunktion innerhalb Radius
+    //  neighborfunction='kreis'
+    neighmatrix=1-(OutputDistances%OutputDistances)/(3.14159265*Radius*Radius);
+      //neighmatrix[neighmatrix<0]=0
+    
+    for(unsigned int i=0;i<neighmatrix.n_rows;i++){
+      for(unsigned int j=0;j<neighmatrix.n_cols;j++){
+        if(neighmatrix(i,j)<0)
+          neighmatrix(i,j)=0;
       }
-        //Das muesste auch vektoriesierbar sein, momentan klappts aber nur als for schleife 
-//Injeder Dimension der inputdiff matrize wirdein Wert des Datenvekotr abgezogen
-//dadurch wird defakto von jedem gewicht der datenvektor komplett abgezogen
-//das dunktioniert, weil R automatisch den Wert auf die korrekte Matrizengroesse vergroessert
-        
-// inputdiff <- esom
-// for (w in 1:NumberOfweights) {
-//   //neigharray[,,w] <- neighmatrix //Nachbahrschaftsmatrix ist fuer alle Gewichtsvektoren konstant
-//   inputdiff[,,w] <- inputdiff[,,w]-DataSample[w]
-// } //end for 1:NumberOfweights
-
-        inputdiff=Delta3DWeightsC(esomwts,DataSample); //MT: Ohne Multiplikation mit 1 ist esom==inputdiff, kA wieso
-        
-        
-//CurrentLearnrate is always 1
-esomwts = esomwts-neigharray%inputdiff; // element-wise cube multiplicatio with %
-
-
-//// End One Learnstep for one inputvector (1 Datenzeilen)
+    }
+    // neigharray=array(neighmatrix,c(k,m,NumberOfweights)) //Bringe auf gleiche Dimension wie esom und inputdiff
+    //   std::cout<<"slice2p "<<p<<std::endl;
+    for(int i=0;i<NumberOfweights;i++){
+      neigharray.slice(i)=neighmatrix;
+    }
+    //Das muesste auch vektoriesierbar sein, momentan klappts aber nur als for schleife 
+    //Injeder Dimension der inputdiff matrize wirdein Wert des Datenvekotr abgezogen
+    //dadurch wird defakto von jedem gewicht der datenvektor komplett abgezogen
+    //das dunktioniert, weil R automatisch den Wert auf die korrekte Matrizengroesse vergroessert
             
-// Hold BMUs
-//std::cout<<"hold p"<<p<<std::endl;
-            //for(int i=0;i<NumberOfDataSamples;i++){
-              //for(int j=0;j<NumberOfweights;j++){
+    // inputdiff <- esom
+    // for (w in 1:NumberOfweights) {
+    //   //neigharray[,,w] <- neighmatrix //Nachbahrschaftsmatrix ist fuer alle Gewichtsvektoren konstant
+    //   inputdiff[,,w] <- inputdiff[,,w]-DataSample[w]
+    // } //end for 1:NumberOfweights
+    
+    inputdiff=Delta3DWeightsC(esomwts,DataSample); //MT: Ohne Multiplikation mit 1 ist esom==inputdiff, kA wieso
+    
+    
+    
+    if(NoCases<2501){//for small number of samples the learning rate is constant
+      //CurrentLearnrate is always 1
+      esomwts = esomwts-neigharray%inputdiff; // element-wise cube multiplicatio with %
+    }else{//#for large number of samples the learning rate has to be adjusted
+      //in future also adjust radius thresholds depending on gridsize
+      if (Radius > 16) {
+      esomwts = esomwts-neigharray%inputdiff; // element-wise cube multiplicatio with %
+      }
+      else if (Radius <= 16 && Radius > 8) {
+        esomwts = esomwts-0.75*neigharray%inputdiff; // element-wise cube multiplicatio with %  
+      }
+      else if (Radius <= 8 && Radius > 4) {
+        esomwts = esomwts-0.5*neigharray%inputdiff; // element-wise cube multiplicatio with % 
+      }
+      else {
+        esomwts = esomwts-0.1*neigharray%inputdiff; // element-wise cube multiplicatio with % 
+      }
+    }
+    //// End One Learnstep for one inputvector (1 Datenzeilen)
                 
-               // std::cout<<i<<" "<<j<<" "<<BMUsampled(i,0)<<" "<< BMUsampled(i,1)<<std::endl;
-                //esomwts(BMUsampled(i,0),BMUsampled(i,1),j) = DataSampled(i,j);
-              
-              //}
-            //} // end for hold bmus
-            //std::cout<<"end p"<<p<<std::endl;
+    // Hold BMUs
+    //std::cout<<"hold p"<<p<<std::endl;
+              //for(int i=0;i<NumberOfDataSamples;i++){
+                //for(int j=0;j<NumberOfweights;j++){
+                  
+                 // std::cout<<i<<" "<<j<<" "<<BMUsampled(i,0)<<" "<< BMUsampled(i,1)<<std::endl;
+                  //esomwts(BMUsampled(i,0),BMUsampled(i,1),j) = DataSampled(i,j);
+                
+                //}
+              //} // end for hold bmus
+              //std::cout<<"end p"<<p<<std::endl;
   } //end for 1:NumberOfDataSamples
   return(esomwts);
 }

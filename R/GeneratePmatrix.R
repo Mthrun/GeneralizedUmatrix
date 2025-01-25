@@ -5,7 +5,7 @@ GeneratePmatrix=function(Data,EsomNeurons,...) {
 # EsomNeurons[1:Lines,1:Columns,1:weights]    Information stored as a List of weights in a 2D matrix,
 #                                   oder das Rlistenobjekt aus ReadEsomNeurons
 # Radius                            The radius for measuring the density within the hypersphere
-# Umatrix[1:Lines,1:Columns]        Matrix with U-Matrix Height values
+# Pmatrix[1:Lines,1:Columns]        Matrix with P-Matrix density values
 
 
 #OUTPUT
