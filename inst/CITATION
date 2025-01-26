@@ -9,7 +9,7 @@ bibentry(bibtype = "Article",
   year = "2020",
   issn = "2215-0161",
   doi = "10.1016/j.mex.2020.101093",
-  url = "https://www.sciencedirect.com/science/article/pii/S2215016120303137",
+  url = "https://doi.org/10.1016/j.mex.2020.101093",
 
   textVersion =
   paste(
